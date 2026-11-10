@@ -369,3 +369,16 @@ const WM = (() => {
   return { open, close, focus, showDesktop, active, has: id => wins.has(id) };
 })();
 
+/* =========================================================
+   Inicialización de cada aplicación
+   ========================================================= */
+const AppInit = {
+  about(body) {
+    const tabs = $$('.tab', body), panels = $$('.tab-panel', body);
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.toggle('active', x === t));
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === t.dataset.tab));
+      Sound.play('click');
+    }));
+  },
+
