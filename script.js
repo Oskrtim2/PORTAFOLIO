@@ -172,3 +172,200 @@ const Sound = (() => {
   };
 })();
 
+/* =========================================================
+   Gestor de ventanas
+   ========================================================= */
+const WM = (() => {
+  const layer = $('#windows');
+  const tb = $('#tb-windows');
+  const wins = new Map(); // id -> { el, btn, app, cleanup }
+  let z = 10, cascade = 0;
+
+  function bounds() { return layer.getBoundingClientRect(); }
+
+  function open(id, opts = {}) {
+    const app = APPS[id];
+    if (!app) return;
+    closeStartMenu();
+    if (wins.has(id)) {
+      const w = wins.get(id);
+      restore(id);
+      w.onOpen && w.onOpen(opts);
+      return;
+    }
+
+    const el = document.createElement('section');
+    el.className = 'window';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-label', opts.title || app.title);
+    el.dataset.app = id;
+    el.innerHTML = `
+      <div class="titlebar">
+        <svg><use href="#${app.icon}"/></svg>
+        <span class="title"></span>
+        <div class="controls">
+          <button class="min" aria-label="Minimizar">&#8212;</button>
+          <button class="max" aria-label="Maximizar">&#9633;</button>
+          <button class="close" aria-label="Cerrar">&#10005;</button>
+        </div>
+      </div>
+      <div class="win-body"></div>`;
+    $('.title', el).textContent = opts.title || app.title;
+    const body = $('.win-body', el);
+    const tpl = document.getElementById('tpl-' + id);
+    if (tpl) body.appendChild(tpl.content.cloneNode(true));
+
+    // Tamaño y posición en cascada
+    const b = bounds();
+    const w = Math.min(app.w, b.width - 20), h = Math.min(app.h, b.height - 20);
+    const step = (cascade++ % 7) * 28;
+    let x = Math.max(10, Math.min(b.width - w - 10, (b.width - w) / 2 - 90 + step));
+    let y = Math.max(6, Math.min(b.height - h - 6, (b.height - h) / 2 - 60 + step));
+    Object.assign(el.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+
+    layer.appendChild(el);
+
+    // Botón en la barra de tareas
+    const btn = document.createElement('button');
+    btn.className = 'tb-btn open';
+    btn.innerHTML = `<svg><use href="#${app.icon}"/></svg><span></span>`;
+    $('span', btn).textContent = (opts.title || app.title).split(' — ')[0];
+    btn.addEventListener('click', () => {
+      const cur = wins.get(id);
+      if (el.classList.contains('minimized')) restore(id);
+      else if (cur && el.style.zIndex == z) minimize(id);
+      else focus(id);
+    });
+    tb.appendChild(btn);
+
+    const rec = { el, btn, app };
+    wins.set(id, rec);
+
+    // Controles
+    $('.min', el).addEventListener('click', e => { e.stopPropagation(); minimize(id); });
+    $('.max', el).addEventListener('click', e => { e.stopPropagation(); toggleMax(id); });
+    $('.close', el).addEventListener('click', e => { e.stopPropagation(); close(id); });
+    $('.titlebar', el).addEventListener('dblclick', e => { if (!e.target.closest('.controls')) toggleMax(id); });
+    el.addEventListener('pointerdown', () => focus(id));
+    makeDraggable(el, id);
+
+    Sound.play('open');
+    focus(id);
+
+    const init = AppInit[id];
+    if (init) {
+      const res = init(body, el, opts) || {};
+      rec.cleanup = res.cleanup;
+      rec.onOpen = res.onOpen;
+      rec.onKey = res.onKey;
+      res.onOpen && res.onOpen(opts);
+    }
+    updateHash(id);
+  }
+
+  function focus(id) {
+    const w = wins.get(id);
+    if (!w) return;
+    if (w.el.style.zIndex != z) w.el.style.zIndex = ++z;
+    wins.forEach((o, k) => {
+      const active = k === id;
+      o.el.classList.toggle('inactive', !active);
+      o.btn.classList.toggle('active', active);
+    });
+  }
+
+  function topVisible() {
+    let best = null, bz = -1;
+    wins.forEach((o, k) => {
+      if (!o.el.classList.contains('minimized') && +o.el.style.zIndex > bz) { bz = +o.el.style.zIndex; best = k; }
+    });
+    return best;
+  }
+
+  function minimize(id) {
+    const w = wins.get(id);
+    if (!w) return;
+    w.el.classList.add('minimized');
+    w.btn.classList.remove('active');
+    const next = topVisible();
+    if (next) focus(next);
+  }
+
+  function restore(id) {
+    const w = wins.get(id);
+    if (!w) return;
+    w.el.classList.remove('minimized');
+    focus(id);
+  }
+
+  function toggleMax(id) {
+    const w = wins.get(id);
+    if (!w || isMobile()) return;
+    w.el.classList.toggle('maximized');
+    Sound.play('click');
+  }
+
+  function close(id, silent) {
+    const w = wins.get(id);
+    if (!w) return;
+    wins.delete(id);
+    w.cleanup && w.cleanup();
+    w.btn.remove();
+    if (!silent) Sound.play('close');
+    w.el.classList.add('closing');
+    setTimeout(() => w.el.remove(), 150);
+    const next = topVisible();
+    if (next) focus(next);
+    if (!wins.size) history.replaceState(null, '', location.pathname);
+  }
+
+  function makeDraggable(el, id) {
+    const bar = $('.titlebar', el);
+    let sx, sy, ox, oy, dragging = false;
+    bar.addEventListener('pointerdown', e => {
+      if (e.target.closest('.controls') || isMobile() || e.button !== 0) return;
+      dragging = true;
+      if (el.classList.contains('maximized')) {
+        // Al arrastrar una ventana maximizada, se restaura bajo el cursor
+        el.classList.remove('maximized');
+        const w = el.offsetWidth;
+        el.style.left = Math.max(0, e.clientX - w / 2) + 'px';
+        el.style.top = Math.max(0, e.clientY - 15) + 'px';
+      }
+      sx = e.clientX; sy = e.clientY; ox = el.offsetLeft; oy = el.offsetTop;
+      bar.setPointerCapture(e.pointerId);
+    });
+    bar.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const b = bounds();
+      const nx = Math.min(b.width - 80, Math.max(80 - el.offsetWidth, ox + e.clientX - sx));
+      const ny = Math.min(b.height - 30, Math.max(0, oy + e.clientY - sy));
+      el.style.left = nx + 'px';
+      el.style.top = ny + 'px';
+    });
+    bar.addEventListener('pointerup', e => {
+      if (!dragging) return;
+      dragging = false;
+      // Aero Snap: arrastrar arriba maximiza
+      if (e.clientY <= 2) { el.classList.add('maximized'); Sound.play('click'); }
+    });
+  }
+
+  function showDesktop() {
+    const anyVisible = [...wins.values()].some(w => !w.el.classList.contains('minimized'));
+    wins.forEach((w, k) => anyVisible ? minimize(k) : restore(k));
+  }
+
+  function active() {
+    const id = topVisible();
+    return id ? { id, ...wins.get(id) } : null;
+  }
+
+  function updateHash(id) {
+    const hash = Object.keys(HASH_TO_APP).find(k => HASH_TO_APP[k] === id);
+    if (hash) history.replaceState(null, '', '#' + hash);
+  }
+
+  return { open, close, focus, showDesktop, active, has: id => wins.has(id) };
+})();
+
