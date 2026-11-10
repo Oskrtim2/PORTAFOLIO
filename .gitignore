@@ -14,3 +14,6 @@ Thumbs.db
 /assets/images/project-ai.jpg
 /assets/images/project-cloud.jpg
 /assets/images/project-web.jpg
+
+.vercel
+.env*
