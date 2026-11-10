@@ -975,3 +975,19 @@ paintSoundBtn();
   setInterval(spawn, 1500);
 })();
 
+/* =========================================================
+   Apagar / encender
+   ========================================================= */
+const shutdownScreen = $('#shutdown-screen');
+$('#shutdown').addEventListener('click', () => {
+  closeStartMenu();
+  Sound.play('close');
+  shutdownScreen.classList.add('show');
+  shutdownScreen.setAttribute('aria-hidden', 'false');
+});
+$('#power-on').addEventListener('click', () => {
+  sessionStorage.removeItem('oskr-booted');
+  location.hash = '';
+  location.reload();
+});
+
