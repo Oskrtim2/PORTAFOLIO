@@ -307,3 +307,31 @@
   </div>
 </template>
 
+<template id="tpl-projects">
+  <div class="explorer">
+    <div class="ex-bar">
+      <button class="ex-nav" data-ex="back" aria-label="Atrás">&#9664;</button>
+      <button class="ex-nav" data-ex="fwd" aria-label="Adelante" disabled>&#9654;</button>
+      <div class="ex-address"><svg><use href="#i-folder"/></svg><span class="ex-path">Equipo ▸ Oscar ▸ Proyectos</span></div>
+      <input class="ex-search" type="search" placeholder="Buscar en Proyectos" aria-label="Buscar proyectos">
+    </div>
+    <div class="ex-body">
+      <ul class="ex-side">
+        <li class="head">Favoritos</li>
+        <li><button data-open="about">Escritorio</button></li>
+        <li><a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub</a></li>
+        <li class="head">Bibliotecas</li>
+        <li><button class="ex-filter active" data-filter="all">Todos</button></li>
+        <li><button class="ex-filter" data-filter="web">Web / SaaS</button></li>
+        <li><button class="ex-filter" data-filter="mobile">AR & Móvil</button></li>
+        <li><button class="ex-filter" data-filter="data">Estructuras & Audio</button></li>
+      </ul>
+      <div class="ex-main">
+        <div class="ex-files"></div>
+        <div class="ex-detail" hidden></div>
+      </div>
+    </div>
+    <div class="ex-status"><span class="ex-count"></span></div>
+  </div>
+</template>
+
