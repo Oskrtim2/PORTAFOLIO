@@ -714,3 +714,123 @@ const CommunityStore = (() => {
   return { shared, list, add };
 })();
 
+const Viewer = (() => {
+  const box = $('#viewer'), stage = $('.vw-stage', box), img = $('.vw-img', box);
+  const title = $('.vw-title', box), count = $('.vw-count', box);
+  const prevBtn = $('.vw-prev', box), nextBtn = $('.vw-next', box), zoomBtn = $('.vw-zoom', box);
+  let list = [], i = 0, zoomed = false, lastFocus = null;
+
+  function show() {
+    const p = list[i];
+    setZoom(false);
+    img.classList.add('loading');
+    img.onload = () => img.classList.remove('loading');
+    img.src = safeImg(p.src);
+    img.alt = p.title;
+    title.textContent = p.author ? `${p.title} — por ${p.author}` : p.title;
+    count.textContent = `${i + 1} de ${list.length}`;
+    const many = list.length > 1;
+    prevBtn.hidden = nextBtn.hidden = !many;
+  }
+
+  function open(l, idx) {
+    list = l; i = idx;
+    lastFocus = document.activeElement;
+    show();
+    box.hidden = false;
+    requestAnimationFrame(() => box.classList.add('show'));
+    Sound.play('open');
+    $('.vw-close', box).focus();
+  }
+
+  function close() {
+    if (box.hidden) return;
+    box.classList.remove('show');
+    setTimeout(() => { box.hidden = true; img.removeAttribute('src'); }, 200);
+    Sound.play('close');
+    lastFocus && lastFocus.focus && lastFocus.focus();
+  }
+
+  function go(d) {
+    if (list.length < 2) return;
+    i = (i + d + list.length) % list.length;
+    show();
+    Sound.play('click');
+  }
+
+  // Zoom: la imagen pasa a tamaño real y se puede arrastrar para recorrerla
+  function setZoom(on, cx, cy) {
+    // Medir la imagen ajustada antes de cambiar al modo ampliado
+    const r = img.getBoundingClientRect();
+    zoomed = on;
+    box.classList.toggle('zoomed', on);
+    zoomBtn.textContent = on ? '−' : '+';
+    zoomBtn.setAttribute('aria-label', on ? 'Alejar' : 'Ampliar');
+    if (on) {
+      const fx = cx != null ? (cx - r.left) / r.width : .5;
+      const fy = cy != null ? (cy - r.top) / r.height : .5;
+      const fitW = r.width;
+      const w = Math.max(img.naturalWidth, fitW * 2);
+      img.style.width = w + 'px';
+      // offsetWidth fuerza el cálculo del nuevo tamaño antes de mover el scroll
+      stage.scrollLeft = fx * img.offsetWidth - stage.clientWidth / 2;
+      stage.scrollTop = fy * img.offsetHeight - stage.clientHeight / 2;
+    } else {
+      img.style.width = '';
+    }
+  }
+
+  // Arrastrar para recorrer cuando hay zoom
+  let drag = null, moved = false;
+  stage.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    moved = false;
+    if (zoomed) {
+      drag = { x: e.clientX, y: e.clientY, sl: stage.scrollLeft, st: stage.scrollTop };
+      stage.setPointerCapture(e.pointerId);
+    }
+  });
+  stage.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+    stage.scrollLeft = drag.sl - dx;
+    stage.scrollTop = drag.st - dy;
+  });
+  stage.addEventListener('pointerup', () => { drag = null; });
+  stage.addEventListener('click', e => {
+    if (moved) return;
+    if (e.target === img) setZoom(!zoomed, e.clientX, e.clientY);
+    else if (!zoomed) close(); // clic en el fondo oscuro cierra
+  });
+
+  // Deslizar a los lados en pantallas táctiles
+  let tx = null;
+  stage.addEventListener('touchstart', e => { tx = zoomed ? null : e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', e => {
+    if (tx == null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) { moved = true; go(dx < 0 ? 1 : -1); }
+    tx = null;
+  });
+
+  prevBtn.addEventListener('click', () => go(-1));
+  nextBtn.addEventListener('click', () => go(1));
+  zoomBtn.addEventListener('click', () => setZoom(!zoomed));
+  $('.vw-close', box).addEventListener('click', close);
+
+  function onKey(e) {
+    if (box.hidden) return false;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === '+' || e.key === '=') setZoom(true);
+    else if (e.key === '-') setZoom(false);
+    else return true; // dejar pasar Tab, etc. pero no a las ventanas
+    e.preventDefault();
+    return true;
+  }
+
+  return { open, close, onKey };
+})();
+
