@@ -362,3 +362,9 @@ a { color: var(--link); }
 .mail textarea { flex: 1; min-height: 140px; margin: 10px; padding: 10px; font: inherit; border: 1px solid #b5c4d4; resize: none; }
 .mail-feedback { margin: 0 10px 10px; padding: 8px 12px; border-radius: 4px; background: linear-gradient(#f0ffe6, #d6f5c2); border: 1px solid #8cc76a; color: #245c0e; }
 
+/* ---------------- Papelera ---------------- */
+.ex-files.list { display: block; padding: 8px; }
+.file-row { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center; padding: 6px 8px; border-bottom: 1px solid #eef2f6; font-size: 13px; }
+.file-row svg { width: 22px; height: 22px; }
+.file-row small { color: var(--muted); }
+
