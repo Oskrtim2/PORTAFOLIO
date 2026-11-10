@@ -944,3 +944,34 @@ paintSoundBtn();
   tick(); setInterval(tick, 1000);
 })();
 
+/* =========================================================
+   Burbujas (mini-juego)
+   ========================================================= */
+(function bubbles() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const box = $('#bubbles'), counter = $('#bubble-count');
+  let popped = 0;
+  function spawn() {
+    if (document.hidden || box.childElementCount > 14) return;
+    const b = document.createElement('div');
+    const size = 18 + Math.random() * 54;
+    b.className = 'bubble';
+    Object.assign(b.style, {
+      width: size + 'px', height: size + 'px',
+      left: (8 + Math.random() * 88) + '%',
+      animationDuration: (11 + Math.random() * 12) + 's'
+    });
+    b.addEventListener('animationend', () => b.remove());
+    b.addEventListener('pointerdown', e => {
+      e.stopPropagation();
+      if (b.classList.contains('pop')) return;
+      b.classList.add('pop');
+      Sound.play('pop');
+      counter.textContent = ++popped;
+    });
+    box.appendChild(b);
+  }
+  for (let i = 0; i < 4; i++) setTimeout(spawn, i * 600);
+  setInterval(spawn, 1500);
+})();
+
