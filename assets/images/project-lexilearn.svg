@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="Verdana, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a1b5e"/><stop offset=".55" stop-color="#3b3a9c"/><stop offset="1" stop-color="#1d7fa8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".75" cy=".2" r=".6">
+      <stop offset="0" stop-color="#ffe6a8" stop-opacity=".55"/><stop offset="1" stop-color="#ffe6a8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf6"/><stop offset="1" stop-color="#f1ead6"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1a6"/><stop offset="1" stop-color="#f2b11c"/></linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#0a0630" flood-opacity=".45"/></filter>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#glow)"/>
+  <g fill="#fff" opacity=".55">
+    <circle cx="90" cy="80" r="2.5"/><circle cx="260" cy="40" r="1.8"/><circle cx="1110" cy="560" r="2.2"/>
+    <circle cx="1040" cy="90" r="1.6"/><circle cx="160" cy="600" r="2"/><circle cx="620" cy="40" r="1.6"/>
+  </g>
+
+  <!-- Libro abierto -->
+  <g filter="url(#sh)" transform="translate(150 150)">
+    <path d="M0 30 Q150 -10 300 30 V400 Q150 360 0 400z" fill="url(#page)"/>
+    <path d="M300 30 Q450 -10 600 30 V400 Q450 360 300 400z" fill="url(#page)"/>
+    <path d="M300 30 V400" stroke="#d6caa6" stroke-width="3"/>
+    <!-- Sílabas resaltadas -->
+    <g font-size="44" font-weight="700">
+      <rect x="38" y="78" width="96" height="60" rx="12" fill="#ffd3e2"/>
+      <text x="86" y="122" text-anchor="middle" fill="#9b1f52">ca</text>
+      <text x="146" y="122" text-anchor="middle" fill="#8d8aa8">·</text>
+      <rect x="158" y="78" width="100" height="60" rx="12" fill="#cdeaff"/>
+      <text x="208" y="122" text-anchor="middle" fill="#0b5fb5">sa</text>
+      <rect x="38" y="168" width="104" height="60" rx="12" fill="#d8f7b8"/>
+      <text x="90" y="212" text-anchor="middle" fill="#2f7a12">lu</text>
+      <text x="152" y="212" text-anchor="middle" fill="#8d8aa8">·</text>
+      <rect x="164" y="168" width="96" height="60" rx="12" fill="#fff1a6"/>
+      <text x="212" y="212" text-anchor="middle" fill="#8a5a00">na</text>
+    </g>
+    <g stroke="#cfc6ae" stroke-width="10" stroke-linecap="round">
+      <path d="M44 280 H250"/><path d="M44 318 H220"/><path d="M44 356 H236"/>
+      <path d="M344 300 H560"/><path d="M344 338 H520"/>
+    </g>
+    <!-- Página derecha: lupa OCR -->
+    <g transform="translate(450 165)">
+      <rect x="-104" y="-92" width="208" height="150" rx="10" fill="none" stroke="#7b6fd6" stroke-width="5" stroke-dasharray="16 12"/>
+      <circle cx="-8" cy="-14" r="44" fill="#e8e4ff" stroke="#5a49c9" stroke-width="10"/>
+      <path d="M24 18 L66 60" stroke="#5a49c9" stroke-width="16" stroke-linecap="round"/>
+      <text x="-8" y="0" text-anchor="middle" font-size="38" font-weight="700" fill="#5a49c9">Aa</text>
+    </g>
+  </g>
+
+  <!-- Ondas de voz -->
+  <g transform="translate(820 360)" fill="none" stroke="#ffe08a" stroke-linecap="round">
+    <path d="M0 0 h28 l34 -30 v120 l-34 -30 h-28z" fill="#ffe08a" stroke="none" transform="translate(0 -30)"/>
+    <path d="M90 -22 a40 40 0 0 1 0 64" stroke-width="10"/>
+    <path d="M118 -50 a78 78 0 0 1 0 120" stroke-width="10" opacity=".75"/>
+    <path d="M146 -78 a116 116 0 0 1 0 176" stroke-width="10" opacity=".45"/>
+  </g>
+
+  <!-- Insignia suave -->
+  <g transform="translate(985 150)">
+    <circle r="64" fill="url(#gold)" stroke="#fff" stroke-width="6"/>
+    <path d="M0 -34 L10 -10 L36 -10 L15 6 L23 32 L0 16 L-23 32 L-15 6 L-36 -10 L-10 -10z" fill="#fff"/>
+  </g>
+
+  <!-- Iconos del inicio de sesión visual -->
+  <g transform="translate(150 610)" font-size="28" font-weight="700" fill="#fff">
+    <circle r="22" fill="#ffd166"/><text x="40" y="10">→</text>
+    <circle cx="96" r="22" fill="#a9c7ff"/><circle cx="106" cy="-8" r="18" fill="#3b3a9c"/>
+    <text x="136" y="10">→</text>
+    <path d="M196 18 C176 -6 196 -26 222 -24 C226 2 214 22 196 18z" fill="#8fe07a"/>
+  </g>
+
+  <text x="1050" y="628" text-anchor="end" font-size="64" font-weight="700" fill="#fff" letter-spacing="1">Lexi<tspan fill="#ffe08a">Learn</tspan></text>
+</svg>

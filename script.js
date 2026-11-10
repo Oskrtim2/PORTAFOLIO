@@ -38,25 +38,25 @@ const COMMUNITY = {
 
 /* ---------- Datos de proyectos ---------- */
 const PROJECTS = {
-  legalflow: {
-    name: 'LegalFlow',
-    cat: 'web',
-    kind: 'SaaS multi-tenant',
-    title: 'LegalFlow · Gestión jurídica inteligente',
-    subtitle: 'Plataforma SaaS multi-tenant para despachos de abogados con Next.js 16, React 19 y PostgreSQL',
-    image: 'assets/images/project-legalflow.jpg',
-    github: 'https://github.com/Oskrtim2/legalflow-app',
-    overview: 'LegalFlow resuelve la dispersión de información y el riesgo de perder términos procesales en despachos jurídicos en Colombia. Centraliza expedientes con radicados judiciales, control de términos con alertas tempranas, facturación en COP y gestión de clientes con aislamiento estricto entre inquilinos.',
+  lexilearn: {
+    name: 'LexiLearn',
+    cat: 'api',
+    kind: 'API de aprendizaje asistivo',
+    title: 'LexiLearn · Aprender a leer sin barreras',
+    subtitle: 'API REST en NestJS para estudiantes con dislexia, TDAH y TEA: OCR, texto a voz, silabación y gamificación calmada',
+    image: 'assets/images/project-lexilearn.svg',
+    github: 'https://github.com/Oskrtim2/LexiLearn-Backend',
+    overview: 'LexiLearn es el backend de una plataforma de aprendizaje asistivo para estudiantes de primaria y secundaria con dislexia, TDAH o Trastorno del Espectro Autista. El estudiante fotografía una página, la API extrae el texto, lo divide en sílabas y frases cortas, calcula su legibilidad y lo lee en voz alta. Todo pensado para que nadie se frustre: sin contraseñas, sin castigos por perder la racha y con celebraciones silenciosas.',
     architecture: [
-      'Aislamiento multi-tenant estricto: filtrado obligatorio por <code>tenantId</code> en todas las consultas y transacciones con Prisma 7.',
-      'Seguridad RBAC centralizada con un helper <code>can()</code> y una matriz de permisos, en lugar de simples validaciones por rol.',
-      'Next.js 16 App Router con Server Actions de React 19 encapsuladas (<code>protectedAction</code>), esquemas Zod y Auth.js v5 con bcrypt (12 rondas).',
-      'Arquitectura modular con patrón Repository (<code>BaseRepository</code> y repositorios por entidad).',
-      'Dashboard con semáforo de riesgo procesal en tiempo real.',
-      'Infraestructura reproducible con Docker Compose y Dockerfile multi-stage.'
+      'Inicio de sesión accesible sin contraseñas: <b>PIN corto</b>, <b>código QR firmado</b> o una <b>secuencia de iconos</b> (estrella → luna → hoja) guardada como digest HMAC.',
+      'OCR de páginas escaneadas con <b>Tesseract</b> local o <b>AWS Textract</b>, validación por bytes mágicos (PNG / JPEG / WebP) y límite de 10 MB.',
+      'Texto a voz neuronal con <b>Amazon Polly</b> o <b>Google Cloud TTS</b>, caché por hash de contenido, <i>advisory locks</i> de PostgreSQL y URLs firmadas de MP3.',
+      'Asistente de lectura: silabación en español e inglés, microfrases por cláusulas, tiempo estimado e índice de legibilidad.',
+      'Gamificación amigable para los sentidos: micro-XP, insignias suaves y rachas no punitivas.',
+      'Monolito modular Controlador → Servicio → Repositorio → Prisma, proveedores intercambiables por interfaces y tokens de inyección, Helmet, CORS, <i>throttling</i> y Swagger.'
     ],
-    metrics: [['100%', 'Aislamiento multi-tenant'], ['Semáforo', 'Control de términos'], ['Next 16', 'React 19']],
-    stack: ['Next.js 16', 'React 19', 'TypeScript', 'PostgreSQL 16', 'Prisma 7', 'Server Actions', 'Auth.js v5', 'Tailwind CSS v4', 'shadcn/ui', 'Docker Compose', 'Zod']
+    metrics: [['3', 'Formas de entrar sin contraseña'], ['2 + 2', 'Proveedores OCR y TTS'], ['ES / EN', 'Silabación']],
+    stack: ['NestJS 12', 'TypeScript 6', 'PostgreSQL 17', 'Prisma 6', 'JWT', 'Tesseract.js', 'AWS Textract', 'Amazon Polly', 'Google Cloud TTS', 'Swagger / OpenAPI', 'Vitest', 'Docker Compose']
   },
   smartstencil: {
     name: 'SmartStencil',
@@ -1021,6 +1021,33 @@ paintSoundBtn();
   }
   for (let i = 0; i < 4; i++) setTimeout(spawn, i * 600);
   setInterval(spawn, 1500);
+})();
+
+/* =========================================================
+   Fondo con paralaje: las capas siguen al mouse con suavidad
+   ========================================================= */
+(function parallax() {
+  if (isTouch || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const wp = $('.wallpaper');
+  let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+
+  function step() {
+    // Se acerca un poco al objetivo en cada cuadro para que el movimiento sea suave
+    x += (tx - x) * .07;
+    y += (ty - y) * .07;
+    wp.style.setProperty('--px', x.toFixed(4));
+    wp.style.setProperty('--py', y.toFixed(4));
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > .001 ? requestAnimationFrame(step) : 0;
+  }
+  function aim(nx, ny) {
+    tx = nx; ty = ny;
+    if (!raf) raf = requestAnimationFrame(step);
+  }
+  document.addEventListener('pointermove', e => {
+    aim(e.clientX / innerWidth * 2 - 1, e.clientY / innerHeight * 2 - 1);
+  }, { passive: true });
+  // Al salir de la ventana del navegador, el fondo vuelve al centro
+  document.documentElement.addEventListener('pointerleave', () => aim(0, 0));
 })();
 
 /* =========================================================
