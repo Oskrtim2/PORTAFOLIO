@@ -531,3 +531,21 @@ a { color: var(--link); }
 }
 .toast.out { opacity: 0; }
 
+/* ---------------- Responsive ---------------- */
+@media (max-width: 760px) {
+  .gadgets { display: none; }
+  .icons { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, 84px); grid-template-rows: none; grid-auto-rows: 92px; right: 8px; justify-content: center; }
+  .window { inset: 0 !important; width: auto !important; height: auto !important; border-radius: 0; resize: none; }
+  .window .controls .max { display: none; }
+  .ex-side { display: none; }
+  .ex-search { display: none; }
+  .tb-btn span { display: none; }
+  .tb-pinned { display: none; }
+  .tray-clock #tb-date { display: none; }
+  .start-menu { width: 100vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .bubbles { display: none; }
+}
