@@ -625,3 +625,13 @@ const AppInit = {
     });
   },
 
+  bin(body) {
+    $('.bin-empty', body).addEventListener('click', e => {
+      $('.ex-files', body).innerHTML = '<p class="muted" style="padding:12px">La papelera está vacía.</p>';
+      $('.info-bar span', body).textContent = '0 elementos';
+      e.currentTarget.disabled = true;
+      Sound.play('close');
+    });
+  }
+};
+
