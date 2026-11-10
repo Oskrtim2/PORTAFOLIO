@@ -124,3 +124,51 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const isTouch = matchMedia('(pointer: coarse)').matches;
 const isMobile = () => innerWidth <= 760;
 
+/* =========================================================
+   Sonido (todo sintetizado con Web Audio, sin archivos)
+   ========================================================= */
+const Sound = (() => {
+  let ctx = null;
+  let on = localStorage.getItem('oskr-sound') !== 'off';
+
+  function ac() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  function tone(freq, dur, { type = 'sine', vol = .15, at = 0, slideTo } = {}) {
+    const c = ac(); if (!c) return;
+    const t = c.currentTime + at;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(c.destination);
+    o.start(t); o.stop(t + dur + .05);
+  }
+
+  const ui = {
+    click: () => tone(880, .05, { vol: .05, type: 'triangle' }),
+    open: () => { tone(660, .12, { vol: .06 }); tone(990, .16, { vol: .05, at: .05 }); },
+    close: () => { tone(700, .1, { vol: .05 }); tone(470, .14, { vol: .05, at: .05 }); },
+    pop: () => tone(500 + Math.random() * 500, .09, { vol: .12, slideTo: 1600 }),
+    error: () => { tone(440, .18, { vol: .08, type: 'triangle' }); tone(330, .25, { vol: .08, type: 'triangle', at: .12 }); },
+    startup: () => [523, 659, 784, 1046].forEach((f, i) => { tone(f, 1.6, { vol: .07, at: i * .14 }); tone(f / 2, 1.6, { vol: .04, at: i * .14 }); }),
+    send: () => { tone(600, .1, { vol: .06, slideTo: 1400 }); tone(1200, .2, { vol: .05, at: .1 }); }
+  };
+
+  return {
+    get on() { return on; },
+    toggle() { on = !on; localStorage.setItem('oskr-sound', on ? 'on' : 'off'); return on; },
+    play(name) { if (on && ui[name]) ui[name](); },
+    unlock: ac
+  };
+})();
+
