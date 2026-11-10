@@ -451,3 +451,11 @@ const AppInit = {
     return { onOpen: opts => opts && opts.project && showDetail(opts.project) };
   },
 
+  tattoo(body) {
+    renderGallery($('.gallery', body), TATTOO_PHOTOS, 'Tatuaje');
+  },
+
+  drawings(body) {
+    renderGallery($('.gallery', body), DRAWINGS, 'Dibujo');
+  },
+
