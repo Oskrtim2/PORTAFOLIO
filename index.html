@@ -245,3 +245,20 @@
   <button id="power-on" class="aero-btn">Encender de nuevo</button>
 </div>
 
+<!-- Visor de fotos a pantalla completa -->
+<div id="viewer" class="viewer" role="dialog" aria-modal="true" aria-label="Visor de fotos" hidden>
+  <div class="vw-top">
+    <svg><use href="#i-photos"/></svg>
+    <span class="vw-title"></span>
+    <span class="vw-count"></span>
+    <button class="vw-close" aria-label="Cerrar visor">&#10005;</button>
+  </div>
+  <div class="vw-stage"><img class="vw-img" alt="" draggable="false"></div>
+  <div class="vw-bar">
+    <button class="vw-btn vw-prev" aria-label="Anterior">&#9664;</button>
+    <button class="vw-btn vw-zoom big" aria-label="Ampliar">+</button>
+    <button class="vw-btn vw-next" aria-label="Siguiente">&#9654;</button>
+  </div>
+  <p class="vw-help">Clic en la imagen para ampliar · arrastra para moverte · ← → para cambiar · Esc para cerrar</p>
+</div>
+
