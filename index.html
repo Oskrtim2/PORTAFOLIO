@@ -381,3 +381,51 @@
   </div>
 </template>
 
+<template id="tpl-paint">
+  <div class="paint">
+    <div class="ribbon">
+      <div class="rb-group">
+        <div class="swatches"></div>
+        <label class="rb-label">Colores</label>
+      </div>
+      <div class="rb-group">
+        <input type="range" class="brush-size" min="1" max="40" value="5" aria-label="Tamaño del pincel">
+        <label class="rb-label">Tamaño</label>
+      </div>
+      <div class="rb-group tools">
+        <button class="rb-btn active" data-tool="brush">Pincel</button>
+        <button class="rb-btn" data-tool="eraser">Borrador</button>
+        <label class="rb-label">Herramientas</label>
+      </div>
+      <div class="rb-group tools">
+        <button class="rb-btn" data-act="clear">Limpiar</button>
+        <button class="rb-btn" data-act="save">Guardar PNG</button>
+        <button class="rb-btn publish" data-act="publish">Publicar en Comunidad</button>
+        <label class="rb-label">Archivo</label>
+      </div>
+    </div>
+    <div class="canvas-wrap"><canvas class="paint-canvas"></canvas></div>
+    <div class="modal-back" hidden>
+      <form class="dialog" novalidate>
+        <div class="dlg-title">Publicar en Comunidad</div>
+        <div class="dlg-body">
+          <img class="dlg-preview" alt="Vista previa de tu dibujo">
+          <div class="dlg-fields">
+            <label>Nombre de la obra
+              <input name="title" maxlength="60" required autocomplete="off" placeholder="Ej: Atardecer en la ciudad">
+            </label>
+            <label>Firma del autor
+              <input name="author" maxlength="40" required autocomplete="off" placeholder="Tu nombre o alias">
+            </label>
+            <p class="dlg-error" hidden></p>
+          </div>
+        </div>
+        <div class="dlg-actions">
+          <button type="submit" class="aero-btn primary">Publicar</button>
+          <button type="button" class="aero-btn" data-cancel>Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
