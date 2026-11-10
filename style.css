@@ -368,3 +368,45 @@ a { color: var(--link); }
 .file-row svg { width: 22px; height: 22px; }
 .file-row small { color: var(--muted); }
 
+/* ---------------- Barra de tareas ---------------- */
+.taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; height: var(--taskbar-h); z-index: 1000;
+  display: flex; align-items: center; gap: 4px; padding: 0 0 0 4px;
+  background: linear-gradient(rgba(255,255,255,.28), rgba(255,255,255,.08) 50%, rgba(0,0,0,.18) 51%, rgba(0,0,0,.28)), var(--glass-dark);
+  backdrop-filter: blur(12px) saturate(1.4); -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border-top: 1px solid rgba(255,255,255,.45);
+  box-shadow: 0 -1px 0 rgba(0,0,0,.4);
+}
+.start-orb {
+  position: relative; width: 50px; height: 50px; margin-top: -8px; flex: none; border: 0; border-radius: 50%; padding: 10px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,.75) 0 18%, rgba(255,255,255,0) 45%),
+    radial-gradient(circle at 50% 100%, rgba(120,230,255,.9), rgba(30,120,200,.0) 60%),
+    radial-gradient(circle, #1a6fb8 0%, #0c3c6e 70%, #082848 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.45), 0 2px 6px rgba(0,0,0,.5);
+  transition: filter .2s;
+}
+.start-orb svg { width: 100%; height: 100%; filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)); }
+.start-orb:hover, .start-orb.open { filter: brightness(1.25) saturate(1.2); }
+.tb-pinned, .tb-windows { display: flex; gap: 3px; height: 100%; align-items: center; }
+.tb-windows { flex: 1; overflow: hidden; min-width: 0; }
+.tb-btn {
+  display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border-radius: 4px;
+  border: 1px solid transparent; background: none; color: #fff; font-size: 12.5px; text-decoration: none;
+  max-width: 170px; min-width: 0;
+}
+.tb-btn svg { width: 26px; height: 26px; flex: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+.tb-btn span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px #000; }
+.tb-btn.pinned { padding: 0 8px; }
+.tb-btn:hover { border-color: rgba(255,255,255,.4); background: linear-gradient(rgba(255,255,255,.3), rgba(255,255,255,.08)); }
+.tb-btn.open { border-color: rgba(255,255,255,.35); background: linear-gradient(rgba(255,255,255,.22), rgba(255,255,255,.05)); box-shadow: inset 0 0 0 1px rgba(0,0,0,.3); }
+.tb-btn.active { border-color: rgba(255,255,255,.55); background: linear-gradient(rgba(255,255,255,.42), rgba(255,255,255,.14)); }
+.tray { display: flex; align-items: center; height: 100%; color: #fff; }
+.tray-btn { width: 30px; height: 30px; border: 1px solid transparent; border-radius: 3px; background: none; padding: 5px; color: #fff; }
+.tray-btn svg { width: 100%; height: 100%; }
+.tray-btn:hover { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.12); }
+.tray-btn.muted-snd .waves { display: none; }
+.tray-clock { display: flex; flex-direction: column; align-items: center; padding: 0 10px; font-size: 12px; line-height: 1.25; text-shadow: 0 1px 2px #000; }
+.show-desktop { width: 14px; height: 100%; margin-left: 2px; border: 0; border-left: 1px solid rgba(255,255,255,.35); background: linear-gradient(90deg, rgba(255,255,255,.15), rgba(255,255,255,.05)); }
+.show-desktop:hover { background: linear-gradient(90deg, rgba(255,255,255,.4), rgba(255,255,255,.15)); }
+
