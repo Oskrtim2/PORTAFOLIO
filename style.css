@@ -145,3 +145,18 @@ a { color: var(--link); }
 .icon:hover { background: linear-gradient(rgba(255,255,255,.28), rgba(255,255,255,.12)); border-color: rgba(255,255,255,.45); }
 .icon.selected, .icon:focus-visible { background: linear-gradient(rgba(140,200,255,.5), rgba(90,160,240,.35)); border-color: rgba(200,230,255,.8); outline: none; }
 
+/* ---------------- Gadgets ---------------- */
+.gadgets { position: absolute; top: 14px; right: 14px; z-index: 1; display: flex; flex-direction: column; gap: 14px; width: 150px; }
+.gadget {
+  border-radius: 10px; border: 1px solid var(--glass-border);
+  background: linear-gradient(rgba(255,255,255,.45), rgba(255,255,255,.15));
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 6px 18px rgba(0,30,60,.25), inset 0 1px 0 rgba(255,255,255,.8);
+}
+.clock-gadget { padding: 8px; }
+.analog { width: 100%; height: auto; }
+.stats-gadget { padding: 10px 12px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); background: linear-gradient(rgba(22,55,92,.88), rgba(8,28,58,.9)); }
+.stats-gadget h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+.stat { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; border-top: 1px solid rgba(255,255,255,.15); }
+.stat b { color: #bff0ff; }
+
