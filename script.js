@@ -920,3 +920,27 @@ function paintSoundBtn() {
 soundBtn.addEventListener('click', () => { Sound.toggle(); paintSoundBtn(); Sound.play('click'); });
 paintSoundBtn();
 
+/* =========================================================
+   Relojes
+   ========================================================= */
+(function clocks() {
+  const ticks = $('#ticks');
+  for (let i = 0; i < 12; i++) {
+    const a = i * 30 * Math.PI / 180, r1 = i % 3 ? 38 : 34;
+    ticks.insertAdjacentHTML('beforeend',
+      `<line x1="${50 + Math.sin(a) * r1}" y1="${50 - Math.cos(a) * r1}" x2="${50 + Math.sin(a) * 42}" y2="${50 - Math.cos(a) * 42}" stroke="#4a627a" stroke-width="${i % 3 ? 1.2 : 2.4}" stroke-linecap="round"/>`);
+  }
+  const hh = $('#hand-h'), mh = $('#hand-m'), shd = $('#hand-s');
+  const tt = $('#tb-time'), td = $('#tb-date');
+  function tick() {
+    const d = new Date();
+    const s = d.getSeconds(), m = d.getMinutes() + s / 60, h = (d.getHours() % 12) + m / 60;
+    hh.setAttribute('transform', `rotate(${h * 30} 50 50)`);
+    mh.setAttribute('transform', `rotate(${m * 6} 50 50)`);
+    shd.setAttribute('transform', `rotate(${s * 6} 50 50)`);
+    tt.textContent = d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+    td.textContent = d.toLocaleDateString('es', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
