@@ -991,3 +991,40 @@ $('#power-on').addEventListener('click', () => {
   location.reload();
 });
 
+/* =========================================================
+   Arranque
+   ========================================================= */
+(function boot() {
+  const bootEl = $('#boot'), welcome = $('#welcome');
+  const initialApp = HASH_TO_APP[location.hash.slice(1)];
+
+  function ready() {
+    WM.open(initialApp || 'about');
+  }
+
+  if (sessionStorage.getItem('oskr-booted') || initialApp) {
+    bootEl.remove(); welcome.remove();
+    ready();
+    return;
+  }
+  sessionStorage.setItem('oskr-booted', '1');
+
+  let done = false;
+  function finish() {
+    if (done) return; done = true;
+    Sound.play('startup');
+    bootEl.classList.add('hidden-fade');
+    welcome.classList.add('show');
+    setTimeout(() => {
+      welcome.classList.remove('show');
+      setTimeout(() => { bootEl.remove(); welcome.remove(); ready(); }, 500);
+    }, 1300);
+  }
+  bootEl.addEventListener('click', finish);
+  setTimeout(finish, 2200);
+})();
+
+window.addEventListener('hashchange', () => {
+  const app = HASH_TO_APP[location.hash.slice(1)];
+  if (app) WM.open(app);
+});
