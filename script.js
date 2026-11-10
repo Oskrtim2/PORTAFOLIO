@@ -875,3 +875,37 @@ smSearch.addEventListener('keydown', e => {
   if (e.key === 'Enter') { const f = filterStart(smSearch.value); f && WM.open(f.dataset.open); }
 });
 
+/* =========================================================
+   Clics globales: cualquier [data-open] abre su ventana
+   ========================================================= */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-open]');
+  if (!t || t.classList.contains('icon')) return;
+  e.preventDefault();
+  WM.open(t.dataset.open, { project: t.dataset.project });
+});
+
+// Iconos del escritorio: un clic selecciona, doble clic abre (un toque en pantallas táctiles)
+$$('.icon').forEach(icon => {
+  icon.addEventListener('click', () => {
+    $$('.icon').forEach(i => i.classList.toggle('selected', i === icon));
+    if (isTouch) WM.open(icon.dataset.open);
+  });
+  icon.addEventListener('dblclick', () => WM.open(icon.dataset.open));
+  icon.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); WM.open(icon.dataset.open); } });
+});
+$('#desktop').addEventListener('pointerdown', e => {
+  if (!e.target.closest('.icon')) $$('.icon').forEach(i => i.classList.remove('selected'));
+});
+
+// Teclado: Escape cierra menú; la batería escucha teclas cuando está al frente
+document.addEventListener('keydown', e => {
+  if (Viewer.onKey(e)) return;
+  if (e.key === 'Escape') { closeStartMenu(); return; }
+  if (e.target.matches('input, textarea, select')) return;
+  const a = WM.active();
+  if (a && a.onKey && a.onKey(e)) e.preventDefault();
+});
+
+$('#show-desktop').addEventListener('click', () => WM.showDesktop());
+
