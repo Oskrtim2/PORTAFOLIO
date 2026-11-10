@@ -671,3 +671,46 @@ function toast(msg) {
   setTimeout(() => t.remove(), 3000);
 }
 
+/* =========================================================
+   Almacén de la Comunidad (Supabase o este navegador)
+   ========================================================= */
+const CommunityStore = (() => {
+  const LS_KEY = 'oskr-comunidad';
+  const shared = !!(COMMUNITY.supabaseUrl && COMMUNITY.supabaseKey);
+  const api = shared && `${COMMUNITY.supabaseUrl.replace(/\/$/, '')}/rest/v1/${COMMUNITY.table}`;
+  const headers = shared && {
+    apikey: COMMUNITY.supabaseKey,
+    Authorization: `Bearer ${COMMUNITY.supabaseKey}`,
+    'Content-Type': 'application/json'
+  };
+
+  function readLocal() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; }
+  }
+
+  async function list() {
+    if (!shared) return readLocal();
+    const r = await fetch(`${api}?select=id,title,author,image,created_at&order=created_at.desc&limit=60`, { headers });
+    if (!r.ok) throw new Error('No se pudieron cargar las obras.');
+    return r.json();
+  }
+
+  async function add({ title, author, image }) {
+    const item = { title: title.slice(0, 60), author: author.slice(0, 40), image };
+    if (shared) {
+      const r = await fetch(api, { method: 'POST', headers: { ...headers, Prefer: 'return=minimal' }, body: JSON.stringify(item) });
+      if (!r.ok) throw new Error('El servidor no aceptó la obra. Inténtalo de nuevo.');
+      return;
+    }
+    const items = readLocal();
+    items.unshift({ ...item, id: Date.now(), created_at: new Date().toISOString() });
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(items.slice(0, 40)));
+    } catch {
+      throw new Error('No queda espacio en este navegador para más obras.');
+    }
+  }
+
+  return { shared, list, add };
+})();
+
