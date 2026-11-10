@@ -262,3 +262,48 @@
   <p class="vw-help">Clic en la imagen para ampliar · arrastra para moverte · ← → para cambiar · Esc para cerrar</p>
 </div>
 
+<!-- ============ PLANTILLAS DE VENTANAS ============ -->
+<template id="tpl-about">
+  <div class="about">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="general">General</button>
+      <button class="tab" data-tab="arte">Arte</button>
+      <button class="tab" data-tab="musica">Música</button>
+    </div>
+    <div class="tab-panel active" data-panel="general">
+      <div class="about-head">
+        <div class="photo-frame"><img src="assets/images/hero-avatar.jpg" alt="Avatar de Oscar Timaran"></div>
+        <div>
+          <h1>Oscar Timaran</h1>
+          <p class="roles"><span class="pill blue">Ingeniero de Software</span><span class="pill red">Tatuador</span><span class="pill purple">Baterista</span></p>
+          <p class="muted">Remoto · LatAm</p>
+        </div>
+      </div>
+      <p>Transformo ideas en sistemas. Me interesa el arte del software: cómo se va a ver algo para quien lo usa y cómo va a crecer en el futuro.</p>
+      <p>Fuera del código soy <b>tatuador</b> (hace unos 9 meses) y <b>baterista</b> (hace 6 o 7 años). Me gusta mucho dibujar, hacer contenido para redes y aprovechar mi tiempo libre en mis hobbies: videojuegos, arte, series y películas.</p>
+      <dl class="props">
+        <dt>Usuario</dt><dd>@Oskrtim2</dd>
+        <dt>Enfoque</dt><dd>Desarrollo de software y arquitectura</dd>
+        <dt>Tatuando desde</dt><dd>hace ~9 meses</dd>
+        <dt>Tocando batería</dt><dd>hace 6–7 años</dd>
+      </dl>
+    </div>
+    <div class="tab-panel" data-panel="arte">
+      <h2>Dibujo, tatuaje y contenido</h2>
+      <p>Llevo aproximadamente <b>9 meses tatuando</b>. El dibujo es la base de todo lo que hago: bocetos, diseños para tatuar y contenido para redes.</p>
+      <p>Esa mezcla de arte y código dio origen a <a href="#" data-open="projects" data-project="smartstencil">SmartStencil</a>, una app de realidad aumentada para probar stencils sobre la piel antes de tatuar.</p>
+      <div class="btn-row">
+        <button class="aero-btn" data-open="tattoo">Ver mis tatuajes</button>
+        <button class="aero-btn" data-open="drawings">Ver mis dibujos</button>
+        <button class="aero-btn" data-open="paint">Dibujar en Paint</button>
+        <button class="aero-btn" data-open="community">Comunidad</button>
+      </div>
+    </div>
+    <div class="tab-panel" data-panel="musica">
+      <h2>Baterista</h2>
+      <p>Toco batería hace unos <b>6 o 7 años</b>. He tocado con bandas y grupos de géneros variados como <b>grunge</b>, <b>nu-metal</b> y <b>punk</b>.</p>
+      <p>Todavía no tengo mucha experiencia en eventos en vivo, pero me encanta lo que hago.</p>
+    </div>
+  </div>
+</template>
+
