@@ -4,8 +4,9 @@
 
 /* ---------- Configuración editable ---------- */
 
-// Si pones tu correo aquí, el formulario de contacto abrirá el
-// cliente de correo del visitante con el mensaje ya escrito.
+// Correo que recibe los mensajes del formulario de contacto.
+// Se envían con FormSubmit (https://formsubmit.co): la primera vez llega un
+// correo "Activate Form" a esta dirección y hay que pulsar el botón para activarlo.
 const CONTACT_EMAIL = 'oscartimaran60@gmail.com';
 
 // Galerías. Para agregar una imagen: cópiala a la carpeta indicada
@@ -30,15 +31,10 @@ const DRAWINGS = [
 ];
 
 // Comunidad (dibujos que publican los visitantes desde Paint).
-// Sin configurar, cada obra se guarda solo en el navegador de quien la hizo.
-// Para que TODOS vean las obras de todos, crea un proyecto gratis en
-// https://supabase.com, ejecuta el SQL de COMUNIDAD-SUPABASE.md y pega aquí
-// la "Project URL" y la "anon public key".
-const COMMUNITY = {
-  supabaseUrl: '',
-  supabaseKey: '',
-  table: 'dibujos'
-};
+// Se guardan en Vercel Blob a través de /api/dibujos y todos los visitantes
+// ven las mismas obras. Abriendo index.html sin servidor (file://) se usan
+// solo las obras guardadas en este navegador.
+const COMMUNITY_API = '/api/dibujos';
 
 /* ---------- Datos de proyectos ---------- */
 const PROJECTS = {
@@ -713,19 +709,48 @@ const AppInit = {
 
   contact(body) {
     const form = $('form', body), fb = $('.mail-feedback', body);
-    form.addEventListener('submit', e => {
+    const sendBtn = $('[type="submit"]', form);
+    const say = (html, kind) => { fb.innerHTML = html; fb.dataset.kind = kind; fb.hidden = false; };
+    const fallback = ' Escríbeme directo a <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a> o por <a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">Instagram @0skrtm__</a>.';
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       const d = Object.fromEntries(new FormData(form));
-      if (CONTACT_EMAIL) {
-        const subject = encodeURIComponent(`[Portafolio] ${d.subject} — ${d.name}`);
-        const text = encodeURIComponent(`${d.message}\n\n— ${d.name} (${d.email})`);
-        location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${text}`;
-        fb.textContent = 'Se abrió tu aplicación de correo con el mensaje listo para enviar.';
-      } else {
-        fb.innerHTML = 'Por ahora el formulario no envía correos. Escríbeme por <a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">Instagram @0skrtm__</a> o <a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>.';
+      const name = (d.name || '').trim(), email = (d.email || '').trim(), message = (d.message || '').trim();
+      if (!name || !email || !message || !form.elements.email.checkValidity()) {
+        say(!name ? 'Escribe tu nombre o empresa.' : !email || !form.elements.email.checkValidity()
+          ? 'Escribe un correo válido para poder responderte.' : 'Escribe tu mensaje.', 'error');
+        Sound.play('error');
+        return;
       }
-      fb.hidden = false;
-      Sound.play('send');
+      if (d._honey) return; // campo trampa: solo lo llenan los bots
+
+      sendBtn.disabled = true; sendBtn.textContent = 'Enviando...';
+      try {
+        const r = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _subject: `[Portafolio] ${d.subject} — ${name}`,
+            _replyto: email,
+            _template: 'table',
+            Nombre: name,
+            Correo: email,
+            Asunto: d.subject,
+            Mensaje: message
+          })
+        });
+        const res = await r.json().catch(() => ({}));
+        if (!r.ok || String(res.success) !== 'true') throw new Error(res.message || 'send failed');
+        form.reset();
+        say('¡Mensaje enviado! Te responderé a tu correo lo antes posible.', 'ok');
+        Sound.play('send');
+      } catch {
+        say('No se pudo enviar el mensaje.' + fallback, 'error');
+        Sound.play('error');
+      } finally {
+        sendBtn.disabled = false; sendBtn.textContent = 'Enviar';
+      }
     });
     // Un enlace puede pedir un asunto concreto (p. ej. "Oportunidad laboral" desde el CV)
     return { onOpen: opts => { if (opts && opts.subject) form.elements.subject.value = opts.subject; } };
@@ -823,17 +848,13 @@ function toast(msg) {
 }
 
 /* =========================================================
-   Almacén de la Comunidad (Supabase o este navegador)
+   Almacén de la Comunidad (Vercel Blob vía /api/dibujos, o este navegador)
    ========================================================= */
 const CommunityStore = (() => {
   const LS_KEY = 'oskr-comunidad';
-  const shared = !!(COMMUNITY.supabaseUrl && COMMUNITY.supabaseKey);
-  const api = shared && `${COMMUNITY.supabaseUrl.replace(/\/$/, '')}/rest/v1/${COMMUNITY.table}`;
-  const headers = shared && {
-    apikey: COMMUNITY.supabaseKey,
-    Authorization: `Bearer ${COMMUNITY.supabaseKey}`,
-    'Content-Type': 'application/json'
-  };
+  const shared = /^https?:$/.test(location.protocol);
+  // Obras publicadas desde este navegador que la caché de la CDN aún no muestra
+  let recent = [];
 
   function readLocal() {
     try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; }
@@ -841,16 +862,25 @@ const CommunityStore = (() => {
 
   async function list() {
     if (!shared) return readLocal();
-    const r = await fetch(`${api}?select=id,title,author,image,created_at&order=created_at.desc&limit=60`, { headers });
+    const r = await fetch(COMMUNITY_API, { headers: { Accept: 'application/json' } });
     if (!r.ok) throw new Error('No se pudieron cargar las obras.');
-    return r.json();
+    const items = await r.json();
+    const known = new Set(items.map(it => it.id));
+    recent = recent.filter(it => !known.has(it.id));
+    return [...recent, ...items];
   }
 
   async function add({ title, author, image }) {
     const item = { title: title.slice(0, 60), author: author.slice(0, 40), image };
     if (shared) {
-      const r = await fetch(api, { method: 'POST', headers: { ...headers, Prefer: 'return=minimal' }, body: JSON.stringify(item) });
-      if (!r.ok) throw new Error('El servidor no aceptó la obra. Inténtalo de nuevo.');
+      const r = await fetch(COMMUNITY_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(item)
+      });
+      const res = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(res.error || 'El servidor no aceptó la obra. Inténtalo de nuevo.');
+      recent.unshift(res);
       return;
     }
     const items = readLocal();
