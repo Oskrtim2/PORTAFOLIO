@@ -635,3 +635,39 @@ const AppInit = {
   }
 };
 
+/* =========================================================
+   Galerías + visor a pantalla completa
+   ========================================================= */
+// Escapa el texto que escriben los visitantes antes de ponerlo en el HTML
+const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+const esc = str => String(str ?? '').replace(/[&<>"']/g, c => ESC[c]);
+// Solo se aceptan imágenes propias del sitio, dibujos en base64 o enlaces https
+const safeImg = src => /^(data:image\/(png|jpeg|webp);base64,|assets\/|https:\/\/)/.test(src || '') ? src : '';
+
+function renderGallery(el, list, kind) {
+  if (!list.length) {
+    el.innerHTML = `<div class="gallery-empty">Todavía no hay imágenes en esta galería.</div>`;
+    return;
+  }
+  el.innerHTML = list.map((p, i) => `
+    <button class="thumb" data-i="${i}" title="Ver «${esc(p.title)}» en pantalla grande">
+      <img src="${esc(safeImg(p.src))}" alt="${esc(kind)}: ${esc(p.title)}" loading="lazy">
+      <span>${esc(p.title)}</span>
+      ${p.author ? `<small class="by">por ${esc(p.author)}</small>` : ''}
+    </button>`).join('');
+  el.onclick = e => {
+    const t = e.target.closest('.thumb');
+    if (t) Viewer.open(list, +t.dataset.i);
+  };
+}
+
+/* Mensaje flotante breve */
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('out'), 2600);
+  setTimeout(() => t.remove(), 3000);
+}
+
