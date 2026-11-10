@@ -459,3 +459,66 @@ const AppInit = {
     renderGallery($('.gallery', body), DRAWINGS, 'Dibujo');
   },
 
+  paint(body) {
+    const canvas = $('.paint-canvas', body), wrap = $('.canvas-wrap', body);
+    const ctx = canvas.getContext('2d');
+    const COLORS = ['#000000', '#7f7f7f', '#880015', '#ed1c24', '#ff7f27', '#fff200', '#22b14c', '#00a2e8',
+                    '#ffffff', '#c3c3c3', '#b97a57', '#ffaec9', '#ffc90e', '#b5e61d', '#99d9ea', '#3f48cc'];
+    let color = '#000000', tool = 'brush', drawing = false, lx = 0, ly = 0;
+    const sw = $('.swatches', body);
+    sw.innerHTML = COLORS.map(c => `<button class="swatch${c === color ? ' active' : ''}" style="background:${c}" data-c="${c}" aria-label="Color ${c}"></button>`).join('');
+    sw.addEventListener('click', e => {
+      const b = e.target.closest('.swatch'); if (!b) return;
+      color = b.dataset.c;
+      $$('.swatch', sw).forEach(x => x.classList.toggle('active', x === b));
+      setTool('brush');
+    });
+    const size = $('.brush-size', body);
+
+    function setTool(t) {
+      tool = t;
+      $$('[data-tool]', body).forEach(x => x.classList.toggle('active', x.dataset.tool === t));
+    }
+    $$('[data-tool]', body).forEach(b => b.addEventListener('click', () => setTool(b.dataset.tool)));
+
+    function fit() {
+      const r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      const dpr = window.devicePixelRatio || 1;
+      const copy = document.createElement('canvas');
+      copy.width = canvas.width; copy.height = canvas.height;
+      copy.getContext('2d').drawImage(canvas, 0, 0);
+      canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (copy.width) ctx.drawImage(copy, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.lineCap = ctx.lineJoin = 'round';
+    }
+    const ro = new ResizeObserver(fit);
+    ro.observe(wrap);
+
+    function pos(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+    function stroke(x, y) {
+      ctx.strokeStyle = tool === 'eraser' ? '#ffffff' : color;
+      ctx.lineWidth = +size.value * (tool === 'eraser' ? 2 : 1);
+      ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(x, y); ctx.stroke();
+      lx = x; ly = y;
+    }
+    canvas.addEventListener('pointerdown', e => {
+      drawing = true; canvas.setPointerCapture(e.pointerId);
+      [lx, ly] = pos(e); stroke(lx + .01, ly + .01);
+    });
+    canvas.addEventListener('pointermove', e => { if (drawing) stroke(...pos(e)); });
+    canvas.addEventListener('pointerup', () => { drawing = false; });
+
+    $('[data-act="clear"]', body).addEventListener('click', () => {
+      ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.restore();
+      Sound.play('close');
+    });
+    $('[data-act="save"]', body).addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.download = 'mi-dibujo.png'; a.href = canvas.toDataURL('image/png'); a.click();
+      Sound.play('send');
+    });
+
