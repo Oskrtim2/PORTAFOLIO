@@ -169,13 +169,34 @@
 <main id="desktop" class="desktop">
   <div class="wallpaper" aria-hidden="true">
     <div class="sky"></div>
+    <div class="rays"></div>
     <div class="sun"></div>
-    <div class="aurora a1"></div>
-    <div class="aurora a2"></div>
-    <div class="aurora a3"></div>
+    <div class="clouds"><i class="cloud c1"></i><i class="cloud c2"></i><i class="cloud c3"></i></div>
+    <div class="glow-band"></div>
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="rb-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaffc4" stop-opacity=".95"/><stop offset=".35" stop-color="#9dff7a" stop-opacity=".55"/><stop offset="1" stop-color="#36e0c8" stop-opacity="0"/></linearGradient>
+        <linearGradient id="rb-white" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#bff3ff" stop-opacity="0"/></linearGradient>
+        <linearGradient id="rb-cyan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9fbff" stop-opacity=".8"/><stop offset=".4" stop-color="#5fd8ff" stop-opacity=".35"/><stop offset="1" stop-color="#5fd8ff" stop-opacity="0"/></linearGradient>
+      </defs>
+    </svg>
+    <div class="silk r1"><svg viewBox="0 0 2400 600" preserveAspectRatio="none">
+      <path d="M0 300 C200 190 400 190 600 300 S1000 410 1200 300 S1600 190 1800 300 S2200 410 2400 300 L2400 346 C2200 496 2000 496 1800 346 S1400 276 1200 346 S800 496 600 346 S200 276 0 346 Z" fill="url(#rb-green)"/>
+      <path d="M0 300 C200 190 400 190 600 300 S1000 410 1200 300 S1600 190 1800 300 S2200 410 2400 300" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+    </svg></div>
+    <div class="silk r2"><svg viewBox="0 0 2400 600" preserveAspectRatio="none">
+      <path d="M0 300 C200 220 400 220 600 300 S1000 380 1200 300 S1600 220 1800 300 S2200 380 2400 300 L2400 322 C2200 428 2000 428 1800 322 S1400 268 1200 322 S800 428 600 322 S200 268 0 322 Z" fill="url(#rb-white)"/>
+      <path d="M0 300 C200 220 400 220 600 300 S1000 380 1200 300 S1600 220 1800 300 S2200 380 2400 300" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+    </svg></div>
+    <div class="silk r3"><svg viewBox="0 0 2400 600" preserveAspectRatio="none">
+      <path d="M0 300 C200 170 400 170 600 300 S1000 430 1200 300 S1600 170 1800 300 S2200 430 2400 300 L2400 370 C2200 550 2000 550 1800 370 S1400 290 1200 370 S800 550 600 370 S200 290 0 370 Z" fill="url(#rb-cyan)"/>
+      <path d="M0 300 C200 170 400 170 600 300 S1000 430 1200 300 S1600 170 1800 300 S2200 430 2400 300" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+    </svg></div>
     <div class="hill h1"></div>
     <div class="hill h2"></div>
+    <div class="flare"><i></i><i></i><i></i></div>
     <div class="sparkles"></div>
+    <div class="glints"><i></i><i></i><i></i><i></i><i></i></div>
   </div>
   <div id="bubbles" class="bubbles"></div>
 

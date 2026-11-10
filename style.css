@@ -73,21 +73,82 @@ a { color: var(--link); }
     radial-gradient(ellipse 60% 45% at 78% 18%, rgba(255,255,255,.85), transparent 70%),
     linear-gradient(180deg, #0a74d6 0%, #3aa6f0 35%, #8fd3ff 62%, #d9f3ff 78%);
 }
+/* Todo lo que se mueve en el fondo es luz: rayos del sol, nubes, cintas de aurora,
+   brillo sobre las colinas y destellos. El paralaje usa `transform`; las animaciones
+   usan translate / rotate / scale / opacity, así que se suman sin pisarse. */
 .sun {
   position: absolute; top: 8%; right: 18%; width: 180px; height: 180px; border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,.6) 30%, transparent 70%);
+  background: radial-gradient(circle, #fff 0%, #fffbe8 18%, rgba(255,255,255,.6) 34%, transparent 70%);
+  transform: translate(calc(var(--px) * 26px), calc(var(--py) * 18px));
+  animation: sunBreathe 7s ease-in-out infinite alternate;
+}
+@keyframes sunBreathe { from { scale: .94; opacity: .88 } to { scale: 1.1; opacity: 1 } }
+
+/* Rayos: abanico de luz centrado en el sol que gira muy despacio */
+.rays {
+  position: absolute; top: calc(8% + 90px); right: calc(18% + 90px); width: 0; height: 0;
   transform: translate(calc(var(--px) * 26px), calc(var(--py) * 18px));
 }
-.aurora {
-  position: absolute; left: -20%; width: 140%; height: 260px; border-radius: 50%;
-  filter: blur(2px); opacity: .55; mix-blend-mode: screen;
+.rays::before {
+  content: ""; position: absolute; left: -900px; top: -900px; width: 1800px; height: 1800px; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.22) 0deg 4deg, rgba(255,255,255,0) 7deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, #000 4%, rgba(0,0,0,.45) 22%, transparent 62%);
+  mask-image: radial-gradient(circle, #000 4%, rgba(0,0,0,.45) 22%, transparent 62%);
+  animation: raysSpin 180s linear infinite, raysPulse 7s ease-in-out infinite alternate;
 }
-.aurora.a1 { top: 30%; background: linear-gradient(90deg, transparent, rgba(160,255,120,.7), rgba(80,220,255,.6), transparent); transform: translate(calc(var(--px) * -22px), calc(var(--py) * -12px)) rotate(-8deg); animation: drift 22s ease-in-out infinite alternate; }
-.aurora.a2 { top: 38%; height: 120px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent); transform: translate(calc(var(--px) * -32px), calc(var(--py) * -16px)) rotate(-5deg); animation: drift 30s ease-in-out infinite alternate-reverse; }
-.aurora.a3 { top: 22%; height: 90px; background: linear-gradient(90deg, transparent 10%, rgba(120,240,200,.5), transparent 80%); transform: translate(calc(var(--px) * -16px), calc(var(--py) * -9px)) rotate(-12deg); animation: drift 26s ease-in-out infinite alternate; }
-@keyframes drift { from { translate: -6% 0 } to { translate: 6% 10px } }
+@keyframes raysSpin { to { rotate: 360deg } }
+@keyframes raysPulse { from { opacity: .55 } to { opacity: 1 } }
 
-.hill { position: absolute; border-radius: 50%; }
+/* Nubes suaves que cruzan el cielo de izquierda a derecha */
+.clouds { position: absolute; inset: 0; transform: translate(calc(var(--px) * -6px), calc(var(--py) * -4px)); }
+.cloud {
+  position: absolute; width: 240px; height: 58px; border-radius: 999px;
+  background: rgba(255,255,255,.85); filter: blur(7px); opacity: .75;
+  animation: cloudDrift 150s linear infinite;
+}
+.cloud::before, .cloud::after { content: ""; position: absolute; border-radius: 50%; background: inherit; }
+.cloud::before { width: 110px; height: 90px; left: 38px; top: -46px; }
+.cloud::after { width: 84px; height: 70px; left: 124px; top: -30px; }
+.cloud.c1 { top: 14%; left: 8%; animation-delay: -40s; }
+.cloud.c2 { top: 27%; left: 50%; scale: .65; opacity: .6; animation-duration: 200s; animation-delay: -150s; }
+.cloud.c3 { top: 5%; left: 70%; scale: 1.25; opacity: .55; animation-duration: 240s; animation-delay: -60s; }
+@keyframes cloudDrift { from { translate: -110vw 0 } to { translate: 110vw 0 } }
+
+/* Banda de luz difusa detrás de las cintas */
+.glow-band {
+  position: absolute; left: -20%; width: 140%; top: 33%; height: 150px; border-radius: 50%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.75) 40%, rgba(190,255,230,.6) 60%, transparent);
+  filter: blur(18px); mix-blend-mode: screen;
+  transform: translate(calc(var(--px) * -28px), calc(var(--py) * -14px)) rotate(-7deg);
+  animation: glowPulse 9s ease-in-out infinite alternate;
+}
+@keyframes glowPulse { from { opacity: .45 } to { opacity: .85 } }
+
+/* Cintas de aurora estilo Vista / 7: ondas de seda que fluyen sin costura */
+.silk {
+  position: absolute; left: -10%; width: 120%; overflow: hidden; mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  animation: ribbonBreathe 12s ease-in-out infinite alternate;
+}
+.silk svg { display: block; width: 200%; height: 100%; animation: ribbonFlow 50s linear infinite; }
+.silk.r1 { top: 12%; height: 56%; opacity: 1;   transform: translate(calc(var(--px) * -24px), calc(var(--py) * -12px)) rotate(-8deg); }
+.silk.r2 { top: 22%; height: 40%; opacity: .9;  transform: translate(calc(var(--px) * -34px), calc(var(--py) * -16px)) rotate(-5deg); animation-duration: 9s; animation-direction: alternate-reverse; }
+.silk.r3 { top: 6%; height: 66%; opacity: .75; transform: translate(calc(var(--px) * -16px), calc(var(--py) * -9px)) rotate(-11deg); animation-duration: 15s; }
+.silk.r2 svg { animation-duration: 34s; }
+.silk.r3 svg { animation-duration: 70s; animation-direction: reverse; }
+@keyframes ribbonFlow { to { translate: -50% 0 } }
+@keyframes ribbonBreathe { from { scale: 1 .8 } to { scale: 1 1.2 } }
+
+/* Colinas con un brillo de cristal que las recorre cada pocos segundos */
+.hill { position: absolute; border-radius: 50%; overflow: hidden; }
+.hill::after {
+  content: ""; position: absolute; top: 0; left: 0; width: 30%; height: 45%;
+  background: linear-gradient(105deg, transparent 15%, rgba(255,255,255,.4) 50%, transparent 85%);
+  translate: -120% 0; animation: hillSheen 12s cubic-bezier(.45,0,.25,1) infinite;
+}
+.hill.h2::after { animation-delay: 5s; width: 26%; }
+@keyframes hillSheen { 0% { translate: -120% 0 } 40%, 100% { translate: 420% 0 } }
 .hill.h1 {
   left: -25%; right: -10%; bottom: -55%; height: 95%;
   transform: translate(calc(var(--px) * -38px), calc(var(--py) * -14px));
@@ -100,6 +161,18 @@ a { color: var(--link); }
   background: radial-gradient(ellipse at 40% 12%, #d4ff8a 0%, #86de3d 30%, #3aa61f 65%, #1d730f 100%);
   box-shadow: inset 0 14px 26px rgba(255,255,255,.4);
 }
+
+/* Destellos de lente: se mueven al contrario que el sol para dar profundidad */
+.flare {
+  position: absolute; top: calc(8% + 90px); right: calc(18% + 90px); width: 0; height: 0; mix-blend-mode: screen;
+  transform: translate(calc(var(--px) * -70px), calc(var(--py) * -50px));
+  animation: raysPulse 7s ease-in-out infinite alternate;
+}
+.flare i { position: absolute; border-radius: 50%; }
+.flare i:nth-child(1) { width: 70px; height: 70px; left: -250px; top: 130px; background: radial-gradient(circle, transparent 55%, rgba(160,255,220,.45) 70%, transparent 74%); }
+.flare i:nth-child(2) { width: 34px; height: 34px; left: -380px; top: 230px; background: radial-gradient(circle, rgba(255,255,255,.5), rgba(140,210,255,.25) 60%, transparent 70%); }
+.flare i:nth-child(3) { width: 120px; height: 120px; left: -560px; top: 330px; background: radial-gradient(circle, rgba(200,170,255,.18) 40%, rgba(120,220,255,.22) 62%, transparent 70%); }
+
 .sparkles {
   position: absolute; inset: -30px;
   transform: translate(calc(var(--px) * 14px), calc(var(--py) * 10px));
@@ -112,6 +185,25 @@ a { color: var(--link); }
   animation: twinkle 4s ease-in-out infinite alternate;
 }
 @keyframes twinkle { from { opacity: .3 } to { opacity: 1 } }
+
+/* Destellos de cuatro puntas que se encienden de uno en uno */
+.glints { position: absolute; inset: 0; transform: translate(calc(var(--px) * 18px), calc(var(--py) * 12px)); }
+.glints i { position: absolute; width: 26px; height: 26px; scale: 0; animation: glint 6s ease-in-out infinite; }
+.glints i::before, .glints i::after {
+  content: ""; position: absolute; left: 50%; top: 0; width: 2px; height: 100%; margin-left: -1px; border-radius: 2px;
+  background: linear-gradient(transparent, #fff 50%, transparent);
+}
+.glints i::after { rotate: 90deg; }
+.glints i:nth-child(1) { left: 31%; top: 34%; animation-delay: .5s; }
+.glints i:nth-child(2) { left: 58%; top: 25%; animation-delay: 1.7s; }
+.glints i:nth-child(3) { left: 46%; top: 47%; animation-delay: 2.9s; width: 18px; height: 18px; }
+.glints i:nth-child(4) { left: 68%; top: 44%; animation-delay: 4.1s; }
+.glints i:nth-child(5) { left: 22%; top: 21%; animation-delay: 5.3s; width: 20px; height: 20px; }
+@keyframes glint {
+  0%, 62%, 100% { scale: 0; rotate: 0deg; opacity: 0 }
+  74% { scale: 1; rotate: 45deg; opacity: 1 }
+  86% { scale: .2; rotate: 90deg; opacity: 0 }
+}
 
 /* Burbujas */
 .bubbles { position: absolute; inset: 0; pointer-events: none; }
@@ -543,6 +635,8 @@ a { color: var(--link); }
 /* ---------------- Responsive ---------------- */
 @media (max-width: 760px) {
   .gadgets { display: none; }
+  .cloud.c3, .flare, .glints i:nth-child(n+4) { display: none; }
+  .rays::before { width: 1100px; height: 1100px; left: -550px; top: -550px; }
   .icons { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, 84px); grid-template-rows: none; grid-auto-rows: 92px; right: 8px; justify-content: center; }
   .window { inset: 0 !important; width: auto !important; height: auto !important; border-radius: 0; resize: none; }
   .window .controls .max { display: none; }
@@ -557,6 +651,7 @@ a { color: var(--link); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .bubbles { display: none; }
+  .wallpaper *, .wallpaper *::before, .wallpaper *::after { animation: none !important; }
 }
 
 /* Botón de Instagram */
