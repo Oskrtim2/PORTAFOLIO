@@ -6,7 +6,7 @@
 
 // Si pones tu correo aquí, el formulario de contacto abrirá el
 // cliente de correo del visitante con el mensaje ya escrito.
-const CONTACT_EMAIL = '';
+const CONTACT_EMAIL = 'oscartimaran60@gmail.com';
 
 // Galerías. Para agregar una imagen: cópiala a la carpeta indicada
 // (nombre sin espacios ni tildes) y añade una línea { src, title }.
@@ -102,7 +102,8 @@ const PROJECTS = {
 
 /* ---------- Aplicaciones ---------- */
 const APPS = {
-  about:    { title: 'Sobre mí — Propiedades', icon: 'i-user',   w: 580, h: 580 },
+  about:    { title: 'Sobre mí — Propiedades', icon: 'i-user',   w: 580, h: 600 },
+  cv:       { title: 'CV_Oscar_Timaran.pdf — Lector de documentos', icon: 'i-pdf', w: 1000, h: 660 },
   projects: { title: 'Proyectos',              icon: 'i-folder', w: 820, h: 560 },
   skills:   { title: 'Habilidades',            icon: 'i-skills', w: 760, h: 540 },
   tattoo:   { title: 'Tatuajes — Visualizador de fotos', icon: 'i-tattoo', w: 640, h: 480 },
@@ -115,7 +116,7 @@ const APPS = {
 };
 
 const HASH_TO_APP = {
-  'sobre-mi': 'about', proyectos: 'projects', habilidades: 'skills', tatuajes: 'tattoo',
+  'sobre-mi': 'about', cv: 'cv', 'hoja-de-vida': 'cv', proyectos: 'projects', habilidades: 'skills', tatuajes: 'tattoo',
   dibujos: 'drawings', comunidad: 'community', paint: 'paint', hobbies: 'hobbies', contacto: 'contact'
 };
 
@@ -623,6 +624,53 @@ const AppInit = {
       fb.hidden = false;
       Sound.play('send');
     });
+    // Un enlace puede pedir un asunto concreto (p. ej. "Oportunidad laboral" desde el CV)
+    return { onOpen: opts => { if (opts && opts.subject) form.elements.subject.value = opts.subject; } };
+  },
+
+  cv(body) {
+    const reader = $('.cv-reader', body), scroll = $('.cv-scroll', body), paper = $('.cv-paper', body);
+    const zoomLabel = $('.cv-zoom', body), where = $('.cv-where', body), notesBtn = $('.cv-notes-btn', body);
+    const sections = $$('.cv-sec', body), marks = $$('[data-goto]', body);
+    const ZOOMS = [.75, .9, 1, 1.15, 1.3, 1.5];
+    let z = 2;
+
+    function setZoom(i) {
+      z = Math.max(0, Math.min(ZOOMS.length - 1, i));
+      paper.style.setProperty('--z', ZOOMS[z]);
+      zoomLabel.textContent = Math.round(ZOOMS[z] * 100) + '%';
+    }
+    $$('[data-zoom]', body).forEach(b => b.addEventListener('click', () => { setZoom(z + +b.dataset.zoom); Sound.play('click'); }));
+
+    notesBtn.addEventListener('click', () => {
+      const on = reader.classList.toggle('notes-on');
+      notesBtn.classList.toggle('active', on);
+      notesBtn.setAttribute('aria-pressed', on);
+      Sound.play('click');
+    });
+
+    // Marcadores: desplazan hasta la sección y la resaltan como con un marcador fosforescente
+    marks.forEach(b => b.addEventListener('click', () => {
+      const sec = $(`[data-sec="${b.dataset.goto}"]`, paper);
+      scroll.scrollTo({ top: sec.offsetTop - 16, behavior: 'smooth' });
+      sec.classList.remove('flash'); void sec.offsetWidth; sec.classList.add('flash');
+      Sound.play('click');
+    }));
+
+    // Marca en la barra lateral la sección que se está leyendo
+    function spy() {
+      const y = scroll.scrollTop + scroll.clientHeight * .3;
+      let cur = sections[0];
+      sections.forEach(s => { if (s.offsetTop <= y) cur = s; });
+      if (scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 4) cur = sections[sections.length - 1];
+      marks.forEach(m => m.classList.toggle('active', m.dataset.goto === cur.dataset.sec));
+      where.textContent = $('h2', cur).textContent;
+    }
+    scroll.addEventListener('scroll', spy, { passive: true });
+
+    // En pantallas pequeñas la hoja empieza más pequeña para que quepa
+    setZoom(isMobile() ? 0 : 2);
+    spy();
   },
 
   bin(body) {
@@ -882,7 +930,7 @@ document.addEventListener('click', e => {
   const t = e.target.closest('[data-open]');
   if (!t || t.classList.contains('icon')) return;
   e.preventDefault();
-  WM.open(t.dataset.open, { project: t.dataset.project });
+  WM.open(t.dataset.open, { project: t.dataset.project, subject: t.dataset.subject });
 });
 
 // Iconos del escritorio: un clic selecciona, doble clic abre (un toque en pantallas táctiles)

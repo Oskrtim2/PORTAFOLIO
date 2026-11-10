@@ -7,7 +7,7 @@
   <meta name="description" content="Portafolio de Oscar Timaran: ingeniero de software, tatuador y baterista. Un escritorio interactivo estilo Windows 7 / Frutiger Aero.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -124,6 +124,14 @@
       <path d="M8 25c5-3 10-3 15 0v11c-5-3-10-3-15 0z" fill="#00a4ef"/>
       <path d="M25 25c5 3 10 3 15 0v11c-5 3-10 3-15 0z" fill="#ffb900"/>
     </symbol>
+    <symbol id="i-pdf" viewBox="0 0 48 48">
+      <path d="M10 4h20l10 10v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="url(#g-silver)" stroke="#6b7a8f"/>
+      <path d="M30 4v8a2 2 0 0 0 2 2h8" fill="#e3e8ee" stroke="#6b7a8f"/>
+      <path d="M13 19h15M13 23h18M13 27h12" stroke="#8797ab" stroke-width="1.6" stroke-linecap="round"/>
+      <rect x="4" y="30" width="28" height="11" rx="2.5" fill="url(#g-red)" stroke="#7d1608"/>
+      <text x="18" y="38.6" font-size="8" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="bold">CV</text>
+      <rect x="5" y="31" width="26" height="4" rx="2" fill="url(#g-gloss)" opacity=".6"/>
+    </symbol>
     <symbol id="i-power" viewBox="0 0 24 24">
       <path d="M12 3v8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
       <path d="M7 6.5a7.5 7.5 0 1 0 10 0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
@@ -166,6 +174,7 @@
   <!-- Iconos del escritorio -->
   <nav class="icons" aria-label="Iconos del escritorio">
     <button class="icon" data-open="about"><svg><use href="#i-user"/></svg><span>Sobre mí</span></button>
+    <button class="icon" data-open="cv"><svg><use href="#i-pdf"/></svg><span>CV.pdf</span></button>
     <button class="icon" data-open="projects"><svg><use href="#i-folder"/></svg><span>Proyectos</span></button>
     <button class="icon" data-open="skills"><svg><use href="#i-skills"/></svg><span>Habilidades</span></button>
     <button class="icon" data-open="tattoo"><svg><use href="#i-tattoo"/></svg><span>Tatuajes</span></button>
@@ -195,6 +204,7 @@
     </div>
     <div class="gadget stats-gadget">
       <h3>Estado</h3>
+      <div class="stat"><span>Ing. Software</span><b>5.º sem.</b></div>
       <div class="stat"><span>Tatuando</span><b data-since="tattoo">~9 meses</b></div>
       <div class="stat"><span>Batería</span><b>6–7 años</b></div>
       <div class="stat"><span>Burbujas</span><b id="bubble-count">0</b></div>
@@ -208,6 +218,7 @@
 <div id="start-menu" class="start-menu" role="menu" aria-hidden="true">
   <div class="sm-left">
     <button class="sm-item" data-open="about"><svg><use href="#i-user"/></svg><div><b>Sobre mí</b><small>Quién soy</small></div></button>
+    <button class="sm-item" data-open="cv"><svg><use href="#i-pdf"/></svg><div><b>Hoja de vida</b><small>Mi CV en formato Harvard</small></div></button>
     <button class="sm-item" data-open="projects"><svg><use href="#i-folder"/></svg><div><b>Proyectos</b><small>Software que he construido</small></div></button>
     <button class="sm-item" data-open="community"><svg><use href="#i-community"/></svg><div><b>Comunidad</b><small>Dibujos de los visitantes</small></div></button>
     <button class="sm-item" data-open="paint"><svg><use href="#i-paint"/></svg><div><b>Paint</b><small>Dibuja algo</small></div></button>
@@ -222,6 +233,7 @@
     <div class="sm-avatar"><img src="assets/images/hero-avatar.jpg" alt="Avatar de Oscar"></div>
     <button class="sm-link" data-open="about">Oscar Timaran</button>
     <button class="sm-link" data-open="projects">Documentos</button>
+    <button class="sm-link" data-open="cv">Hoja de vida</button>
     <button class="sm-link" data-open="drawings">Imágenes</button>
     <button class="sm-link" data-open="community">Comunidad</button>
     <button class="sm-link" data-open="hobbies">Juegos</button>
@@ -237,6 +249,7 @@
   <button id="start-btn" class="start-orb" aria-label="Inicio" aria-haspopup="menu"><svg><use href="#i-win"/></svg></button>
   <div class="tb-pinned">
     <button class="tb-btn pinned" data-open="projects" title="Proyectos"><svg><use href="#i-folder"/></svg></button>
+    <button class="tb-btn pinned" data-open="cv" title="Hoja de vida (CV)"><svg><use href="#i-pdf"/></svg></button>
     <button class="tb-btn pinned" data-open="paint" title="Paint"><svg><use href="#i-paint"/></svg></button>
     <a class="tb-btn pinned" href="https://github.com/Oskrtim2" target="_blank" rel="noopener" title="GitHub"><svg><use href="#i-github"/></svg></a>
     <a class="tb-btn pinned" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener" title="Instagram @0skrtm__" aria-label="Instagram"><svg><use href="#i-instagram"/></svg></a>
@@ -285,16 +298,21 @@
         <div class="photo-frame"><img src="assets/images/hero-avatar.jpg" alt="Avatar de Oscar Timaran"></div>
         <div>
           <h1>Oscar Timaran</h1>
-          <p class="roles"><span class="pill blue">Ingeniero de Software</span><span class="pill red">Tatuador</span><span class="pill purple">Baterista</span></p>
-          <p class="muted">Remoto · LatAm</p>
-          <a class="aero-btn ig-btn" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#i-instagram"/></svg> Sígueme en Instagram</a>
+          <p class="roles"><span class="pill blue">Ingeniería de Software</span><span class="pill red">Tatuador</span><span class="pill purple">Baterista</span></p>
+          <p class="muted">Pasto, Nariño · Colombia</p>
+          <div class="btn-row about-btns">
+            <button class="aero-btn primary" data-open="cv"><svg width="18" height="18"><use href="#i-pdf"/></svg> Ver mi CV</button>
+            <a class="aero-btn ig-btn" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#i-instagram"/></svg> Instagram</a>
+          </div>
         </div>
       </div>
-      <p>Transformo ideas en sistemas. Me interesa el arte del software: cómo se va a ver algo para quien lo usa y cómo va a crecer en el futuro.</p>
+      <p>Estudio <b>Ingeniería de Software</b> en la Universidad Cooperativa de Colombia (quinto semestre). Transformo ideas en sistemas. Me interesa el arte del software: cómo se va a ver algo para quien lo usa y cómo va a crecer en el futuro.</p>
       <p>Fuera del código soy <b>tatuador</b> (hace unos 9 meses) y <b>baterista</b> (hace 6 o 7 años). Me gusta mucho dibujar, hacer contenido para redes y aprovechar mi tiempo libre en mis hobbies: videojuegos, arte, series y películas.</p>
       <dl class="props">
         <dt>GitHub</dt><dd><a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">@Oskrtim2</a></dd>
         <dt>Instagram</dt><dd><a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">@0skrtm__</a></dd>
+        <dt>Estudios</dt><dd>Ing. de Software · U. Cooperativa de Colombia</dd>
+        <dt>Experiencia</dt><dd>Servicio al cliente, CRM y SAP · <a href="#" data-open="cv">ver CV</a></dd>
         <dt>Enfoque</dt><dd>Desarrollo de software y arquitectura</dd>
         <dt>Tatuando desde</dt><dd>hace ~9 meses</dd>
         <dt>Tocando batería</dt><dd>hace 6–7 años</dd>
@@ -368,11 +386,99 @@
         <ul><li>Domain-Driven Design (DDD)</li><li>Clean Architecture y SOLID</li><li>Algoritmos y estructuras de datos</li><li>Multi-tenancy y RBAC</li><li>Git y control de versiones</li><li>Seguridad y validación (Zod)</li></ul>
       </section>
       <section class="cp-card">
+        <h3><span class="dot orange"></span>Experiencia profesional</h3>
+        <p class="muted">Lo que aprendí atendiendo clientes</p>
+        <ul><li>Plataforma SAP</li><li>Sistemas CRM</li><li>Gestión de solicitudes y PQR</li><li>Trazabilidad y calidad de datos</li><li>Herramientas ofimáticas</li><li>Comunicación, empatía y trabajo en equipo</li></ul>
+        <button class="cp-link" data-open="cv">Ver en mi CV ›</button>
+      </section>
+      <section class="cp-card">
         <h3><span class="dot red"></span>Creativas</h3>
         <p class="muted">Lo que hago fuera del código</p>
         <ul><li>Tatuaje (~9 meses)</li><li>Dibujo e ilustración</li><li>Batería (6–7 años)</li><li>Creación de contenido para redes</li></ul>
       </section>
     </div>
+  </div>
+</template>
+
+<template id="tpl-cv">
+  <div class="cv-reader notes-on">
+    <div class="cv-toolbar">
+      <a class="aero-btn primary" href="assets/docs/CV_Oscar_Timaran.pdf" download="CV_Oscar_Timaran.pdf"><svg width="16" height="16"><use href="#i-pdf"/></svg> Descargar PDF</a>
+      <a class="aero-btn" href="assets/docs/CV_Oscar_Timaran.pdf" target="_blank" rel="noopener">Abrir original</a>
+      <span class="cv-sep"></span>
+      <button class="rb-btn" data-zoom="-1" aria-label="Alejar">−</button>
+      <span class="cv-zoom">100%</span>
+      <button class="rb-btn" data-zoom="1" aria-label="Acercar">+</button>
+      <span class="cv-sep"></span>
+      <button class="rb-btn active cv-notes-btn" aria-pressed="true">Notas de Oscar</button>
+    </div>
+    <div class="cv-body">
+      <ul class="cv-side" aria-label="Marcadores">
+        <li class="head">Marcadores</li>
+        <li><button data-goto="perfil">Perfil</button></li>
+        <li><button data-goto="educacion">Educación</button></li>
+        <li><button data-goto="experiencia">Experiencia laboral</button></li>
+        <li><button data-goto="habilidades">Habilidades</button></li>
+        <li class="head">Fuera del papel</li>
+        <li><button data-open="projects">Proyectos</button></li>
+        <li><button data-open="tattoo">Tatuajes</button></li>
+        <li><button data-open="contact">Contactar</button></li>
+      </ul>
+      <div class="cv-scroll">
+        <article class="cv-paper">
+          <header class="cv-head">
+            <h1>Oscar Alejandro Timarán Melo</h1>
+            <p>Pasto, Nariño, Colombia • <a href="tel:+573207810704">+57 320 781 0704</a> • <a href="mailto:oscartimaran60@gmail.com">oscartimaran60@gmail.com</a></p>
+          </header>
+
+          <section class="cv-sec" data-sec="perfil">
+            <h2>Perfil</h2>
+            <p class="cv-just">Estudiante de quinto semestre de Ingeniería de Software en la Universidad Cooperativa de Colombia, con experiencia laboral en atención y soporte a clientes, gestión de solicitudes y manejo de información en sistemas CRM y SAP. Persona responsable, adaptable y orientada al aprendizaje continuo, interesada en aplicar sus conocimientos en desarrollo de software, soporte técnico y análisis de requerimientos para aportar valor a equipos de tecnología.</p>
+            <aside class="cv-note yellow">Fuera de la hoja también soy <b>tatuador</b> y <b>baterista</b>. <button data-open="about">Conóceme →</button></aside>
+          </section>
+
+          <section class="cv-sec" data-sec="educacion">
+            <h2>Educación</h2>
+            <div class="cv-entry">
+              <div class="cv-row"><b>Universidad Cooperativa de Colombia</b><span>Pasto, Nariño</span></div>
+              <div class="cv-row"><i>Ingeniería de Software – Quinto semestre</i><span>En curso</span></div>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-row"><b>Escuela Normal Superior de Pasto</b><span>Pasto, Nariño</span></div>
+              <div class="cv-row"><i>Bachiller con énfasis en educación (Certificado de equivalencia de educación secundaria)</i><span>2022</span></div>
+            </div>
+            <aside class="cv-note blue">Teoría de clase hecha código: <button data-open="projects" data-project="cyberplayer">Cyber Player 2000 →</button></aside>
+          </section>
+
+          <section class="cv-sec" data-sec="experiencia">
+            <h2>Experiencia laboral</h2>
+            <div class="cv-entry">
+              <div class="cv-row"><b>Soluciones Integrales DEVCOM S.A.S.</b><span>Pasto, Nariño</span></div>
+              <div class="cv-row"><i>Auxiliar de Servicio al Cliente</i><span>Marzo 2025 – Diciembre 2025</span></div>
+              <ul>
+                <li>Atendí, orienté y acompañé a clientes, identificando sus necesidades y brindando soluciones oportunas a sus inquietudes.</li>
+                <li>Recibí, registré y di seguimiento a solicitudes, peticiones, consultas y requerimientos hasta su cierre, garantizando la trazabilidad de cada caso.</li>
+                <li>Administré y actualicé información de clientes y operaciones mediante sistemas CRM y la plataforma SAP, asegurando la calidad y consistencia de los datos.</li>
+                <li>Apoyé los procesos de ventas y posventa, y gestioné la atención y resolución de quejas y reclamos (PQR).</li>
+                <li>Recibí reconocimiento en la certificación laboral por mi responsabilidad, compromiso, profesionalismo, trabajo en equipo y excelente actitud de servicio.</li>
+              </ul>
+            </div>
+            <aside class="cv-note green">Atender clientes me enseñó a pensar en quien usa el sistema. Así diseño software: <button data-open="projects" data-project="legalflow">LegalFlow →</button></aside>
+          </section>
+
+          <section class="cv-sec" data-sec="habilidades">
+            <h2>Habilidades</h2>
+            <ul>
+              <li><b>Herramientas y sistemas:</b> Plataforma SAP, sistemas CRM, herramientas ofimáticas y manejo de equipos de cómputo.</li>
+              <li><b>Formación técnica:</b> Fundamentos de programación, desarrollo e ingeniería de software (formación universitaria en curso).</li>
+              <li><b>Habilidades blandas:</b> Comunicación efectiva, empatía, paciencia, trabajo en equipo, orientación al cliente y adaptabilidad a horarios extendidos.</li>
+            </ul>
+            <aside class="cv-note pink">¿Buscas a alguien para tu equipo? <button data-open="contact" data-subject="Oportunidad laboral">Escríbeme →</button></aside>
+          </section>
+        </article>
+      </div>
+    </div>
+    <div class="ex-status cv-status"><span>Página 1 de 1</span><span class="cv-where">Perfil</span></div>
   </div>
 </template>
 

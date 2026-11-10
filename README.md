@@ -8,6 +8,7 @@ Ingeniero de software, tatuador y baterista.
 
 - **Escritorio** con ventanas que se arrastran, minimizan y maximizan, barra de tareas, menú Inicio y gadgets.
 - **Sobre mí**: quién soy, mi lado artístico y musical.
+- **CV.pdf**: mi hoja de vida (formato Harvard) en un lector de documentos con marcadores, zoom, descarga del PDF y notas adhesivas que llevan a mis proyectos. El PDF original está en `assets/docs/`.
 - **Proyectos**: explorador de archivos con LegalFlow, SmartStencil y Cyber Player 2000.
 - **Tatuajes** y **Dibujos**: galerías con visor a pantalla completa (zoom, flechas, deslizar en móvil).
 - **Paint**: lienzo para dibujar y guardar en PNG.

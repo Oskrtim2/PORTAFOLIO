@@ -552,6 +552,96 @@ a { color: var(--link); }
 
 /* Botón de Instagram */
 .ig-btn svg { flex: none; }
-.about-head .ig-btn { margin-top: 8px; }
+.about-head .about-btns { margin-top: 8px; }
 .props a { text-decoration: none; }
 .props a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------------- Hoja de vida (lector de documentos) ---------------- */
+.dot.orange { background: radial-gradient(circle at 40% 30%, #ffe0b0, #d9730f); }
+.cp-link { margin-top: 8px; padding: 0; border: 0; background: none; color: var(--link); font-size: 12.5px; }
+.cp-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.cv-reader { display: flex; flex-direction: column; height: 100%; background: #f0f0f0; }
+.cv-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 8px; background: linear-gradient(#fbfdff, #e4ecf6); border-bottom: 1px solid #a9bcd1; }
+.cv-toolbar .rb-btn { min-width: 28px; font-size: 13px; }
+.cv-zoom { min-width: 42px; text-align: center; font-size: 12.5px; color: var(--muted); }
+.cv-sep { width: 1px; height: 22px; margin: 0 4px; background: #c6d4e3; }
+.cv-body { flex: 1; display: flex; min-height: 0; container-type: inline-size; }
+.cv-side { width: 150px; flex: none; margin: 0; padding: 8px 0; list-style: none; overflow: auto; background: linear-gradient(90deg, #f1f6fb, #e7eff8); border-right: 1px solid #d0dbe7; font-size: 13px; }
+.cv-side li.head { padding: 8px 12px 3px; font-weight: 600; color: #1e3f66; }
+.cv-side button { display: block; width: 100%; text-align: left; padding: 3px 12px 3px 22px; border: 1px solid transparent; background: none; }
+.cv-side button:hover { background: linear-gradient(#f2f9fe, #d6edfc); border-color: #b8d6fb; }
+.cv-side button.active { background: linear-gradient(#dcebfc, #c1dbfc); border-color: #7da2ce; }
+
+/* La hoja: gris de fondo como un lector de PDF, papel tamaño carta encima */
+.cv-scroll { flex: 1; overflow: auto; padding: 24px 24px 40px; background: radial-gradient(ellipse at 50% 0, #b9c5d2, #8d9aa9); }
+.notes-on .cv-scroll { padding-right: 150px; }
+.cv-paper {
+  --z: 1;
+  width: calc(600px * var(--z)); min-height: calc(600px * 1.294 * var(--z));
+  margin: 0 auto; padding: 3.4em 3.6em 3em;
+  font: calc(12.5px * var(--z)) / 1.38 "Times New Roman", Tinos, "Liberation Serif", Georgia, serif;
+  color: #111; background: #fff; text-align: left;
+  box-shadow: 0 1px 2px rgba(0,0,0,.25), 0 10px 30px rgba(0,25,55,.35);
+  animation: paperIn .45s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes paperIn { from { opacity: 0; transform: translateY(18px) rotate(-.6deg) } }
+.cv-paper a { color: inherit; text-decoration: none; }
+.cv-paper a:hover { color: var(--link); text-decoration: underline; }
+.cv-head { text-align: center; }
+.cv-head h1 { margin: 0; font-size: 1.62em; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.cv-head p { margin: .15em 0 0; font-size: .96em; }
+.cv-sec { position: relative; }
+.cv-sec h2 {
+  margin: 1.05em 0 .45em; padding-bottom: .1em; border-bottom: 1.5px solid #111;
+  font-size: 1.04em; font-weight: 700; text-align: center; text-transform: uppercase;
+  background: linear-gradient(rgba(255,232,64,.75), rgba(255,232,64,.75)) no-repeat 0 100% / 0 100%;
+}
+.cv-sec.flash h2 { animation: highlighter 1.8s ease forwards; }
+@keyframes highlighter {
+  0% { background-size: 0 100% }
+  30%, 70% { background-size: 100% 100% }
+  100% { background-size: 100% 0 }
+}
+.cv-just { margin: 0; text-align: justify; hyphens: auto; }
+.cv-entry { margin-bottom: .6em; }
+.cv-row { display: flex; justify-content: space-between; gap: 1em; }
+.cv-row span { flex: none; text-align: right; }
+.cv-paper ul { margin: .2em 0 0; padding-left: 2.6em; }
+.cv-paper li { margin: .05em 0; }
+
+/* Notas adhesivas escritas a mano: conectan el CV con el resto del escritorio */
+.cv-note { display: none; }
+.notes-on .cv-note {
+  display: block; position: absolute; top: .3em; left: calc(100% + 1.8em); z-index: 1; width: 158px;
+  padding: 13px 11px 10px; font: 600 17.5px/1.1 Caveat, "Segoe Print", "Comic Sans MS", cursive; color: #2a2a2a;
+  background: var(--note); box-shadow: 2px 4px 10px rgba(0,0,0,.28), inset 0 -18px 20px -18px rgba(0,0,0,.18);
+  transform: rotate(var(--tilt, 2deg)); transition: transform .2s;
+  animation: noteIn .5s .25s cubic-bezier(.3,1.6,.5,1) backwards;
+}
+.notes-on .cv-note:hover { transform: rotate(0) scale(1.04); }
+.cv-note::before {
+  content: ""; position: absolute; top: -9px; left: 50%; width: 62px; height: 18px; translate: -50% 0; rotate: -3deg;
+  background: rgba(255,255,255,.55); border: 1px solid rgba(0,0,0,.06); box-shadow: 0 1px 2px rgba(0,0,0,.12);
+}
+.cv-note b { font-weight: 700; }
+.cv-note button { display: inline; padding: 0; border: 0; background: none; font: inherit; font-weight: 700; color: #0b4f9a; text-decoration: underline; text-decoration-style: wavy; text-underline-offset: 3px; }
+.cv-note.yellow { --note: #fff59a; --tilt: 2.5deg; }
+.cv-note.blue   { --note: #bfe6ff; --tilt: -2deg; }
+.cv-note.green  { --note: #cdf5a8; --tilt: 1.5deg; }
+.cv-note.pink   { --note: #ffc9dc; --tilt: -3deg; }
+@keyframes noteIn { from { opacity: 0; transform: translateY(-14px) rotate(12deg) scale(.9) } }
+.cv-status { display: flex; justify-content: space-between; }
+
+/* Sin espacio en el margen: las notas se pegan dentro de la hoja */
+@container (max-width: 920px) {
+  .notes-on .cv-scroll { padding-right: 24px; }
+  .notes-on .cv-note { position: relative; top: 0; left: 0; width: auto; max-width: 300px; margin: .9em 0 .4em auto; font-size: 18px; }
+}
+@media (max-width: 760px) {
+  .cv-side { display: none; }
+  .cv-toolbar a:not(.primary), .cv-toolbar .cv-sep:first-of-type { display: none; }
+  .cv-scroll { padding: 12px; }
+  .cv-paper { padding: 2.2em 1.6em; width: auto; min-height: 0; }
+  .cv-row { flex-wrap: wrap; gap: 0 1em; }
+}
