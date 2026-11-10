@@ -100,3 +100,27 @@ const PROJECTS = {
   }
 };
 
+/* ---------- Aplicaciones ---------- */
+const APPS = {
+  about:    { title: 'Sobre mí — Propiedades', icon: 'i-user',   w: 580, h: 580 },
+  projects: { title: 'Proyectos',              icon: 'i-folder', w: 820, h: 560 },
+  skills:   { title: 'Habilidades',            icon: 'i-skills', w: 760, h: 540 },
+  tattoo:   { title: 'Tatuajes — Visualizador de fotos', icon: 'i-tattoo', w: 640, h: 480 },
+  community:{ title: 'Comunidad — Galería de visitantes', icon: 'i-community', w: 760, h: 560 },
+  paint:    { title: 'Sin título — Paint',     icon: 'i-paint',  w: 880, h: 560 },
+  hobbies:  { title: 'Hobbies',                icon: 'i-games',  w: 640, h: 470 },
+  contact:  { title: 'Mensaje nuevo',          icon: 'i-mail',   w: 560, h: 500 },
+  bin:      { title: 'Papelera de reciclaje',  icon: 'i-bin',    w: 520, h: 320 },
+  drawings: { title: 'Dibujos — Visualizador de fotos', icon: 'i-photos', w: 680, h: 520 }
+};
+
+const HASH_TO_APP = {
+  'sobre-mi': 'about', proyectos: 'projects', habilidades: 'skills', tatuajes: 'tattoo',
+  dibujos: 'drawings', comunidad: 'community', paint: 'paint', hobbies: 'hobbies', contacto: 'contact'
+};
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const isTouch = matchMedia('(pointer: coarse)').matches;
+const isMobile = () => innerWidth <= 760;
+
