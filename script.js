@@ -522,3 +522,65 @@ const AppInit = {
       Sound.play('send');
     });
 
+    // Publicar en Comunidad: pide nombre de la obra y firma del autor
+    const back = $('.modal-back', body), form = $('.dialog', body);
+    const err = $('.dlg-error', body), preview = $('.dlg-preview', body);
+    let exported = null;
+
+    function isBlank() {
+      const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let i = 0; i < d.length; i += 16) if (d[i] < 250 || d[i + 1] < 250 || d[i + 2] < 250) return false;
+      return true;
+    }
+    function exportImage() {
+      // Reduce el dibujo a máx. 900 px y lo guarda como JPEG para que pese poco
+      const scale = Math.min(1, 900 / Math.max(canvas.width, canvas.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(canvas.width * scale); c.height = Math.round(canvas.height * scale);
+      const x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+      x.drawImage(canvas, 0, 0, c.width, c.height);
+      return c.toDataURL('image/jpeg', .85);
+    }
+    function closeDialog() { back.hidden = true; err.hidden = true; }
+
+    $('[data-act="publish"]', body).addEventListener('click', () => {
+      if (isBlank()) { Sound.play('error'); toast('El lienzo está vacío. ¡Dibuja algo primero!'); return; }
+      exported = exportImage();
+      preview.src = exported;
+      back.hidden = false;
+      err.hidden = true;
+      Sound.play('open');
+      form.elements.title.focus();
+    });
+    $('[data-cancel]', body).addEventListener('click', closeDialog);
+    back.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); closeDialog(); } });
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const title = form.elements.title.value.trim();
+      const author = form.elements.author.value.trim();
+      if (!title || !author) {
+        err.textContent = !title ? 'Escribe el nombre de la obra.' : 'Firma tu obra con tu nombre o alias.';
+        err.hidden = false; Sound.play('error');
+        (!title ? form.elements.title : form.elements.author).focus();
+        return;
+      }
+      const btn = $('[type="submit"]', form);
+      btn.disabled = true; btn.textContent = 'Publicando...';
+      try {
+        await CommunityStore.add({ title, author, image: exported });
+        closeDialog();
+        form.reset();
+        Sound.play('send');
+        WM.open('community');
+      } catch (ex) {
+        err.textContent = ex.message || 'No se pudo publicar. Inténtalo de nuevo.';
+        err.hidden = false; Sound.play('error');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Publicar';
+      }
+    });
+
+    return { cleanup: () => ro.disconnect() };
+  },
+
