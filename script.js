@@ -82,6 +82,85 @@ const PROJECTS = {
     metrics: [['100 % local', 'IA sin nube'], ['500 ms', 'Telemetría en vivo'], ['ES / EN', 'Interfaz bilingüe']],
     stack: ['C# 12', '.NET 8', 'WPF', 'MVVM', 'P/Invoke Win32', 'DWM', 'ONNX Runtime', 'PDH', 'System.Text.Json', 'Inno Setup']
   },
+  pixelperfect: {
+    name: 'Dakingo Bakery',
+    cat: 'web',
+    kind: 'Tienda online · demo en vivo',
+    title: 'Dakingo Bakery · Tienda online de pastelería',
+    subtitle: 'E-commerce en Next.js 16 y React 19 con carrito, categorías y cuentas de usuario',
+    image: 'assets/images/project-pixelperfect.jpg',
+    github: 'https://github.com/Oskrtim2/Pixel-perfect',
+    demo: 'https://pixel-perfect-kappa-bay.vercel.app',
+    overview: 'Una tienda online para una pastelería, hecha al pixel a partir de un diseño. El cliente busca tortas y postres, filtra por categoría, guarda favoritos y arma su pedido en un carrito lateral. Es el tipo de página que un negocio local necesita para vender por internet, lista y publicada.',
+    architecture: [
+      'Carrito lateral con cantidades, eliminación de productos y total calculado en tiempo real.',
+      'Menú por categorías (clásicas, gourmet, postres, galletas) que filtra los productos más vendidos.',
+      'Favoritos, buscador y menú adaptado a celular.',
+      'Ventanas de inicio de sesión y registro, ayuda y un cupón de descuento que se copia con un clic.',
+      'Componentes React tipados con TypeScript y estilos con Tailwind CSS 4.',
+      'Publicada en Vercel con imágenes optimizadas por <code>next/image</code>.'
+    ],
+    metrics: [['En vivo', 'Publicada en Vercel'], ['Carrito', 'Pedido completo'], ['Responsive', 'Celular y escritorio']],
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Lucide', 'Vercel']
+  },
+  flex: {
+    name: 'Flex Dashboard',
+    cat: 'web',
+    kind: 'Panel de ventas · demo en vivo',
+    title: 'Flex · Panel de administración de ventas',
+    subtitle: 'Maqueta de dashboard maquetada al pixel en Next.js, con métricas, gráfica de sesiones y medidor de conversión',
+    image: 'assets/images/project-flex.jpg',
+    github: 'https://github.com/Oskrtim2/R-flex-copia-taller',
+    demo: 'https://proyecto-flex-psi.vercel.app',
+    overview: 'Un panel de control para una tienda online: ventas, visitantes y pedidos de un vistazo, sesiones a lo largo del tiempo y la tasa de conversión. Lo construí replicando un diseño profesional con fidelidad, que es justo lo que se necesita para paneles internos, apps de administración o reportes para clientes.',
+    architecture: [
+      'Menú lateral con secciones, integraciones (Jira, Slack, Intercom) y contador de mensajes.',
+      'Tarjetas de métricas con variación porcentual al alza o a la baja.',
+      'Gráfica de sesiones y medidor semicircular de conversión dibujados con SVG, sin librerías de gráficas.',
+      'Estilos con CSS Modules, sin dependencias extra más allá de Next.js y React.',
+      'Publicado en Vercel.'
+    ],
+    metrics: [['0', 'Librerías de gráficas'], ['SVG', 'Gráficas a mano'], ['En vivo', 'Publicado en Vercel']],
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'CSS Modules', 'SVG', 'Vercel']
+  },
+  glassplayer: {
+    name: 'Glass Player',
+    cat: 'web',
+    kind: 'UI de reproductor de video',
+    title: 'Glass Player · Reproductor con diseño glassmorphism',
+    subtitle: 'Interfaz de reproductor de video con paneles de vidrio esmerilado, en HTML, CSS y JavaScript puros',
+    image: 'assets/images/project-glassplayer.svg',
+    github: 'https://github.com/Oskrtim2/glassmorphism_reproductor',
+    overview: 'Una interfaz de reproductor de video pensada como una app de streaming premium: la película flota sobre la sala en un panel de vidrio, con una barra lateral de acciones y controles de reproducción translúcidos. Muestra el cuidado por el detalle visual que pongo en cada interfaz.',
+    architecture: [
+      'Paneles de vidrio esmerilado con <code>backdrop-filter</code>, bordes de luz y sombras suaves.',
+      'Barra lateral con reproducir, bloquear pantalla, transmitir, compartir y buscar.',
+      'Controles de reproducción, volumen, calidad y barra de progreso con estados interactivos.',
+      'Sin frameworks: HTML semántico, CSS y JavaScript puros.'
+    ],
+    metrics: [['0', 'Dependencias'], ['Glass', 'Estética premium'], ['Vanilla', 'HTML · CSS · JS']],
+    stack: ['HTML5', 'CSS3', 'JavaScript', 'Glassmorphism', 'backdrop-filter']
+  },
+  wallsense: {
+    name: 'WallSense',
+    cat: 'mobile',
+    kind: 'App para reloj Garmin',
+    title: 'WallSense · Detector magnético para Garmin',
+    subtitle: 'App Connect IQ para el Forerunner 165 que convierte el magnetómetro del reloj en un detector de anomalías con vibración',
+    image: 'assets/images/project-wallsense.svg',
+    github: 'https://github.com/Oskrtim2/WallSense_SmartWatch',
+    overview: 'WallSense lee el magnetómetro de tres ejes del reloj, se calibra con el campo magnético del lugar y avisa con vibraciones cada vez más intensas cuando detecta algo que lo altera. Es un proyecto experimental de hobby, no un instrumento de seguridad, pero muestra que puedo programar sobre hardware real, sensores y dispositivos con recursos muy limitados.',
+    architecture: [
+      'Muestreo del magnetómetro a la máxima frecuencia que reporta el sensor, con reintento a 25 Hz si el firmware la rechaza.',
+      'Calibración de 3 segundos con media y varianza en línea (algoritmo de Welford).',
+      'Umbral adaptativo según el ruido del ambiente (<code>4σ + 1.5 mG</code>, entre 2 y 30 mG) e histéresis del 35 % para evitar falsas alarmas.',
+      'Vibración dinámica con 8 patrones: el intervalo baja de 720 a 320 ms y el pulso crece de 50 a 150 ms según la intensidad.',
+      'Interfaz negra para pantalla AMOLED con medidor de 270° y ecos de radar.',
+      'Vigilante del sensor que lo vuelve a registrar si deja de enviar datos durante 3,5 s.'
+    ],
+    metrics: [['3 ejes', 'Magnetómetro'], ['8', 'Patrones de vibración'], ['Welford', 'Calibración en línea']],
+    stack: ['Monkey C', 'Garmin Connect IQ', 'Sensores', 'Hápticos', 'AMOLED UI']
+  },
   smartstencil: {
     name: 'SmartStencil',
     cat: 'mobile',
@@ -444,7 +523,7 @@ const AppInit = {
         <h3>Resumen</h3><p>${p.overview}</p>
         <h3>Arquitectura</h3><ul>${p.architecture.map(a => `<li>${a}</li>`).join('')}</ul>
         <h3>Tecnologías</h3><div class="stack">${p.stack.map(s => `<span class="pill">${s}</span>`).join('')}</div>
-        <div class="btn-row"><a class="aero-btn" href="${p.github}" target="_blank" rel="noopener">
+        <div class="btn-row">${p.demo ? `<a class="aero-btn primary" href="${p.demo}" target="_blank" rel="noopener">Ver demo en vivo</a>` : ''}<a class="aero-btn" href="${p.github}" target="_blank" rel="noopener">
           <svg width="16" height="16"><use href="#i-github"/></svg> Ver en GitHub</a>
           <button class="aero-btn" data-back>Volver a Proyectos</button></div>`;
       files.hidden = true; detail.hidden = false;

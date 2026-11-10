@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="Inter, 'Segoe UI', Verdana, sans-serif">
+  <defs>
+    <linearGradient id="room" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2f28"/><stop offset="1" stop-color="#14100d"/></linearGradient>
+    <radialGradient id="lamp" cx=".88" cy=".35" r=".4"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".45"/><stop offset="1" stop-color="#ffcf8a" stop-opacity="0"/></radialGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8a5b"/><stop offset=".45" stop-color="#c2417a"/><stop offset="1" stop-color="#2b1a5e"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".7" cy=".35" r=".35"><stop offset="0" stop-color="#ffe7b3"/><stop offset="1" stop-color="#ffe7b3" stop-opacity="0"/></radialGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset="1" stop-color="#fff" stop-opacity=".07"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity=".55"/></filter>
+    <clipPath id="clip"><rect x="200" y="110" width="800" height="400" rx="18"/></clipPath>
+  </defs>
+  <rect width="1200" height="675" fill="url(#room)"/>
+  <rect width="1200" height="675" fill="url(#lamp)"/>
+  <rect x="0" y="560" width="1200" height="115" fill="#0e0b09" opacity=".6"/>
+
+  <!-- Marco de vidrio -->
+  <g filter="url(#sh)"><rect x="180" y="50" width="840" height="480" rx="28" fill="url(#glass)" stroke="#fff" stroke-opacity=".25"/></g>
+  <circle cx="222" cy="82" r="16" fill="#fff" fill-opacity=".15"/>
+  <path d="M225 75 l-7 7 7 7" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <text x="600" y="90" text-anchor="middle" font-size="20" font-weight="600" fill="#fff">Atardecer</text>
+
+  <!-- Escena abstracta -->
+  <g clip-path="url(#clip)">
+    <rect x="200" y="110" width="800" height="400" fill="url(#screen)"/>
+    <rect x="200" y="110" width="800" height="400" fill="url(#sun)"/>
+    <path d="M200 420 L330 330 L430 390 L560 280 L690 380 L800 320 L1000 410 V510 H200z" fill="#1a1036" opacity=".75"/>
+    <path d="M200 460 L360 400 L520 450 L700 390 L860 440 L1000 420 V510 H200z" fill="#0f0a22"/>
+  </g>
+  <rect x="226" y="482" width="748" height="5" rx="2.5" fill="#fff" fill-opacity=".3"/>
+  <rect x="226" y="482" width="500" height="5" rx="2.5" fill="#fff"/>
+  <circle cx="726" cy="484.5" r="9" fill="#fff"/>
+
+  <!-- Barra lateral -->
+  <rect x="90" y="190" width="70" height="300" rx="35" fill="url(#glass)" stroke="#fff" stroke-opacity=".22"/>
+  <circle cx="125" cy="232" r="22" fill="#fff" fill-opacity=".22"/>
+  <path d="M118 222 l18 10 -18 10z" fill="#fff"/>
+  <g fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="2.5" stroke-linecap="round">
+    <rect x="115" y="292" width="20" height="15" rx="3"/><path d="M119 292v-5a6 6 0 0 1 12 0v5"/>
+    <path d="M115 360h20v14M115 380a8 8 0 0 1 8 8"/>
+    <circle cx="123" cy="440" r="9"/><path d="M130 447l7 7"/>
+  </g>
+
+  <!-- Controles -->
+  <rect x="430" y="560" width="340" height="66" rx="33" fill="url(#glass)" stroke="#fff" stroke-opacity=".22"/>
+  <g fill="#fff">
+    <path d="M488 581v24M507 581l-16 12 16 12z"/>
+    <path d="M552 579l22 14-22 14z"/>
+    <path d="M612 581l16 12-16 12zM632 581v24"/>
+  </g>
+  <path d="M488 581v24M632 581v24" stroke="#fff" stroke-width="3"/>
+  <text x="712" y="600" font-size="18" font-weight="600" fill="#fff">1080p</text>
+</svg>

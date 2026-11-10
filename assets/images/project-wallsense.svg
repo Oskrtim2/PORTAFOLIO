@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="'Segoe UI', Verdana, sans-serif">
+  <defs>
+    <radialGradient id="bg" cx=".5" cy=".45" r=".75">
+      <stop offset="0" stop-color="#14323a"/><stop offset=".6" stop-color="#0a1418"/><stop offset="1" stop-color="#030608"/>
+    </radialGradient>
+    <linearGradient id="bezel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b6672"/><stop offset=".5" stop-color="#2a3138"/><stop offset="1" stop-color="#11161a"/></linearGradient>
+    <linearGradient id="strap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b2228"/><stop offset=".5" stop-color="#2b343c"/><stop offset="1" stop-color="#1b2228"/></linearGradient>
+    <linearGradient id="arc" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#34d399"/><stop offset=".6" stop-color="#facc15"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000" flood-opacity=".7"/></filter>
+    <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+
+  <!-- Ondas de campo magnético -->
+  <g fill="none" stroke="#34d399" stroke-opacity=".18" stroke-width="2">
+    <path d="M0 200 C 300 120 900 280 1200 190"/><path d="M0 260 C 300 190 900 340 1200 250"/>
+    <path d="M0 430 C 300 500 900 360 1200 450"/><path d="M0 490 C 300 560 900 420 1200 510"/>
+  </g>
+
+  <!-- Correa -->
+  <rect x="520" y="-10" width="160" height="695" rx="30" fill="url(#strap)"/>
+  <g stroke="#0b0f12" stroke-width="3" opacity=".6"><path d="M540 40h120M540 80h120M540 600h120M540 640h120"/></g>
+
+  <!-- Reloj -->
+  <g filter="url(#sh)">
+    <circle cx="600" cy="337" r="210" fill="url(#bezel)"/>
+    <circle cx="600" cy="337" r="186" fill="#000"/>
+  </g>
+  <g fill="#1f2a30"><rect x="802" y="270" width="20" height="40" rx="6"/><rect x="802" y="360" width="20" height="40" rx="6"/><rect x="378" y="300" width="20" height="60" rx="6"/></g>
+
+  <!-- Ecos de radar -->
+  <g fill="none" stroke="#34d399">
+    <circle cx="600" cy="337" r="70" stroke-opacity=".5" stroke-width="2"/>
+    <circle cx="600" cy="337" r="110" stroke-opacity=".3" stroke-width="2"/>
+    <circle cx="600" cy="337" r="150" stroke-opacity=".15" stroke-width="2"/>
+  </g>
+  <!-- Medidor de 270° -->
+  <path d="M482 455 A 168 168 0 1 1 718 455" fill="none" stroke="#1e293b" stroke-width="14" stroke-linecap="round"/>
+  <path d="M482 455 A 168 168 0 1 1 760 260" fill="none" stroke="url(#arc)" stroke-width="14" stroke-linecap="round"/>
+  <path d="M482 455 A 168 168 0 1 1 760 260" fill="none" stroke="url(#arc)" stroke-width="14" stroke-linecap="round" filter="url(#glow)" opacity=".7"/>
+
+  <text x="600" y="345" text-anchor="middle" font-size="76" font-weight="700" fill="#f8fafc">12.4</text>
+  <text x="600" y="385" text-anchor="middle" font-size="22" fill="#94a3b8" letter-spacing="2">mG Δ</text>
+  <text x="600" y="430" text-anchor="middle" font-size="16" fill="#34d399">umbral 6.0</text>
+
+  <!-- Vibración -->
+  <g stroke="#facc15" stroke-width="5" stroke-linecap="round" fill="none" opacity=".8">
+    <path d="M330 300 q -14 37 0 74"/><path d="M296 282 q -22 55 0 110"/>
+    <path d="M870 300 q 14 37 0 74"/><path d="M904 282 q 22 55 0 110"/>
+  </g>
+
+  <text x="80" y="620" font-size="44" font-weight="700" fill="#f8fafc">Wall<tspan fill="#34d399">Sense</tspan></text>
+  <text x="1120" y="620" text-anchor="end" font-size="20" fill="#94a3b8">Garmin Forerunner 165</text>
+</svg>
