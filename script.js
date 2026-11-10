@@ -834,3 +834,44 @@ const Viewer = (() => {
   return { open, close, onKey };
 })();
 
+/* =========================================================
+   Menú Inicio
+   ========================================================= */
+const startMenu = $('#start-menu'), startBtn = $('#start-btn'), smSearch = $('#sm-search');
+
+function openStartMenu() {
+  startMenu.classList.add('open'); startBtn.classList.add('open');
+  startMenu.setAttribute('aria-hidden', 'false');
+  Sound.play('click');
+  if (!isTouch) setTimeout(() => smSearch.focus(), 50);
+}
+function closeStartMenu() {
+  startMenu.classList.remove('open'); startBtn.classList.remove('open');
+  startMenu.setAttribute('aria-hidden', 'true');
+  smSearch.value = ''; filterStart('');
+}
+startBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  startMenu.classList.contains('open') ? closeStartMenu() : openStartMenu();
+});
+document.addEventListener('pointerdown', e => {
+  if (startMenu.classList.contains('open') && !startMenu.contains(e.target) && !startBtn.contains(e.target)) closeStartMenu();
+});
+
+function filterStart(q) {
+  q = q.trim().toLowerCase();
+  let first = null;
+  $$('.sm-item', startMenu).forEach(it => {
+    const show = !q || it.textContent.toLowerCase().includes(q);
+    it.classList.toggle('hide', !show);
+    it.classList.remove('hl');
+    if (show && q && !first) first = it;
+  });
+  first && first.classList.add('hl');
+  return first;
+}
+smSearch.addEventListener('input', () => filterStart(smSearch.value));
+smSearch.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const f = filterStart(smSearch.value); f && WM.open(f.dataset.open); }
+});
+
