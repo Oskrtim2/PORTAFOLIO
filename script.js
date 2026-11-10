@@ -607,3 +607,21 @@ const AppInit = {
     return { onOpen: load };
   },
 
+  contact(body) {
+    const form = $('form', body), fb = $('.mail-feedback', body);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(form));
+      if (CONTACT_EMAIL) {
+        const subject = encodeURIComponent(`[Portafolio] ${d.subject} — ${d.name}`);
+        const text = encodeURIComponent(`${d.message}\n\n— ${d.name} (${d.email})`);
+        location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${text}`;
+        fb.textContent = 'Se abrió tu aplicación de correo con el mensaje listo para enviar.';
+      } else {
+        fb.innerHTML = 'Por ahora el formulario no envía correos. Escríbeme por <a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>.';
+      }
+      fb.hidden = false;
+      Sound.play('send');
+    });
+  },
+
