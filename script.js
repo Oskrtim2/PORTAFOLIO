@@ -584,3 +584,26 @@ const AppInit = {
     return { cleanup: () => ro.disconnect() };
   },
 
+  community(body) {
+    const gallery = $('.gallery', body), note = $('.community-note', body);
+    note.textContent = CommunityStore.shared
+      ? 'Cualquier visitante puede ver las obras publicadas aquí.'
+      : 'Por ahora las obras se guardan solo en este navegador.';
+    async function load() {
+      gallery.innerHTML = '<div class="gallery-empty">Cargando obras...</div>';
+      try {
+        const items = await CommunityStore.list();
+        if (!items.length) {
+          gallery.innerHTML = `<div class="gallery-empty">Todavía no hay obras publicadas.<br>
+            <a href="#" data-open="paint">Abre Paint</a>, dibuja algo y sé el primero en firmar una.</div>`;
+          return;
+        }
+        renderGallery(gallery, items.map(it => ({ src: it.image, title: it.title, author: it.author })), 'Obra');
+      } catch {
+        gallery.innerHTML = '<div class="gallery-empty">No se pudieron cargar las obras. Revisa tu conexión e inténtalo de nuevo.</div>';
+      }
+    }
+    load();
+    return { onOpen: load };
+  },
+
