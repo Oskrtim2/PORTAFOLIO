@@ -476,3 +476,26 @@
   </div>
 </template>
 
+<template id="tpl-contact">
+  <form class="mail">
+    <div class="mail-toolbar">
+      <button type="submit" class="aero-btn primary">Enviar</button>
+      <a class="aero-btn" href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>
+    </div>
+    <div class="mail-row"><label>Para:</label><input value="Oscar Timaran" readonly></div>
+    <div class="mail-row"><label for="m-name">De:</label><input id="m-name" name="name" required placeholder="Tu nombre o empresa"></div>
+    <div class="mail-row"><label for="m-email">Correo:</label><input id="m-email" name="email" type="email" required placeholder="tu-email@ejemplo.com"></div>
+    <div class="mail-row"><label for="m-subject">Asunto:</label>
+      <select id="m-subject" name="subject">
+        <option>Proyecto de software</option>
+        <option>Oportunidad laboral</option>
+        <option>Cita de tatuaje</option>
+        <option>Banda / música</option>
+        <option>Solo saludar</option>
+      </select>
+    </div>
+    <textarea name="message" required placeholder="Escribe tu mensaje..."></textarea>
+    <p class="mail-feedback" hidden></p>
+  </form>
+</template>
+
