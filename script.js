@@ -22,7 +22,11 @@ const TATTOO_PHOTOS = [
 const DRAWINGS = [
   { src: 'assets/images/dibujos/emos.png', title: 'Emos hijueputas' },
   { src: 'assets/images/dibujos/jhon-2.png', title: 'Jhon 2' },
-  { src: 'assets/images/dibujos/vida-mhm.png', title: 'Vida MHM' }
+  { src: 'assets/images/dibujos/vida-mhm.png', title: 'Vida MHM' },
+  { src: 'assets/images/dibujos/nirvana-x-nana.png', title: 'Nirvana x Nana' },
+  { src: 'assets/images/dibujos/tatu-oscar-dado.png', title: 'Tatu Oscar dado' },
+  { src: 'assets/images/dibujos/tatuaje-kuromi.png', title: 'Tatuaje Kuromi' },
+  { src: 'assets/images/dibujos/eri-tatuaje.png', title: 'ERI tatuaje' }
 ];
 
 // Comunidad (dibujos que publican los visitantes desde Paint).
