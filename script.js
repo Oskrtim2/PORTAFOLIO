@@ -382,3 +382,72 @@ const AppInit = {
     }));
   },
 
+  projects(body) {
+    const files = $('.ex-files', body), detail = $('.ex-detail', body);
+    const back = $('[data-ex="back"]', body), fwd = $('[data-ex="fwd"]', body);
+    const path = $('.ex-path', body), count = $('.ex-count', body), search = $('.ex-search', body);
+    let filter = 'all', last = null;
+
+    function renderList() {
+      const q = search.value.trim().toLowerCase();
+      const items = Object.entries(PROJECTS).filter(([, p]) =>
+        (filter === 'all' || p.cat === filter) &&
+        (!q || (p.name + p.kind + p.stack.join(' ')).toLowerCase().includes(q)));
+      files.innerHTML = items.map(([k, p]) => `
+        <button class="file" data-key="${k}">
+          <img src="${p.image}" alt="" loading="lazy">
+          <span>${p.name}</span><small>${p.kind}</small>
+        </button>`).join('') || '<p class="muted" style="grid-column:1/-1">No hay elementos que coincidan con la búsqueda.</p>';
+      count.textContent = items.length + (items.length === 1 ? ' elemento' : ' elementos');
+    }
+
+    function showList() {
+      detail.hidden = true; files.hidden = false;
+      path.textContent = 'Equipo ▸ Oscar ▸ Proyectos';
+      back.disabled = true; fwd.disabled = !last;
+    }
+
+    function showDetail(key) {
+      const p = PROJECTS[key];
+      if (!p) return;
+      last = key;
+      detail.innerHTML = `
+        <h2>${p.title}</h2>
+        <p class="sub">${p.subtitle}</p>
+        <img class="hero-img" src="${p.image}" alt="Captura de ${p.name}">
+        <div class="metrics">${p.metrics.map(([v, l]) => `<div class="metric"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+        <h3>Resumen</h3><p>${p.overview}</p>
+        <h3>Arquitectura</h3><ul>${p.architecture.map(a => `<li>${a}</li>`).join('')}</ul>
+        <h3>Tecnologías</h3><div class="stack">${p.stack.map(s => `<span class="pill">${s}</span>`).join('')}</div>
+        <div class="btn-row"><a class="aero-btn" href="${p.github}" target="_blank" rel="noopener">
+          <svg width="16" height="16"><use href="#i-github"/></svg> Ver en GitHub</a>
+          <button class="aero-btn" data-back>Volver a Proyectos</button></div>`;
+      files.hidden = true; detail.hidden = false;
+      detail.parentElement.scrollTop = 0;
+      path.textContent = 'Equipo ▸ Oscar ▸ Proyectos ▸ ' + p.name;
+      back.disabled = false; fwd.disabled = true;
+      Sound.play('click');
+    }
+
+    files.addEventListener('click', e => {
+      const f = e.target.closest('.file');
+      if (!f) return;
+      $$('.file', files).forEach(x => x.classList.toggle('selected', x === f));
+      if (isTouch) showDetail(f.dataset.key);
+    });
+    files.addEventListener('dblclick', e => { const f = e.target.closest('.file'); f && showDetail(f.dataset.key); });
+    files.addEventListener('keydown', e => { const f = e.target.closest('.file'); if (f && e.key === 'Enter') { e.preventDefault(); showDetail(f.dataset.key); } });
+    detail.addEventListener('click', e => { if (e.target.closest('[data-back]')) showList(); });
+    back.addEventListener('click', showList);
+    fwd.addEventListener('click', () => last && showDetail(last));
+    search.addEventListener('input', () => { showList(); renderList(); });
+    $$('.ex-filter', body).forEach(b => b.addEventListener('click', () => {
+      filter = b.dataset.filter;
+      $$('.ex-filter', body).forEach(x => x.classList.toggle('active', x === b));
+      showList(); renderList(); Sound.play('click');
+    }));
+
+    renderList(); showList();
+    return { onOpen: opts => opts && opts.project && showDetail(opts.project) };
+  },
+
