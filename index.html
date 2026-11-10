@@ -78,6 +78,14 @@
       <rect x="9" y="8" width="30" height="5" rx="2" fill="url(#g-silver)" stroke="#6b7a8f"/>
       <path d="M20 26c2-3 6-3 8 0" stroke="#6cc93a" stroke-width="2" fill="none"/>
     </symbol>
+    <radialGradient id="g-ig" cx=".3" cy="1.05" r="1.2"><stop offset="0" stop-color="#ffd86b"/><stop offset=".25" stop-color="#ff8a3d"/><stop offset=".5" stop-color="#e1306c"/><stop offset=".75" stop-color="#b13ab8"/><stop offset="1" stop-color="#5b4fe0"/></radialGradient>
+    <symbol id="i-instagram" viewBox="0 0 48 48">
+      <rect x="3" y="3" width="42" height="42" rx="12" fill="url(#g-ig)"/>
+      <rect x="11" y="11" width="26" height="26" rx="8" fill="none" stroke="#fff" stroke-width="3.2"/>
+      <circle cx="24" cy="24" r="6.2" fill="none" stroke="#fff" stroke-width="3.2"/>
+      <circle cx="32.5" cy="15.5" r="2" fill="#fff"/>
+      <path d="M8 6h32a6 6 0 0 1 4 4c-8 4-30 6-40 3a6 6 0 0 1 4-7z" fill="url(#g-gloss)" opacity=".45"/>
+    </symbol>
     <symbol id="i-github" viewBox="0 0 48 48">
       <circle cx="24" cy="24" r="21" fill="#24292f"/>
       <path fill="#fff" d="M24 11a13 13 0 0 0-4.1 25.3c.6.1.9-.3.9-.6v-2.3c-3.6.8-4.4-1.6-4.4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.2-.8.1-.8.1-.8 1.3.1 2 1.3 2 1.3 1.2 2 3.1 1.4 3.8 1.1.1-.8.5-1.4.8-1.7-2.9-.3-5.9-1.4-5.9-6.4 0-1.4.5-2.6 1.3-3.5-.1-.3-.6-1.7.1-3.5 0 0 1.1-.3 3.6 1.3a12.4 12.4 0 0 1 6.5 0c2.5-1.7 3.6-1.3 3.6-1.3.7 1.8.3 3.2.1 3.5.8.9 1.3 2.1 1.3 3.5 0 5-3 6.1-5.9 6.4.5.4.9 1.2.9 2.4v3.6c0 .3.2.7.9.6A13 13 0 0 0 24 11z"/>
@@ -218,6 +226,7 @@
     <button class="sm-link" data-open="community">Comunidad</button>
     <button class="sm-link" data-open="hobbies">Juegos</button>
     <a class="sm-link" href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub</a>
+    <a class="sm-link" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">Instagram</a>
     <button class="sm-link" data-open="contact">Contacto</button>
     <button class="sm-shutdown" id="shutdown"><svg><use href="#i-power"/></svg> Apagar</button>
   </div>
@@ -230,6 +239,7 @@
     <button class="tb-btn pinned" data-open="projects" title="Proyectos"><svg><use href="#i-folder"/></svg></button>
     <button class="tb-btn pinned" data-open="paint" title="Paint"><svg><use href="#i-paint"/></svg></button>
     <a class="tb-btn pinned" href="https://github.com/Oskrtim2" target="_blank" rel="noopener" title="GitHub"><svg><use href="#i-github"/></svg></a>
+    <a class="tb-btn pinned" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener" title="Instagram @0skrtm__" aria-label="Instagram"><svg><use href="#i-instagram"/></svg></a>
   </div>
   <div id="tb-windows" class="tb-windows"></div>
   <div class="tray">
@@ -277,12 +287,14 @@
           <h1>Oscar Timaran</h1>
           <p class="roles"><span class="pill blue">Ingeniero de Software</span><span class="pill red">Tatuador</span><span class="pill purple">Baterista</span></p>
           <p class="muted">Remoto · LatAm</p>
+          <a class="aero-btn ig-btn" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#i-instagram"/></svg> Sígueme en Instagram</a>
         </div>
       </div>
       <p>Transformo ideas en sistemas. Me interesa el arte del software: cómo se va a ver algo para quien lo usa y cómo va a crecer en el futuro.</p>
       <p>Fuera del código soy <b>tatuador</b> (hace unos 9 meses) y <b>baterista</b> (hace 6 o 7 años). Me gusta mucho dibujar, hacer contenido para redes y aprovechar mi tiempo libre en mis hobbies: videojuegos, arte, series y películas.</p>
       <dl class="props">
-        <dt>Usuario</dt><dd>@Oskrtim2</dd>
+        <dt>GitHub</dt><dd><a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">@Oskrtim2</a></dd>
+        <dt>Instagram</dt><dd><a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">@0skrtm__</a></dd>
         <dt>Enfoque</dt><dd>Desarrollo de software y arquitectura</dd>
         <dt>Tatuando desde</dt><dd>hace ~9 meses</dd>
         <dt>Tocando batería</dt><dd>hace 6–7 años</dd>
@@ -320,6 +332,7 @@
         <li class="head">Favoritos</li>
         <li><button data-open="about">Escritorio</button></li>
         <li><a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">Instagram</a></li>
         <li class="head">Bibliotecas</li>
         <li><button class="ex-filter active" data-filter="all">Todos</button></li>
         <li><button class="ex-filter" data-filter="web">Web / SaaS</button></li>
@@ -481,6 +494,7 @@
     <div class="mail-toolbar">
       <button type="submit" class="aero-btn primary">Enviar</button>
       <a class="aero-btn" href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>
+      <a class="aero-btn ig-btn" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#i-instagram"/></svg> Instagram @0skrtm__</a>
     </div>
     <div class="mail-row"><label>Para:</label><input value="Oscar Timaran" readonly></div>
     <div class="mail-row"><label for="m-name">De:</label><input id="m-name" name="name" required placeholder="Tu nombre o empresa"></div>

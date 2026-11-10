@@ -549,3 +549,9 @@ a { color: var(--link); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .bubbles { display: none; }
 }
+
+/* Botón de Instagram */
+.ig-btn svg { flex: none; }
+.about-head .ig-btn { margin-top: 8px; }
+.props a { text-decoration: none; }
+.props a:hover { text-decoration: underline; text-underline-offset: 3px; }

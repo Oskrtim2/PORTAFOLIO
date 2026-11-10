@@ -618,7 +618,7 @@ const AppInit = {
         location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${text}`;
         fb.textContent = 'Se abrió tu aplicación de correo con el mensaje listo para enviar.';
       } else {
-        fb.innerHTML = 'Por ahora el formulario no envía correos. Escríbeme por <a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>.';
+        fb.innerHTML = 'Por ahora el formulario no envía correos. Escríbeme por <a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">Instagram @0skrtm__</a> o <a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>.';
       }
       fb.hidden = false;
       Sound.play('send');
