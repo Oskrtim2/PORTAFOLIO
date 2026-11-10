@@ -32,3 +32,32 @@ button { font: inherit; color: inherit; cursor: pointer; }
 svg { display: block; }
 a { color: var(--link); }
 
+/* ---------------- Arranque ---------------- */
+.boot, .welcome, .shutdown-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity .6s ease;
+}
+.boot { background: #000; color: #ddd; cursor: pointer; }
+.boot-logo { position: relative; width: 110px; height: 110px; display: grid; place-items: center; }
+.boot-orb { width: 90px; height: 90px; animation: bootPulse 2s ease-in-out infinite; }
+.boot-orb svg { width: 100%; height: 100%; filter: drop-shadow(0 0 18px rgba(120, 200, 255, .35)); }
+.boot-text { margin: 28px 0 0; font-size: 20px; font-weight: 300; letter-spacing: .5px; }
+.boot-copy { position: absolute; bottom: 24px; font-size: 12px; color: #a0a0a0; }
+@keyframes bootPulse { 0%,100% { transform: scale(.92); opacity: .7 } 50% { transform: scale(1); opacity: 1 } }
+
+.welcome {
+  background: radial-gradient(ellipse at 50% 40%, #2f8fd8 0%, #0d4d8f 55%, #062a55 100%);
+  color: #fff; opacity: 0; pointer-events: none;
+}
+.welcome.show { opacity: 1; }
+.welcome-frame {
+  width: 110px; height: 110px; padding: 6px; border-radius: 10px;
+  background: linear-gradient(#fff9, #fff3); border: 1px solid #fffa;
+  box-shadow: 0 6px 22px rgba(0,0,0,.35);
+}
+.welcome-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+.welcome-text { font-size: 30px; font-weight: 300; text-shadow: 0 2px 6px rgba(0,0,0,.4); }
+
+.hidden-fade { opacity: 0 !important; pointer-events: none !important; }
+
