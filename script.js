@@ -909,3 +909,14 @@ document.addEventListener('keydown', e => {
 
 $('#show-desktop').addEventListener('click', () => WM.showDesktop());
 
+/* =========================================================
+   Sonido on/off
+   ========================================================= */
+const soundBtn = $('#sound-btn');
+function paintSoundBtn() {
+  soundBtn.classList.toggle('muted-snd', !Sound.on);
+  soundBtn.title = Sound.on ? 'Sonido activado' : 'Sonido desactivado';
+}
+soundBtn.addEventListener('click', () => { Sound.toggle(); paintSoundBtn(); Sound.play('click'); });
+paintSoundBtn();
+
