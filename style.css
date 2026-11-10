@@ -1,0 +1,34 @@
+/* =========================================================
+   OskrOS — Portafolio estilo Windows 7 / Frutiger Aero
+   ========================================================= */
+
+:root {
+  --font: "Segoe UI", "Open Sans", Tahoma, system-ui, sans-serif;
+  --text: #1e2b3a;
+  --muted: #5b6b7d;
+  --link: #0b6bcb;
+  --glass: rgba(170, 205, 235, .42);
+  --glass-dark: rgba(20, 45, 75, .55);
+  --glass-border: rgba(255, 255, 255, .55);
+  --frame-shadow: 0 12px 40px rgba(0, 20, 50, .45), 0 2px 6px rgba(0, 20, 50, .3);
+  --win-radius: 8px;
+  --taskbar-h: 42px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+button { font: inherit; color: inherit; cursor: pointer; }
+svg { display: block; }
+a { color: var(--link); }
+
