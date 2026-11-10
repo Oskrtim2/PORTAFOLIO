@@ -485,6 +485,7 @@ a { color: var(--link); }
   width: auto; height: auto;
   max-width: calc(100% - 32px); max-height: calc(100% - 32px);
   cursor: zoom-in; user-select: none;
+  background: #fff; /* los dibujos PNG sin fondo se ven sobre papel blanco */
   box-shadow: 0 10px 40px rgba(0,0,0,.6); transition: opacity .2s;
 }
 .vw-img.loading { opacity: .2; }
