@@ -62,6 +62,26 @@ const PROJECTS = {
     metrics: [['3', 'Formas de entrar sin contraseña'], ['2 + 2', 'Proveedores OCR y TTS'], ['ES / EN', 'Silabación']],
     stack: ['NestJS 12', 'TypeScript 6', 'PostgreSQL 17', 'Prisma 6', 'JWT', 'Tesseract.js', 'AWS Textract', 'Amazon Polly', 'Google Cloud TTS', 'Swagger / OpenAPI', 'Vitest', 'Docker Compose']
   },
+  contextflow: {
+    name: 'ContextFlow',
+    cat: 'desktop',
+    kind: 'App de escritorio con IA local',
+    title: 'ContextFlow · Gestor de entornos para Windows 11',
+    subtitle: 'HUD flotante para trabajar con varios monitores, con un motor de IA 100 % local que optimiza el equipo',
+    image: 'assets/images/project-contextflow.svg',
+    github: 'https://github.com/Oskrtim2/contextflow',
+    overview: 'ContextFlow vive en el escritorio como una burbuja translúcida. Con <b>Ctrl + E + F</b> se abre un HUD estilo Fluent con CPU, RAM y GPU en vivo, las ventanas agrupadas en "cápsulas" de trabajo y un enrutador para mandarlas a otro monitor. Con <b>Ctrl + E</b> y <b>Ctrl + F</b> recorres tus ventanas en un anillo infinito, como los espacios de trabajo de Pop!_OS. Cuando no estás usando algo, una IA embebida baja la prioridad de los procesos inactivos y libera memoria, sin internet, sin cuentas y sin nube.',
+    architecture: [
+      'Atajos globales (<code>Ctrl+E+F</code>) con un hook de teclado y navegación circular entre ventanas que las restaura, maximiza y enfoca.',
+      'Cápsulas de trabajo en un lienzo infinito: cada una se asigna a un monitor y se acomoda en columnas, filas o cuadrícula.',
+      'Telemetría asíncrona cada 500 ms con Win32: <code>GetSystemTimes</code>, <code>GlobalMemoryStatusEx</code> y contadores PDH de GPU.',
+      'IA offline: un modelo de políticas ONNX de 9 variables, ejecutado con ONNX Runtime embebido, con respaldo si el modelo falla.',
+      'Políticas prudentes y reversibles: prioridad baja, compactación de memoria y ocultar cápsulas inactivas de DWM, con exclusiones, enfriamiento y un diario que restaura todo si la app se cierra de golpe.',
+      'Interfaz WPF con Acrylic/Mica reales de Windows 11, MVVM, tema claro y oscuro, inglés y español, y un instalador de un solo archivo.'
+    ],
+    metrics: [['100 % local', 'IA sin nube'], ['500 ms', 'Telemetría en vivo'], ['ES / EN', 'Interfaz bilingüe']],
+    stack: ['C# 12', '.NET 8', 'WPF', 'MVVM', 'P/Invoke Win32', 'DWM', 'ONNX Runtime', 'PDH', 'System.Text.Json', 'Inno Setup']
+  },
   smartstencil: {
     name: 'SmartStencil',
     cat: 'mobile',
