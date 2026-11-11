@@ -599,14 +599,18 @@ const AppInit = {
     }
     $$('[data-tool]', body).forEach(b => b.addEventListener('click', () => setTool(b.dataset.tool)));
 
+    let dpr = 1;
     function fit() {
-      const r = canvas.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      const dpr = window.devicePixelRatio || 1;
+      // clientWidth/Height dan el tamaño real del lienzo; getBoundingClientRect
+      // incluiría la animación de apertura de la ventana (escala .94) y el lienzo
+      // quedaría más chico que en pantalla, con el trazo corrido respecto al mouse.
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (!w || !h) return;
+      dpr = window.devicePixelRatio || 1;
       const copy = document.createElement('canvas');
       copy.width = canvas.width; copy.height = canvas.height;
       copy.getContext('2d').drawImage(canvas, 0, 0);
-      canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
       ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
       if (copy.width) ctx.drawImage(copy, 0, 0);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -615,7 +619,16 @@ const AppInit = {
     const ro = new ResizeObserver(fit);
     ro.observe(wrap);
 
-    function pos(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+    // Posición del mouse en coordenadas del lienzo. Se escala con el tamaño real
+    // del canvas, así el trazo cae justo bajo el puntero aunque el lienzo se vea
+    // estirado o escalado (animaciones, zoom del navegador, ventana a medio cambiar).
+    function pos(e) {
+      const r = canvas.getBoundingClientRect();
+      return [
+        (e.clientX - r.left) * (canvas.width / r.width) / dpr,
+        (e.clientY - r.top) * (canvas.height / r.height) / dpr
+      ];
+    }
     function stroke(x, y) {
       ctx.strokeStyle = tool === 'eraser' ? '#ffffff' : color;
       ctx.lineWidth = +size.value * (tool === 'eraser' ? 2 : 1);
@@ -628,6 +641,7 @@ const AppInit = {
     });
     canvas.addEventListener('pointermove', e => { if (drawing) stroke(...pos(e)); });
     canvas.addEventListener('pointerup', () => { drawing = false; });
+    canvas.addEventListener('pointercancel', () => { drawing = false; });
 
     $('[data-act="clear"]', body).addEventListener('click', () => {
       ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
