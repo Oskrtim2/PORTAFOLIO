@@ -368,6 +368,7 @@ const WM = (() => {
 
     Sound.play('open');
     focus(id);
+    document.dispatchEvent(new CustomEvent('app-open', { detail: id }));
 
     const init = AppInit[id];
     if (init) {
@@ -686,6 +687,7 @@ const AppInit = {
       btn.disabled = true; btn.textContent = 'Publicando...';
       try {
         await CommunityStore.add({ title, author, image: exported });
+        Invite.published();
         closeDialog();
         form.reset();
         Sound.play('send');
@@ -1458,12 +1460,82 @@ $('#power-on').addEventListener('click', () => {
 /* =========================================================
    Arranque
    ========================================================= */
+/* =========================================================
+   Invitación a dibujar: globo junto al reloj + brillo en el icono de Paint.
+   Sale unos segundos después de entrar, una vez por visita, y deja de
+   salir para siempre cuando el visitante publica su primera obra.
+   ========================================================= */
+const Invite = (() => {
+  const box = $('#invite');
+  const paintIcon = $('.icons .icon[data-open="paint"]');
+  const DELAY = 12000;
+  let published = false, timer = 0;
+  try { published = localStorage.getItem('oskr-published') === '1'; } catch (e) {}
+  const dismissed = () => sessionStorage.getItem('oskr-invite') === 'off';
+
+  function hide(remember) {
+    if (remember) sessionStorage.setItem('oskr-invite', 'off');
+    clearTimeout(timer);
+    if (box.hidden) return;
+    box.classList.remove('show');
+    setTimeout(() => { box.hidden = true; }, 300);
+  }
+
+  async function fillWall() {
+    try {
+      const items = await CommunityStore.list();
+      if (!items.length) return;
+      $('.invite-thumbs', box).innerHTML = items.slice(0, 4).map(it =>
+        `<img src="${esc(safeImg(it.image))}" alt="" loading="lazy">`).join('');
+      $('.invite-count', box).textContent = items.length === 1
+        ? '1 visitante ya dejó su obra. ¡Suma la tuya!'
+        : `${items.length} visitantes ya dejaron su obra. ¡Suma la tuya!`;
+    } catch (e) { /* sin conexión: se queda el texto por defecto */ }
+  }
+
+  function show() {
+    // No interrumpe si ya está dibujando o mirando la Comunidad
+    if (published || dismissed() || WM.has('paint') || WM.has('community')) return;
+    fillWall();
+    box.hidden = false;
+    requestAnimationFrame(() => box.classList.add('show'));
+    Sound.play('open');
+  }
+
+  function schedule() {
+    if (published || dismissed()) return;
+    paintIcon && paintIcon.classList.add('nudge');
+    timer = setTimeout(show, DELAY);
+  }
+
+  $('.invite-x', box).addEventListener('click', () => { hide(true); Sound.play('close'); });
+  $$('[data-invite]', box).forEach(b => b.addEventListener('click', () => {
+    hide(true);
+    WM.open(b.dataset.invite);
+  }));
+  // Al abrir Paint el brillo del icono ya cumplió su función
+  document.addEventListener('app-open', e => {
+    if (e.detail === 'paint') { paintIcon && paintIcon.classList.remove('nudge'); hide(true); }
+  });
+
+  return {
+    schedule,
+    published() {
+      published = true;
+      try { localStorage.setItem('oskr-published', '1'); } catch (e) {}
+      paintIcon && paintIcon.classList.remove('nudge');
+      hide(true);
+    }
+  };
+})();
+
 (function boot() {
   const bootEl = $('#boot'), welcome = $('#welcome');
   const initialApp = HASH_TO_APP[location.hash.slice(1)];
 
   function ready() {
     WM.open(initialApp || 'about');
+    Invite.schedule();
   }
 
   if (sessionStorage.getItem('oskr-booted') || initialApp) {

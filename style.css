@@ -965,3 +965,87 @@ a { color: var(--link); }
 .night .aero-btn.primary { border-color: #fcee0a; box-shadow: 0 0 8px rgba(252,238,10,.25); }
 .night .mail-feedback { color: #b9ffcf; background: rgba(30,215,96,.12); border-color: rgba(30,215,96,.5); }
 .night .dlg-error { color: #ffb3c4; background: rgba(255,42,109,.12); border-color: rgba(255,42,109,.5); }
+
+/* =========================================================
+   Invitación a dibujar para la Comunidad
+   ========================================================= */
+.invite {
+  position: fixed; right: 14px; bottom: calc(var(--taskbar-h) + 14px); z-index: 1050;
+  width: 340px; max-width: calc(100vw - 28px); padding: 14px 16px 14px;
+  border-radius: 10px; border: 1px solid #7aa7d4; color: #1e2b3a;
+  background: linear-gradient(#ffffff, #eef6ff 70%, #e1efff);
+  box-shadow: 0 14px 34px rgba(0,30,70,.4), inset 0 1px 0 #fff;
+  opacity: 0; transform: translateY(18px) scale(.96); transform-origin: 92% 100%;
+  transition: opacity .3s ease, transform .35s cubic-bezier(.3,1.5,.5,1);
+}
+.invite.show { opacity: 1; transform: none; }
+.invite[hidden] { display: none; }
+/* Franja de colores arriba, como un arcoíris de pinturas */
+.invite::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; border-radius: 10px 10px 0 0;
+  background: linear-gradient(90deg, #ff5f6d, #ffc371, #f9f871, #6ef0a3, #4fc3ff, #b98bff, #ff5f6d);
+  background-size: 200% 100%; animation: inviteStripe 4s linear infinite;
+}
+@keyframes inviteStripe { to { background-position: 200% 0 } }
+/* Colita del globo apuntando al reloj */
+.invite::after {
+  content: ""; position: absolute; right: 64px; bottom: -9px; width: 16px; height: 16px; rotate: 45deg;
+  background: #e1efff; border-right: 1px solid #7aa7d4; border-bottom: 1px solid #7aa7d4;
+}
+.invite-x {
+  position: absolute; top: 9px; right: 9px; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 4px;
+  background: none; color: #5b6b7d; font-size: 13px; line-height: 1;
+}
+.invite-x:hover { background: #e4524a; color: #fff; }
+.invite-head { display: flex; align-items: center; gap: 10px; margin: 2px 22px 8px 0; }
+.invite-head b { display: block; font-size: 15px; color: #0b4f9a; }
+.invite-head small { color: var(--muted); font-size: 12px; }
+.invite-ico { flex: none; width: 46px; height: 46px; animation: inviteWiggle 2.6s ease-in-out infinite; transform-origin: 50% 80%; }
+.invite-ico svg { width: 100%; height: 100%; filter: drop-shadow(0 3px 4px rgba(0,0,0,.3)); }
+@keyframes inviteWiggle { 0%, 60%, 100% { rotate: 0deg } 68% { rotate: -14deg } 76% { rotate: 11deg } 84% { rotate: -6deg } 92% { rotate: 3deg } }
+.invite p { margin: 0 0 10px; font-size: 13px; line-height: 1.5; }
+.invite-wall { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 7px 9px; border-radius: 6px; background: rgba(79,195,255,.12); border: 1px dashed #9cc4ea; }
+.invite-thumbs { display: flex; flex: none; }
+.invite-thumbs:empty { display: none; }
+.invite-thumbs img {
+  width: 38px; height: 38px; object-fit: cover; border-radius: 5px; border: 2px solid #fff; background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
+}
+.invite-thumbs img + img { margin-left: -12px; }
+.invite-thumbs img:nth-child(odd) { rotate: -5deg; }
+.invite-thumbs img:nth-child(even) { rotate: 4deg; }
+.invite-count { font-size: 12px; color: #2c4a6b; line-height: 1.35; }
+.invite-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.invite-btns .aero-btn.primary { font-weight: 600; }
+
+/* Brillo en el icono de Paint hasta que lo abran */
+.icon.nudge { position: relative; }
+.icon.nudge svg { animation: paintPulse 2.2s ease-in-out infinite; }
+@keyframes paintPulse {
+  0%, 100% { filter: drop-shadow(0 3px 3px rgba(0,0,0,.35)); scale: 1 }
+  50% { filter: drop-shadow(0 0 10px #ffe36e) drop-shadow(0 0 4px #ff9de2); scale: 1.08 }
+}
+.icon.nudge::after {
+  content: "¡Dibuja!"; position: absolute; top: -2px; right: -6px; padding: 1px 6px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700; color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.35);
+  background: linear-gradient(#ff8a9b, #e8366b); box-shadow: 0 2px 5px rgba(0,0,0,.35); rotate: 8deg;
+  animation: tagBob 2.2s ease-in-out infinite;
+}
+@keyframes tagBob { 50% { translate: 0 -3px } }
+
+/* Modo noche */
+.night .invite { color: var(--text); border-color: rgba(0,240,255,.5); background: linear-gradient(#22183c, #150e28); box-shadow: 0 14px 34px rgba(0,0,0,.6), 0 0 22px rgba(0,240,255,.2); }
+.night .invite::before { background-image: linear-gradient(90deg, #ff2a6d, #fcee0a, #00f0ff, #b967ff, #ff2a6d); }
+.night .invite::after { background: #150e28; border-color: rgba(0,240,255,.5); }
+.night .invite-head b { color: #fcee0a; }
+.night .invite-wall { background: rgba(0,240,255,.07); border-color: rgba(0,240,255,.35); }
+.night .invite-count { color: #b8c6e0; }
+.night .invite-thumbs img { border-color: #2a1f48; }
+
+@media (max-width: 520px) {
+  .invite { right: 10px; left: 10px; width: auto; max-width: none; }
+  .invite::after { right: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .invite { transition: opacity .2s; transform: none; }
+}
