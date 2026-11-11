@@ -1,20 +1,8 @@
-# Respaldo de la versión anterior y carpetas originales de fotos
-# (las imágenes que usa la web están en assets/images/)
-/_respaldo-manga/
-/fotos tatuajes/
-/Dibujos/
-
-# Herramientas locales
-.impeccable/
+# Herramientas y datos locales (no se suben)
+node_modules/
 .vercel/
+.env*
+.claude/
+.impeccable/
 .DS_Store
 Thumbs.db
-
-# Imágenes del sitio anterior que ya no se usan
-/assets/images/project-ai.jpg
-/assets/images/project-cloud.jpg
-/assets/images/project-web.jpg
-
-.vercel
-.env*
-node_modules/

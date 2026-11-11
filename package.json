@@ -2,7 +2,15 @@
   "name": "portafolio",
   "private": true,
   "type": "module",
+  "scripts": {
+    "tw:build": "tailwindcss -i ./tailwind/entrada.css -o ./tailwind.css --minify",
+    "tw:watch": "tailwindcss -i ./tailwind/entrada.css -o ./tailwind.css --watch"
+  },
   "dependencies": {
     "@vercel/blob": "^2.9.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "tailwindcss": "^4.3.5"
   }
 }

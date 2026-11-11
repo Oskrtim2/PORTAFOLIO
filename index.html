@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tailwind.css">
   <link rel="stylesheet" href="style.css">
   <script>try { if (localStorage.getItem('oskr-theme') === 'night') document.documentElement.classList.add('night'); } catch (e) {}</script>
 </head>
@@ -452,34 +453,35 @@
 </template>
 
 <template id="tpl-skills">
-  <div class="skills">
-    <p class="cp-title">Panel de control ▸ Habilidades</p>
-    <div class="cp-grid">
-      <section class="cp-card">
-        <h3><span class="dot blue"></span>Frontend</h3>
-        <p class="muted">UI/UX y rendimiento web</p>
-        <ul><li>React / Next.js</li><li>TypeScript</li><li>Manejo de estado</li><li>CSS moderno y animaciones</li><li>Rendimiento web y SEO</li><li>Tailwind CSS / shadcn/ui</li></ul>
+  <!-- Ventana hecha con Tailwind CSS (ver tailwind/entrada.css) -->
+  <div class="min-h-full px-4 py-3.5 bg-linear-to-b/srgb from-white to-[#f1f6fb] night:bg-none night:bg-n-bg">
+    <p class="m-0 mb-3 text-md text-[#1e3f66] night:text-n-head">Panel de control ▸ Habilidades</p>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+      <section class="px-3.5 py-3 bg-white border border-[#cddbe9] rounded-md shadow-[0_1px_3px_rgba(0,30,60,.08)] transition-[translate,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(0,40,80,.12)] night:bg-n-bg2 night:border-n-line">
+        <h3 class="flex items-center gap-2 m-0 text-md font-semibold"><span class="dot blue"></span>Frontend</h3>
+        <p class="mt-0.5 mx-0 mb-2 text-[12.5px] text-muted">UI/UX y rendimiento web</p>
+        <ul class="m-0 p-0 list-none *:relative *:py-1 *:pl-[18px] *:text-sm *:border-0 *:border-t *:border-dashed *:border-[#e3eaf1] *:before:absolute *:before:left-0 *:before:font-bold *:before:text-[#2f9a1a] *:before:content-['✓'] night:*:border-n-line night:*:before:text-[#ff2a6d]"><li>React / Next.js</li><li>TypeScript</li><li>Manejo de estado</li><li>CSS moderno y animaciones</li><li>Rendimiento web y SEO</li><li>Tailwind CSS / shadcn/ui</li></ul>
       </section>
-      <section class="cp-card">
-        <h3><span class="dot green"></span>Backend e infraestructura</h3>
-        <p class="muted">Sistemas distribuidos y datos</p>
-        <ul><li>Node.js / Express</li><li>NestJS</li><li>PostgreSQL y Prisma</li><li>Docker y Docker Compose</li><li>REST APIs, Swagger y JWT</li><li>OCR y texto a voz (AWS / Google)</li><li>Web Audio API / Canvas</li></ul>
+      <section class="px-3.5 py-3 bg-white border border-[#cddbe9] rounded-md shadow-[0_1px_3px_rgba(0,30,60,.08)] transition-[translate,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(0,40,80,.12)] night:bg-n-bg2 night:border-n-line">
+        <h3 class="flex items-center gap-2 m-0 text-md font-semibold"><span class="dot green"></span>Backend e infraestructura</h3>
+        <p class="mt-0.5 mx-0 mb-2 text-[12.5px] text-muted">Sistemas distribuidos y datos</p>
+        <ul class="m-0 p-0 list-none *:relative *:py-1 *:pl-[18px] *:text-sm *:border-0 *:border-t *:border-dashed *:border-[#e3eaf1] *:before:absolute *:before:left-0 *:before:font-bold *:before:text-[#2f9a1a] *:before:content-['✓'] night:*:border-n-line night:*:before:text-[#ff2a6d]"><li>Node.js / Express</li><li>NestJS</li><li>PostgreSQL y Prisma</li><li>Docker y Docker Compose</li><li>REST APIs, Swagger y JWT</li><li>OCR y texto a voz (AWS / Google)</li><li>Web Audio API / Canvas</li></ul>
       </section>
-      <section class="cp-card">
-        <h3><span class="dot purple"></span>Ingeniería</h3>
-        <p class="muted">Arquitectura y buenas prácticas</p>
-        <ul><li>Domain-Driven Design (DDD)</li><li>Clean Architecture y SOLID</li><li>Algoritmos y estructuras de datos</li><li>C# / .NET y WPF (MVVM)</li><li>Multi-tenancy y RBAC</li><li>Git y control de versiones</li><li>Seguridad y validación (Zod)</li></ul>
+      <section class="px-3.5 py-3 bg-white border border-[#cddbe9] rounded-md shadow-[0_1px_3px_rgba(0,30,60,.08)] transition-[translate,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(0,40,80,.12)] night:bg-n-bg2 night:border-n-line">
+        <h3 class="flex items-center gap-2 m-0 text-md font-semibold"><span class="dot purple"></span>Ingeniería</h3>
+        <p class="mt-0.5 mx-0 mb-2 text-[12.5px] text-muted">Arquitectura y buenas prácticas</p>
+        <ul class="m-0 p-0 list-none *:relative *:py-1 *:pl-[18px] *:text-sm *:border-0 *:border-t *:border-dashed *:border-[#e3eaf1] *:before:absolute *:before:left-0 *:before:font-bold *:before:text-[#2f9a1a] *:before:content-['✓'] night:*:border-n-line night:*:before:text-[#ff2a6d]"><li>Domain-Driven Design (DDD)</li><li>Clean Architecture y SOLID</li><li>Algoritmos y estructuras de datos</li><li>C# / .NET y WPF (MVVM)</li><li>Multi-tenancy y RBAC</li><li>Git y control de versiones</li><li>Seguridad y validación (Zod)</li></ul>
       </section>
-      <section class="cp-card">
-        <h3><span class="dot orange"></span>Experiencia profesional</h3>
-        <p class="muted">Lo que aprendí atendiendo clientes</p>
-        <ul><li>Plataforma SAP</li><li>Sistemas CRM</li><li>Gestión de solicitudes y PQR</li><li>Trazabilidad y calidad de datos</li><li>Herramientas ofimáticas</li><li>Comunicación, empatía y trabajo en equipo</li></ul>
-        <button class="cp-link" data-open="cv">Ver en mi CV ›</button>
+      <section class="px-3.5 py-3 bg-white border border-[#cddbe9] rounded-md shadow-[0_1px_3px_rgba(0,30,60,.08)] transition-[translate,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(0,40,80,.12)] night:bg-n-bg2 night:border-n-line">
+        <h3 class="flex items-center gap-2 m-0 text-md font-semibold"><span class="dot orange"></span>Experiencia profesional</h3>
+        <p class="mt-0.5 mx-0 mb-2 text-[12.5px] text-muted">Lo que aprendí atendiendo clientes</p>
+        <ul class="m-0 p-0 list-none *:relative *:py-1 *:pl-[18px] *:text-sm *:border-0 *:border-t *:border-dashed *:border-[#e3eaf1] *:before:absolute *:before:left-0 *:before:font-bold *:before:text-[#2f9a1a] *:before:content-['✓'] night:*:border-n-line night:*:before:text-[#ff2a6d]"><li>Plataforma SAP</li><li>Sistemas CRM</li><li>Gestión de solicitudes y PQR</li><li>Trazabilidad y calidad de datos</li><li>Herramientas ofimáticas</li><li>Comunicación, empatía y trabajo en equipo</li></ul>
+        <button class="mt-2 p-0 border-0 bg-transparent text-[12.5px]! text-link! hover:underline hover:underline-offset-3" data-open="cv">Ver en mi CV ›</button>
       </section>
-      <section class="cp-card">
-        <h3><span class="dot red"></span>Creativas</h3>
-        <p class="muted">Lo que hago fuera del código</p>
-        <ul><li>Tatuaje (~9 meses)</li><li>Dibujo e ilustración</li><li>Batería (6–7 años)</li><li>Creación de contenido para redes</li></ul>
+      <section class="px-3.5 py-3 bg-white border border-[#cddbe9] rounded-md shadow-[0_1px_3px_rgba(0,30,60,.08)] transition-[translate,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(0,40,80,.12)] night:bg-n-bg2 night:border-n-line">
+        <h3 class="flex items-center gap-2 m-0 text-md font-semibold"><span class="dot red"></span>Creativas</h3>
+        <p class="mt-0.5 mx-0 mb-2 text-[12.5px] text-muted">Lo que hago fuera del código</p>
+        <ul class="m-0 p-0 list-none *:relative *:py-1 *:pl-[18px] *:text-sm *:border-0 *:border-t *:border-dashed *:border-[#e3eaf1] *:before:absolute *:before:left-0 *:before:font-bold *:before:text-[#2f9a1a] *:before:content-['✓'] night:*:border-n-line night:*:before:text-[#ff2a6d]"><li>Tatuaje (~9 meses)</li><li>Dibujo e ilustración</li><li>Batería (6–7 años)</li><li>Creación de contenido para redes</li></ul>
       </section>
     </div>
   </div>
@@ -683,17 +685,28 @@
 </template>
 
 <template id="tpl-contact">
-  <form class="mail">
-    <div class="mail-toolbar">
+  <!-- Ventana hecha con Tailwind CSS (ver tailwind/entrada.css) -->
+  <form class="flex flex-col h-full bg-[#f4f7fb] night:bg-n-bg">
+    <div class="flex flex-wrap gap-2 p-2 border-b border-[#a9bcd1] bg-linear-to-b/srgb from-[#fbfdff] to-[#e4ecf6] night:border-n-line night:from-[#211739] night:to-[#170f2a]">
       <button type="submit" class="aero-btn primary">Enviar</button>
       <a class="aero-btn" href="https://github.com/Oskrtim2" target="_blank" rel="noopener">GitHub @Oskrtim2</a>
       <a class="aero-btn ig-btn" href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#i-instagram"/></svg> Instagram @0skrtm__</a>
     </div>
-    <div class="mail-row"><label>Para:</label><input value="Oscar Timaran" readonly></div>
-    <div class="mail-row"><label for="m-name">De:</label><input id="m-name" name="name" required placeholder="Tu nombre o empresa"></div>
-    <div class="mail-row"><label for="m-email">Correo:</label><input id="m-email" name="email" type="email" required placeholder="tu-email@ejemplo.com"></div>
-    <div class="mail-row"><label for="m-subject">Asunto:</label>
-      <select id="m-subject" name="subject">
+    <div class="flex items-center gap-2 px-2.5 py-[5px] border-b border-[#e0e7ef] night:border-n-line">
+      <label class="w-15 text-sm text-muted">Para:</label>
+      <input class="flex-1 px-1.5 py-1 [font:inherit] bg-white border border-[#b5c4d4] rounded-xs night:border-n-line" value="Oscar Timaran" readonly>
+    </div>
+    <div class="flex items-center gap-2 px-2.5 py-[5px] border-b border-[#e0e7ef] night:border-n-line">
+      <label class="w-15 text-sm text-muted" for="m-name">De:</label>
+      <input class="flex-1 px-1.5 py-1 [font:inherit] bg-white border border-[#b5c4d4] rounded-xs night:border-n-line" id="m-name" name="name" required placeholder="Tu nombre o empresa">
+    </div>
+    <div class="flex items-center gap-2 px-2.5 py-[5px] border-b border-[#e0e7ef] night:border-n-line">
+      <label class="w-15 text-sm text-muted" for="m-email">Correo:</label>
+      <input class="flex-1 px-1.5 py-1 [font:inherit] bg-white border border-[#b5c4d4] rounded-xs night:border-n-line" id="m-email" name="email" type="email" required placeholder="tu-email@ejemplo.com">
+    </div>
+    <div class="flex items-center gap-2 px-2.5 py-[5px] border-b border-[#e0e7ef] night:border-n-line">
+      <label class="w-15 text-sm text-muted" for="m-subject">Asunto:</label>
+      <select class="flex-1 px-1.5 py-1 [font:inherit] bg-white border border-[#b5c4d4] rounded-xs night:border-n-line" id="m-subject" name="subject">
         <option>Proyecto de software</option>
         <option>Oportunidad laboral</option>
         <option>Cita de tatuaje</option>
@@ -701,18 +714,24 @@
         <option>Solo saludar</option>
       </select>
     </div>
-    <textarea name="message" required placeholder="Escribe tu mensaje..."></textarea>
-    <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-    <p class="mail-feedback" hidden></p>
+    <textarea class="flex-1 min-h-35 m-2.5 p-2.5 [font:inherit] border border-[#b5c4d4] resize-none night:border-n-line" name="message" required placeholder="Escribe tu mensaje..."></textarea>
+    <!-- Campo trampa de Web3Forms: invisible para las personas, los bots lo llenan -->
+    <input class="absolute -left-[9999px] size-px opacity-0" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p data-feedback hidden class="mt-0 mx-2.5 mb-2.5 px-3 py-2 rounded-sm border
+      border-[#8cc76a] bg-linear-to-b/srgb from-[#f0ffe6] to-[#d6f5c2] text-[#245c0e]
+      data-[kind=error]:border-[#f0b4a8] data-[kind=error]:bg-none data-[kind=error]:bg-[#fff1ee] data-[kind=error]:text-[#8a1c10]
+      night:border-[rgba(30,215,96,.5)] night:bg-none night:bg-[rgba(30,215,96,.12)] night:text-[#b9ffcf]
+      night:data-[kind=error]:border-[rgba(255,42,109,.5)] night:data-[kind=error]:bg-[rgba(255,42,109,.12)] night:data-[kind=error]:text-[#ffb3c4]"></p>
   </form>
 </template>
 
 <template id="tpl-bin">
+  <!-- Ventana hecha con Tailwind CSS: cada fila usa *: para estilizar sus hijos -->
   <div class="bin">
-    <div class="ex-files list">
-      <div class="file-row"><svg><use href="#i-folder"/></svg><span>portafolio-manga-v1</span><small>Respaldo de la versión anterior</small></div>
-      <div class="file-row"><svg><use href="#i-paint"/></svg><span>boceto_descartado_47.png</span><small>Hay que borrar para mejorar</small></div>
-      <div class="file-row"><svg><use href="#i-drum"/></svg><span>baqueta_rota.wav</span><small>Gajes del oficio</small></div>
+    <div class="p-2" data-bin-list>
+      <div class="grid grid-cols-[24px_1fr_auto] items-center gap-2.5 px-2 py-1.5 text-sm border-b border-[#eef2f6] night:border-n-line *:[svg]:size-[22px] *:[small]:text-muted"><svg><use href="#i-folder"/></svg><span>portafolio-manga-v1</span><small>Respaldo de la versión anterior</small></div>
+      <div class="grid grid-cols-[24px_1fr_auto] items-center gap-2.5 px-2 py-1.5 text-sm border-b border-[#eef2f6] night:border-n-line *:[svg]:size-[22px] *:[small]:text-muted"><svg><use href="#i-paint"/></svg><span>boceto_descartado_47.png</span><small>Hay que borrar para mejorar</small></div>
+      <div class="grid grid-cols-[24px_1fr_auto] items-center gap-2.5 px-2 py-1.5 text-sm border-b border-[#eef2f6] night:border-n-line *:[svg]:size-[22px] *:[small]:text-muted"><svg><use href="#i-drum"/></svg><span>baqueta_rota.wav</span><small>Gajes del oficio</small></div>
     </div>
     <div class="info-bar"><span>3 elementos</span><button class="aero-btn bin-empty">Vaciar papelera</button></div>
   </div>

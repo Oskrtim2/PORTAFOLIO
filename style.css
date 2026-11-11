@@ -401,17 +401,9 @@ a { color: var(--link); }
 .metric span { font-size: 12px; color: var(--muted); }
 .stack { display: flex; flex-wrap: wrap; gap: 4px; }
 
-/* ---------------- Habilidades / Hobbies ---------------- */
-.skills, .hobbies { padding: 14px 16px; background: linear-gradient(#fff, #f1f6fb); min-height: 100%; }
+/* ---------------- Hobbies (Habilidades usa Tailwind) ---------------- */
+.hobbies { padding: 14px 16px; background: linear-gradient(#fff, #f1f6fb); min-height: 100%; }
 .cp-title { margin: 0 0 12px; font-size: 15px; color: #1e3f66; }
-.cp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-.cp-card { padding: 12px 14px; border: 1px solid #cddbe9; border-radius: 6px; background: #fff; box-shadow: 0 1px 3px rgba(0,30,60,.08); transition: transform .15s, box-shadow .15s; }
-.cp-card:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,40,80,.12); }
-.cp-card h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; font-weight: 600; }
-.cp-card p { margin: 2px 0 8px; font-size: 12.5px; }
-.cp-card ul { margin: 0; padding: 0; list-style: none; }
-.cp-card li { padding: 4px 0 4px 18px; position: relative; font-size: 13px; border-top: 1px dashed #e3eaf1; }
-.cp-card li::before { content: "✓"; position: absolute; left: 0; color: #2f9a1a; font-weight: 700; }
 .dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 2px 2px rgba(255,255,255,.7), 0 1px 2px rgba(0,0,0,.3); }
 .dot.blue { background: radial-gradient(circle at 40% 30%, #bfe8ff, #1f74c9); }
 .dot.green { background: radial-gradient(circle at 40% 30%, #d8ffb0, #2f8a12); }
@@ -460,21 +452,6 @@ a { color: var(--link); }
 .rb-btn.active { border-color: #7da2ce; background: linear-gradient(#dcebfc, #b7d4f6); }
 .canvas-wrap { flex: 1; padding: 10px; overflow: hidden; display: flex; }
 .paint-canvas { flex: 1; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.25); cursor: crosshair; touch-action: none; min-width: 0; min-height: 0; width: 100%; height: 100%; }
-
-/* ---------------- Correo ---------------- */
-.mail { display: flex; flex-direction: column; height: 100%; background: #f4f7fb; }
-.mail-toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; background: linear-gradient(#fbfdff, #e4ecf6); border-bottom: 1px solid #a9bcd1; }
-.mail-row { display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-bottom: 1px solid #e0e7ef; }
-.mail-row label { width: 60px; color: var(--muted); font-size: 13px; }
-.mail-row input, .mail-row select { flex: 1; font: inherit; padding: 4px 6px; border: 1px solid #b5c4d4; border-radius: 2px; background: #fff; }
-.mail textarea { flex: 1; min-height: 140px; margin: 10px; padding: 10px; font: inherit; border: 1px solid #b5c4d4; resize: none; }
-.mail-feedback { margin: 0 10px 10px; padding: 8px 12px; border-radius: 4px; background: linear-gradient(#f0ffe6, #d6f5c2); border: 1px solid #8cc76a; color: #245c0e; }
-
-/* ---------------- Papelera ---------------- */
-.ex-files.list { display: block; padding: 8px; }
-.file-row { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center; padding: 6px 8px; border-bottom: 1px solid #eef2f6; font-size: 13px; }
-.file-row svg { width: 22px; height: 22px; }
-.file-row small { color: var(--muted); }
 
 /* ---------------- Barra de tareas ---------------- */
 .taskbar {
@@ -671,8 +648,6 @@ a { color: var(--link); }
 
 /* ---------------- Hoja de vida (lector de documentos) ---------------- */
 .dot.orange { background: radial-gradient(circle at 40% 30%, #ffe0b0, #d9730f); }
-.cp-link { margin-top: 8px; padding: 0; border: 0; background: none; color: var(--link); font-size: 12.5px; }
-.cp-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .cv-reader { display: flex; flex-direction: column; height: 100%; background: #f0f0f0; }
 .cv-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 8px; background: linear-gradient(#fbfdff, #e4ecf6); border-bottom: 1px solid #a9bcd1; }
@@ -917,12 +892,12 @@ a { color: var(--link); }
 .night .stat b { color: #fcee0a; }
 
 /* Paneles y superficies claras → oscuras */
-.night .about, .night .tab-panel, .night .tab.active, .night .skills, .night .hobbies,
-.night .mail, .night .cv-reader, .night .dlg-body, .night .sm-left { background: var(--n-bg); }
-.night .tab, .night .props, .night .cp-card, .night .metric, .night .ex-detail code,
+.night .about, .night .tab-panel, .night .tab.active, .night .hobbies,
+.night .cv-reader, .night .dlg-body, .night .sm-left { background: var(--n-bg); }
+.night .tab, .night .props, .night .metric, .night .ex-detail code,
 .night .ex-address, .night .dlg-actions, .night .info-bar { background: var(--n-bg2); }
 .night .hobby { background: linear-gradient(var(--n-bg2), var(--n-bg)); }
-.night .ex-bar, .night .ex-status, .night .ribbon, .night .mail-toolbar, .night .cv-toolbar { background: linear-gradient(#211739, #170f2a); }
+.night .ex-bar, .night .ex-status, .night .ribbon, .night .cv-toolbar { background: linear-gradient(#211739, #170f2a); }
 .night .ex-side, .night .cv-side { background: linear-gradient(90deg, #170f2a, #130c22); }
 .night .paint { background: #0d0818; }
 .night .cv-scroll { background: radial-gradient(ellipse at 50% 0, #2b2148, #0f0a1c); }
@@ -931,10 +906,10 @@ a { color: var(--link); }
 .night .toast { color: var(--text); background: linear-gradient(#22183c, #140d26); border-color: rgba(0,240,255,.45); box-shadow: 0 6px 18px rgba(0,0,0,.5), 0 0 14px rgba(0,240,255,.2); }
 
 /* Bordes */
-.night .tabs, .night .tab, .night .tab-panel, .night .props, .night .cp-card, .night .hobby, .night .metric,
+.night .tabs, .night .tab, .night .tab-panel, .night .props, .night .hobby, .night .metric,
 .night .ex-bar, .night .ex-side, .night .ex-status, .night .ex-address, .night .ex-search, .night .info-bar,
-.night .ribbon, .night .rb-group, .night .mail-toolbar, .night .mail-row, .night .mail-row input, .night .mail-row select,
-.night .mail textarea, .night .cv-toolbar, .night .cv-side, .night .file-row, .night .ex-detail h3, .night .cp-card li,
+.night .ribbon, .night .rb-group,
+.night .cv-toolbar, .night .cv-side, .night .ex-detail h3,
 .night .dlg-body, .night .dlg-actions, .night .dlg-fields input, .night .sm-left, .night .sm-search input,
 .night .file img, .night .ex-detail .hero-img { border-color: var(--n-line); }
 .night .cv-sep { background: var(--n-line); }
@@ -947,7 +922,6 @@ a { color: var(--link); }
 .night .tab-panel h2, .night .about-head h1, .night .ex-detail h2, .night .ex-detail h3, .night .cp-title,
 .night .hobby h3, .night .ex-side li.head, .night .cv-side li.head, .night .dlg-fields label { color: var(--n-head); }
 .night .metric b, .night .rb-btn.publish { color: #00f0ff; }
-.night .cp-card li::before { color: #ff2a6d; }
 
 /* Hover y selección en cian */
 .night .sm-item:hover, .night .sm-item.hl, .night .file:hover, .night .ex-side button:hover, .night .ex-side a:hover,
@@ -963,7 +937,6 @@ a { color: var(--link); }
 .night .aero-btn { color: var(--text); border-color: #4a3a74; background: linear-gradient(#2a1f48, #1c1434 50%, #160f2a 51%, #201738); box-shadow: inset 0 1px 0 rgba(255,255,255,.1); }
 .night .aero-btn:hover { border-color: #00f0ff; background: linear-gradient(#32255a, #241a44 50%, #1c1438 51%, #2a1f4c); box-shadow: 0 0 10px rgba(0,240,255,.35); }
 .night .aero-btn.primary { border-color: #fcee0a; box-shadow: 0 0 8px rgba(252,238,10,.25); }
-.night .mail-feedback { color: #b9ffcf; background: rgba(30,215,96,.12); border-color: rgba(30,215,96,.5); }
 .night .dlg-error { color: #ffb3c4; background: rgba(255,42,109,.12); border-color: rgba(255,42,109,.5); }
 
 /* =========================================================

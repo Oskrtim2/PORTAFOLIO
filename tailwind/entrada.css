@@ -1,0 +1,56 @@
+/* =========================================================
+   Tailwind CSS v4 — archivo de entrada
+   Genera ../tailwind.css con:  npm run tw:build  (o tw:watch mientras editas)
+
+   - Sin Preflight (el reseteo de Tailwind): así no cambia el aspecto
+     de lo que ya está hecho en style.css.
+   - Solo busca clases en index.html y script.js.
+   - Ojo: style.css va fuera de capas y gana sobre las utilidades. Si una
+     utilidad "no hace efecto", revisa si style.css ya estiliza ese elemento
+     (p. ej. la regla general de button) y, si hace falta, usa "!" al final
+     de la clase: text-link!
+   ========================================================= */
+
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@source "../index.html";
+@source "../script.js";
+
+/* El html tiene font-size: 14px, así que se fijan las medidas en px
+   para que la escala de Tailwind sea la de siempre: p-1 = 4px, p-4 = 16px. */
+@theme {
+  --spacing: 4px;
+
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-xs--line-height: normal;
+  --text-sm: 13px;
+  --text-sm--line-height: normal;
+  --text-base: 14px;
+  --text-base--line-height: normal;
+  --text-md: 15px;
+  --text-md--line-height: normal;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+/* Colores de OskrOS: usan las variables de style.css, así cambian solos
+   entre el modo día y el modo noche. */
+@theme inline {
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-link: var(--link);
+  --color-n-bg: var(--n-bg);
+  --color-n-bg2: var(--n-bg2);
+  --color-n-bg3: var(--n-bg3);
+  --color-n-line: var(--n-line);
+  --color-n-head: var(--n-head);
+}
+
+/* night:  →  estilos del modo noche (cuando <html> tiene la clase .night) */
+@custom-variant night (&:where(.night *));

@@ -743,7 +743,7 @@ const AppInit = {
   },
 
   contact(body) {
-    const form = $('form', body), fb = $('.mail-feedback', body);
+    const form = $('form', body), fb = $('[data-feedback]', body);
     const sendBtn = $('[type="submit"]', form);
     const say = (html, kind) => { fb.innerHTML = html; fb.dataset.kind = kind; fb.hidden = false; };
     const fallback = ' Escríbeme directo a <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a> o por <a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">Instagram @0skrtm__</a>.';
@@ -758,7 +758,7 @@ const AppInit = {
         Sound.play('error');
         return;
       }
-      if (d._honey) return; // campo trampa: solo lo llenan los bots
+      if (d.botcheck) return; // campo trampa: solo lo marcan los bots
 
       sendBtn.disabled = true; sendBtn.textContent = 'Enviando...';
       try {
@@ -843,7 +843,7 @@ const AppInit = {
 
   bin(body) {
     $('.bin-empty', body).addEventListener('click', e => {
-      $('.ex-files', body).innerHTML = '<p class="muted" style="padding:12px">La papelera está vacía.</p>';
+      $('[data-bin-list]', body).innerHTML = '<p class="p-3 text-muted">La papelera está vacía.</p>';
       $('.info-bar span', body).textContent = '0 elementos';
       e.currentTarget.disabled = true;
       Sound.play('close');
