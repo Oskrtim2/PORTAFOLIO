@@ -48,6 +48,72 @@ const COMMUNITY_API = '/api/dibujos';
 
 /* ---------- Datos de proyectos ---------- */
 const PROJECTS = {
+  contextflow: {
+    name: 'ContextFlow',
+    cat: 'desktop',
+    kind: 'App de escritorio con IA local',
+    title: 'ContextFlow · Gestor de entornos para Windows 11',
+    subtitle: 'HUD flotante para trabajar con varios monitores, con un motor de IA 100 % local que optimiza el equipo',
+    image: 'assets/images/project-contextflow.svg',
+    github: 'https://github.com/Oskrtim2/contextflow',
+    overview: 'ContextFlow vive en el escritorio como una burbuja translúcida. Con <b>Ctrl + E + F</b> se abre un HUD estilo Fluent con CPU, RAM y GPU en vivo, las ventanas agrupadas en "cápsulas" de trabajo y un enrutador para mandarlas a otro monitor. Con <b>Ctrl + E</b> y <b>Ctrl + F</b> recorres tus ventanas en un anillo infinito, como los espacios de trabajo de Pop!_OS. Cuando no estás usando algo, una IA embebida que aprende tus hábitos baja la prioridad de las apps inactivas y libera memoria, sin internet, sin cuentas y sin nube.',
+    architecture: [
+      'Atajos globales (<code>Ctrl+E+F</code>) con un hook de teclado y navegación circular entre ventanas; el modo de espacios a pantalla completa maximiza cada app al enfocarla.',
+      'Cápsulas de trabajo en un lienzo infinito: cada una se asigna a un monitor y se acomoda en columnas, filas o cuadrícula.',
+      'Telemetría cada 500 ms con Win32 y PDH, y una tabla de procesos cada 2 s que agrupa los procesos auxiliares (pestañas del navegador, WebView2) bajo su app.',
+      'IA offline v2: modelo ONNX de 12 variables que aprende en el equipo cuánto usas cada app, a qué hora la abres y si volviste a ella justo después de optimizarla, para protegerla más.',
+      'Políticas prudentes y reversibles: el ritmo se adapta a la carga del equipo (de 15 s a 3 s), hay perfiles Conservador, Equilibrado y Agresivo, nunca toca apps que suenan y todo queda en un diario que lo deshace si la app se cierra de golpe.',
+      'Pestaña de Rendimiento estilo administrador de tareas: CPU y RAM por app en vivo, con acciones de Optimizar, Restaurar, Proteger y Cerrar.',
+      'Interfaz WPF con Acrylic/Mica reales de Windows 11, MVVM, tema claro, oscuro y un skin retro “Chrome” con pantallas LCD azules, en inglés y español, e instalador de un solo archivo.'
+    ],
+    metrics: [['100 % local', 'IA sin nube'], ['12', 'Variables del modelo IA'], ['ES / EN', 'Interfaz bilingüe']],
+    stack: ['C# 12', '.NET 8', 'WPF', 'MVVM', 'P/Invoke Win32', 'DWM', 'ONNX Runtime', 'PDH', 'Core Audio', 'System.Text.Json', 'Inno Setup']
+  },
+  wallsense: {
+    name: 'WallSense',
+    cat: 'mobile',
+    kind: 'App para reloj Garmin',
+    title: 'WallSense · Detector magnético para Garmin',
+    subtitle: 'App Connect IQ para el Forerunner 165 que convierte el magnetómetro del reloj en un detector de metal y cables con corriente, con vibración',
+    image: 'assets/images/project-wallsense.svg',
+    github: 'https://github.com/Oskrtim2/WallSense_SmartWatch',
+    overview: 'WallSense lee el magnetómetro de tres ejes del reloj, se calibra con el campo magnético del lugar y avisa con vibraciones cada vez más intensas cuando detecta metal o un cable con corriente detrás de la pared. Es un proyecto experimental de hobby, no un instrumento de seguridad, pero muestra que puedo programar sobre hardware real, sensores y dispositivos con recursos muy limitados.',
+    architecture: [
+      'Muestreo del magnetómetro a la máxima frecuencia que reporta el sensor, en lotes de 1 s, con reintento a 25 Hz si el firmware la rechaza.',
+      'Calibración de 3 segundos con media y varianza en línea (algoritmo de Welford), que se repite sola si la mano se mueve.',
+      'Umbral adaptativo relativo al campo del lugar (<code>4σ + 1 %</code>, nunca menos del 2,5 %, unos 12 mG), con entrada y salida retardadas para evitar falsas alarmas.',
+      'Detector de cables: la corriente alterna de 50/60 Hz produce un rizado en el campo; la app mide su RMS y lo combina con el cambio estable en un solo puntaje.',
+      'Ignora las muestras mientras vibra el motor (su imán causaría falsas detecciones) y usa el acelerómetro para reaprender la base al girar la muñeca.',
+      'Vibración dinámica con 8 patrones: el intervalo baja de 1000 a 600 ms, el pulso crece de 50 a 150 ms y los niveles altos usan doble pulso.',
+      'Interfaz negra para AMOLED con medidor de 270°, ecos de radar y un vigilante que vuelve a registrar el sensor si deja de enviar datos 3,5 s.'
+    ],
+    metrics: [['3 ejes', 'Magnetómetro'], ['2', 'Detectores: metal y cables'], ['8', 'Patrones de vibración']],
+    stack: ['Monkey C', 'Garmin Connect IQ', 'Magnetómetro', 'Acelerómetro', 'Hápticos', 'AMOLED UI']
+  },
+  smartstencil: {
+    name: 'SmartStencil',
+    cat: 'mobile',
+    kind: 'Probador de tatuajes · IA offline',
+    title: 'SmartStencil · Probador de tatuajes en tiempo real',
+    subtitle: 'App Flutter para Android e iOS que convierte cualquier imagen en stencil y la pinta sobre la piel con la cámara, 100 % offline',
+    image: 'assets/images/project-smartstencil.jpg',
+    github: 'https://github.com/Oskrtim2/SmartStencil',
+    overview: 'SmartStencil permite a tatuadores y clientes probar un diseño sobre la piel antes de tatuar. Apuntas la cámara al cuerpo, importas cualquier imagen y la app la convierte en un stencil negro transparente que puedes mover, escalar y girar con los dedos. La tinta se mezcla con la piel conservando poros, vellos y la luz real. Todo ocurre en el teléfono: sin servidor, sin cuentas y sin internet. Nació de juntar mis dos oficios: el código y el tatuaje.',
+    architecture: [
+      'Conversión automática a stencil: conserva la transparencia de los PNG, quita fondos planos por distancia de color y, si el fondo es una foto o un degradado, usa IA para separarlo.',
+      'IA <b>U2-Net</b> ejecutada en el teléfono con <b>ONNX Runtime</b>; la máscara pasa por detección de bordes para conservar el line-art y se limpian las manchas pequeñas.',
+      'Shader GLSL propio (<code>ink_blend.frag</code>) con <code>BlendMode.multiply</code>: el resultado es piel × tinta, así la textura de la piel sigue visible.',
+      'Gestos multitáctiles: arrastrar con un dedo, pellizcar para escalar (0.22× a 6×) y girar con dos, más un control de intensidad de tinta de 0 a 100 %.',
+      'Captura a resolución de cámara (hasta 2560 px) y exportación del stencil como PNG transparente desde el menú de compartir nativo.',
+      '63 pruebas automáticas y GitHub Actions que revisa formato, análisis, pruebas y el build del APK.'
+    ],
+    sections: [{
+      title: 'La IA: U2-Net',
+      html: '<p><b>Qué es:</b> U2-Net (“U al cuadrado”) es una red neuronal creada en 2020 por investigadores de la Universidad de Alberta. Está entrenada para detectar el objeto principal de una imagen, es decir, lo que más llama la atención, y separarlo del fondo.</p><p>La app usa una versión ligera de 4.6 MB que viene dentro del APK. Por ese tamaño, todo indica que es la variante reducida U2-NetP; la versión completa pesa unos 176 MB.</p>'
+    }],
+    metrics: [['100 % offline', 'Sin servidor ni cuentas'], ['4.6 MB', 'IA U2-Net en el APK'], ['63', 'Pruebas automáticas']],
+    stack: ['Flutter 3.47', 'Dart 3.13', 'GLSL Shaders', 'ONNX Runtime', 'U2-Net', 'camera', 'image_picker', 'share_plus', 'GitHub Actions']
+  },
   lexilearn: {
     name: 'LexiLearn',
     cat: 'api',
@@ -67,26 +133,6 @@ const PROJECTS = {
     ],
     metrics: [['3', 'Formas de entrar sin contraseña'], ['2 + 2', 'Proveedores OCR y TTS'], ['ES / EN', 'Silabación']],
     stack: ['NestJS 12', 'TypeScript 6', 'PostgreSQL 17', 'Prisma 6', 'JWT', 'Tesseract.js', 'AWS Textract', 'Amazon Polly', 'Google Cloud TTS', 'Swagger / OpenAPI', 'Vitest', 'Docker Compose']
-  },
-  contextflow: {
-    name: 'ContextFlow',
-    cat: 'desktop',
-    kind: 'App de escritorio con IA local',
-    title: 'ContextFlow · Gestor de entornos para Windows 11',
-    subtitle: 'HUD flotante para trabajar con varios monitores, con un motor de IA 100 % local que optimiza el equipo',
-    image: 'assets/images/project-contextflow.svg',
-    github: 'https://github.com/Oskrtim2/contextflow',
-    overview: 'ContextFlow vive en el escritorio como una burbuja translúcida. Con <b>Ctrl + E + F</b> se abre un HUD estilo Fluent con CPU, RAM y GPU en vivo, las ventanas agrupadas en "cápsulas" de trabajo y un enrutador para mandarlas a otro monitor. Con <b>Ctrl + E</b> y <b>Ctrl + F</b> recorres tus ventanas en un anillo infinito, como los espacios de trabajo de Pop!_OS. Cuando no estás usando algo, una IA embebida baja la prioridad de los procesos inactivos y libera memoria, sin internet, sin cuentas y sin nube.',
-    architecture: [
-      'Atajos globales (<code>Ctrl+E+F</code>) con un hook de teclado y navegación circular entre ventanas que las restaura, maximiza y enfoca.',
-      'Cápsulas de trabajo en un lienzo infinito: cada una se asigna a un monitor y se acomoda en columnas, filas o cuadrícula.',
-      'Telemetría asíncrona cada 500 ms con Win32: <code>GetSystemTimes</code>, <code>GlobalMemoryStatusEx</code> y contadores PDH de GPU.',
-      'IA offline: un modelo de políticas ONNX de 9 variables, ejecutado con ONNX Runtime embebido, con respaldo si el modelo falla.',
-      'Políticas prudentes y reversibles: prioridad baja, compactación de memoria y ocultar cápsulas inactivas de DWM, con exclusiones, enfriamiento y un diario que restaura todo si la app se cierra de golpe.',
-      'Interfaz WPF con Acrylic/Mica reales de Windows 11, MVVM, tema claro y oscuro, inglés y español, y un instalador de un solo archivo.'
-    ],
-    metrics: [['100 % local', 'IA sin nube'], ['500 ms', 'Telemetría en vivo'], ['ES / EN', 'Interfaz bilingüe']],
-    stack: ['C# 12', '.NET 8', 'WPF', 'MVVM', 'P/Invoke Win32', 'DWM', 'ONNX Runtime', 'PDH', 'System.Text.Json', 'Inno Setup']
   },
   pixelperfect: {
     name: 'Dakingo Bakery',
@@ -146,46 +192,6 @@ const PROJECTS = {
     ],
     metrics: [['0', 'Dependencias'], ['Glass', 'Estética premium'], ['Vanilla', 'HTML · CSS · JS']],
     stack: ['HTML5', 'CSS3', 'JavaScript', 'Glassmorphism', 'backdrop-filter']
-  },
-  wallsense: {
-    name: 'WallSense',
-    cat: 'mobile',
-    kind: 'App para reloj Garmin',
-    title: 'WallSense · Detector magnético para Garmin',
-    subtitle: 'App Connect IQ para el Forerunner 165 que convierte el magnetómetro del reloj en un detector de anomalías con vibración',
-    image: 'assets/images/project-wallsense.svg',
-    github: 'https://github.com/Oskrtim2/WallSense_SmartWatch',
-    overview: 'WallSense lee el magnetómetro de tres ejes del reloj, se calibra con el campo magnético del lugar y avisa con vibraciones cada vez más intensas cuando detecta algo que lo altera. Es un proyecto experimental de hobby, no un instrumento de seguridad, pero muestra que puedo programar sobre hardware real, sensores y dispositivos con recursos muy limitados.',
-    architecture: [
-      'Muestreo del magnetómetro a la máxima frecuencia que reporta el sensor, con reintento a 25 Hz si el firmware la rechaza.',
-      'Calibración de 3 segundos con media y varianza en línea (algoritmo de Welford).',
-      'Umbral adaptativo según el ruido del ambiente (<code>4σ + 1.5 mG</code>, entre 2 y 30 mG) e histéresis del 35 % para evitar falsas alarmas.',
-      'Vibración dinámica con 8 patrones: el intervalo baja de 720 a 320 ms y el pulso crece de 50 a 150 ms según la intensidad.',
-      'Interfaz negra para pantalla AMOLED con medidor de 270° y ecos de radar.',
-      'Vigilante del sensor que lo vuelve a registrar si deja de enviar datos durante 3,5 s.'
-    ],
-    metrics: [['3 ejes', 'Magnetómetro'], ['8', 'Patrones de vibración'], ['Welford', 'Calibración en línea']],
-    stack: ['Monkey C', 'Garmin Connect IQ', 'Sensores', 'Hápticos', 'AMOLED UI']
-  },
-  smartstencil: {
-    name: 'SmartStencil',
-    cat: 'mobile',
-    kind: 'AR & tatuajes',
-    title: 'SmartStencil (InkSight) · Realidad aumentada',
-    subtitle: 'App móvil AR con shaders GLSL propios y backend DDD en NestJS',
-    image: 'assets/images/project-smartstencil.jpg',
-    github: 'https://github.com/Oskrtim2/SmartStencil',
-    overview: 'SmartStencil permite a tatuadores y clientes proyectar, ajustar y ver stencils en tiempo real sobre el cuerpo antes de tatuar. Resuelve la deformación en superficies curvas y protege el arte del diseñador contra copias usando tokens efímeros. Nació de juntar mis dos oficios: el código y el tatuaje.',
-    architecture: [
-      'Shader GLSL (<code>multiply_blend.frag</code>) con anti-aliasing MSAA para integrar la tinta con la textura y la luz de la piel.',
-      'Mapeo cilíndrico UV con compensación de curvatura para brazos, piernas y torso.',
-      'Gestos simultáneos (arrastrar, pellizcar, rotar) con deformación en tiempo real a 60 FPS.',
-      'Las imágenes se cargan solo en memoria (RAM), sin guardarse en disco, para evitar que extraigan los stencils.',
-      'Backend NestJS con Domain-Driven Design y 3 bounded contexts: <code>Identity</code>, <code>Catalog</code> y <code>Sharing</code>.',
-      'Tokens QR atómicos y efímeros para que el cliente vea el diseño en su propio teléfono sin exponer el archivo original.'
-    ],
-    metrics: [['60 FPS', 'Render AR'], ['3', 'Bounded contexts DDD'], ['Solo RAM', 'Protección del arte']],
-    stack: ['Flutter', 'GLSL Shaders', 'ARKit / ARCore', 'Riverpod', 'NestJS', 'TypeScript', 'DDD', 'Prisma ORM', 'PostgreSQL', 'AWS S3', 'Docker']
   },
   cyberplayer: {
     name: 'Cyber Player 2000',
@@ -538,6 +544,7 @@ const AppInit = {
         <div class="metrics">${p.metrics.map(([v, l]) => `<div class="metric"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
         <h3>Resumen</h3><p>${p.overview}</p>
         <h3>Arquitectura</h3><ul>${p.architecture.map(a => `<li>${a}</li>`).join('')}</ul>
+        ${(p.sections || []).map(s => `<h3>${s.title}</h3>${s.html}`).join('')}
         <h3>Tecnologías</h3><div class="stack">${p.stack.map(s => `<span class="pill">${s}</span>`).join('')}</div>
         <div class="btn-row">${p.demo ? `<a class="aero-btn primary" href="${p.demo}" target="_blank" rel="noopener">Ver demo en vivo</a>` : ''}<a class="aero-btn" href="${p.github}" target="_blank" rel="noopener">
           <svg width="16" height="16"><use href="#i-github"/></svg> Ver en GitHub</a>
