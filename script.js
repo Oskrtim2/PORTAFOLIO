@@ -1461,13 +1461,17 @@ $('#power-on').addEventListener('click', () => {
    Arranque
    ========================================================= */
 /* =========================================================
-   Invitación a dibujar: globo junto al reloj + brillo en el icono de Paint.
+   Invitación a dibujar: globo junto al reloj + etiquetas en Paint y Comunidad.
    Sale unos segundos después de entrar, una vez por visita, y deja de
    salir para siempre cuando el visitante publica su primera obra.
    ========================================================= */
 const Invite = (() => {
   const box = $('#invite');
-  const paintIcon = $('.icons .icon[data-open="paint"]');
+  // Etiquetas en los iconos del escritorio: salen siempre, en cada carga de la página
+  [['paint', '¡Dibuja!'], ['community', '¡Publica!']].forEach(([app, tag]) => {
+    const icon = $(`.icons .icon[data-open="${app}"]`);
+    if (icon) { icon.classList.add('nudge'); icon.dataset.tag = tag; }
+  });
   const DELAY = 12000;
   let published = false, timer = 0;
   try { published = localStorage.getItem('oskr-published') === '1'; } catch (e) {}
@@ -1504,7 +1508,6 @@ const Invite = (() => {
 
   function schedule() {
     if (published || dismissed()) return;
-    paintIcon && paintIcon.classList.add('nudge');
     timer = setTimeout(show, DELAY);
   }
 
@@ -1515,7 +1518,7 @@ const Invite = (() => {
   }));
   // Al abrir Paint el brillo del icono ya cumplió su función
   document.addEventListener('app-open', e => {
-    if (e.detail === 'paint') { paintIcon && paintIcon.classList.remove('nudge'); hide(true); }
+    if (e.detail === 'paint') hide(true);
   });
 
   return {
@@ -1523,7 +1526,6 @@ const Invite = (() => {
     published() {
       published = true;
       try { localStorage.setItem('oskr-published', '1'); } catch (e) {}
-      paintIcon && paintIcon.classList.remove('nudge');
       hide(true);
     }
   };

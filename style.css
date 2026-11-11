@@ -1018,7 +1018,7 @@ a { color: var(--link); }
 .invite-btns { display: flex; flex-wrap: wrap; gap: 8px; }
 .invite-btns .aero-btn.primary { font-weight: 600; }
 
-/* Brillo en el icono de Paint hasta que lo abran */
+/* Etiquetas que brillan en los iconos de Paint ("¡Dibuja!") y Comunidad ("¡Publica!") */
 .icon.nudge { position: relative; }
 .icon.nudge svg { animation: paintPulse 2.2s ease-in-out infinite; }
 @keyframes paintPulse {
@@ -1026,12 +1026,18 @@ a { color: var(--link); }
   50% { filter: drop-shadow(0 0 10px #ffe36e) drop-shadow(0 0 4px #ff9de2); scale: 1.08 }
 }
 .icon.nudge::after {
-  content: "¡Dibuja!"; position: absolute; top: -2px; right: -6px; padding: 1px 6px; border-radius: 999px;
+  content: attr(data-tag); position: absolute; top: -2px; right: -6px; padding: 1px 6px; border-radius: 999px;
   font-size: 10.5px; font-weight: 700; color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.35);
   background: linear-gradient(#ff8a9b, #e8366b); box-shadow: 0 2px 5px rgba(0,0,0,.35); rotate: 8deg;
   animation: tagBob 2.2s ease-in-out infinite;
 }
 @keyframes tagBob { 50% { translate: 0 -3px } }
+/* La de Comunidad va en verde y a destiempo, para que no se muevan igual */
+.icon.nudge[data-open="community"] svg { animation-delay: 1.1s; }
+.icon.nudge[data-open="community"]::after {
+  background: linear-gradient(#5be3a0, #14a86a); rotate: -6deg; animation-delay: 1.1s;
+}
+.night .icon.nudge[data-open="community"]::after { background: linear-gradient(#3ef7ff, #00a6c4); color: #04121a; text-shadow: none; }
 
 /* Modo noche */
 .night .invite { color: var(--text); border-color: rgba(0,240,255,.5); background: linear-gradient(#22183c, #150e28); box-shadow: 0 14px 34px rgba(0,0,0,.6), 0 0 22px rgba(0,240,255,.2); }
