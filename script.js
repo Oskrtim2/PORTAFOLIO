@@ -16,7 +16,9 @@ const CONTACT_EMAIL = 'oscartimaran60@gmail.com';
 const TATTOO_PHOTOS = [
   { src: 'assets/images/tatuajes/arana.png', title: 'Araña' },
   { src: 'assets/images/tatuajes/crybaby.png', title: 'CryBaby' },
-  { src: 'assets/images/tatuajes/rei-ayanami.png', title: 'Rei Ayanami' }
+  { src: 'assets/images/tatuajes/rei-ayanami.png', title: 'Rei Ayanami' },
+  { src: 'assets/images/tatuajes/sol-vale.png', title: 'Sol y olas' },
+  { src: 'assets/images/tatuajes/yoko.png', title: 'Yoko' }
 ];
 
 // Dibujos → assets/images/dibujos/
