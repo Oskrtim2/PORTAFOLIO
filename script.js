@@ -18,7 +18,11 @@ const TATTOO_PHOTOS = [
   { src: 'assets/images/tatuajes/crybaby.png', title: 'CryBaby' },
   { src: 'assets/images/tatuajes/rei-ayanami.png', title: 'Rei Ayanami' },
   { src: 'assets/images/tatuajes/sol-vale.png', title: 'Sol y olas' },
-  { src: 'assets/images/tatuajes/yoko.png', title: 'Yoko' }
+  { src: 'assets/images/tatuajes/yoko.png', title: 'Yoko' },
+  { src: 'assets/images/tatuajes/str3yas.jpg', title: 'Str3yAs' },
+  { src: 'assets/images/tatuajes/omakase.png', title: 'Omakase' },
+  { src: 'assets/images/tatuajes/siempre-vivaracha.png', title: 'Siempre vivaracha' },
+  { src: 'assets/images/tatuajes/sonic.png', title: 'Sonic' }
 ];
 
 // Dibujos → assets/images/dibujos/
