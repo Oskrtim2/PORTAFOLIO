@@ -23,6 +23,7 @@ const TATTOO_PHOTOS = [
 
 // Dibujos → assets/images/dibujos/
 const DRAWINGS = [
+  { src: 'assets/images/dibujos/str3yas.png', title: 'Str3yaS' },
   { src: 'assets/images/dibujos/emos.png', title: 'Emos hijueputas' },
   { src: 'assets/images/dibujos/jhon-2.png', title: 'Jhon 2' },
   { src: 'assets/images/dibujos/vida-mhm.png', title: 'Vida MHM' },
