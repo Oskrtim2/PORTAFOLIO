@@ -5,9 +5,11 @@
 /* ---------- Configuración editable ---------- */
 
 // Correo que recibe los mensajes del formulario de contacto.
-// Se envían con FormSubmit (https://formsubmit.co): la primera vez llega un
-// correo "Activate Form" a esta dirección y hay que pulsar el botón para activarlo.
 const CONTACT_EMAIL = 'oscartimaran60@gmail.com';
+// Los mensajes se envían con Web3Forms (https://web3forms.com). La clave se pide
+// en esa página con CONTACT_EMAIL y llega por correo; puede ir en el código sin
+// problema (solo sirve para enviar mensajes a ese correo).
+const WEB3FORMS_KEY = '892eb19e-2164-4d36-a646-774b45b228a8';
 
 // Galerías. Para agregar una imagen: cópiala a la carpeta indicada
 // (nombre sin espacios ni tildes) y añade una línea { src, title }.
@@ -760,21 +762,26 @@ const AppInit = {
 
       sendBtn.disabled = true; sendBtn.textContent = 'Enviando...';
       try {
-        const r = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+        if (!WEB3FORMS_KEY) throw new Error('Falta la clave de Web3Forms');
+        // Se envía como FormData (petición "simple", sin consulta previa CORS)
+        const payload = new FormData();
+        Object.entries({
+          access_key: WEB3FORMS_KEY,
+          subject: `[Portafolio] ${d.subject} — ${name}`,
+          from_name: 'Portafolio OskrOS',
+          replyto: email,
+          Nombre: name,
+          Correo: email,
+          Asunto: d.subject,
+          Mensaje: message
+        }).forEach(([k, v]) => payload.append(k, v));
+        const r = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            _subject: `[Portafolio] ${d.subject} — ${name}`,
-            _replyto: email,
-            _template: 'table',
-            Nombre: name,
-            Correo: email,
-            Asunto: d.subject,
-            Mensaje: message
-          })
+          headers: { Accept: 'application/json' },
+          body: payload
         });
         const res = await r.json().catch(() => ({}));
-        if (!r.ok || String(res.success) !== 'true') throw new Error(res.message || 'send failed');
+        if (!r.ok || res.success !== true) throw new Error(res.message || 'send failed');
         form.reset();
         say('¡Mensaje enviado! Te responderé a tu correo lo antes posible.', 'ok');
         Sound.play('send');

@@ -14,13 +14,14 @@ Todos los visitantes ven la misma galería (las 60 obras más recientes).
   en local: `vercel env pull` y `vercel dev`.
 - Abriendo `index.html` directamente (file://) las obras se guardan solo en ese navegador.
 
-## Formulario de contacto (FormSubmit)
+## Formulario de contacto (Web3Forms)
 
 El formulario envía los mensajes a `oscartimaran60@gmail.com` con
-[FormSubmit](https://formsubmit.co), sin servidor propio ni claves.
+[Web3Forms](https://web3forms.com), sin servidor propio (gratis: 250 mensajes al mes).
 
-- **Activación (una sola vez):** el primer mensaje enviado desde la web hace que
-  llegue a ese correo un email de FormSubmit "Activate Form". Pulsa el botón de
-  ese email; desde entonces todos los mensajes llegan a la bandeja de entrada.
-- Para cambiar el correo destino, edita `CONTACT_EMAIL` al inicio de `script.js`
-  (habrá que activarlo de nuevo).
+- La clave (`WEB3FORMS_KEY` al inicio de `script.js`) se pide en web3forms.com
+  con ese correo y llega a la bandeja de entrada. Puede ir en el código: solo
+  permite enviar mensajes a ese correo.
+- Los mensajes llegan con asunto `[Portafolio] <asunto> — <nombre>`; al pulsar
+  "Responder" en Gmail se responde directo al correo del visitante.
+- Para cambiar el correo destino hay que pedir una clave nueva con el otro correo.
