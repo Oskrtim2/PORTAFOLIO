@@ -65,7 +65,13 @@ a { color: var(--link); }
 .desktop { position: fixed; inset: 0 0 var(--taskbar-h) 0; overflow: hidden; }
 .wallpaper { --px: 0; --py: 0; position: absolute; inset: 0 0 calc(-1 * var(--taskbar-h)) 0; overflow: hidden; }
 /* Paralaje: --px y --py (de -1 a 1) los pone script.js según la posición del mouse */
-.wallpaper > * { will-change: transform; }
+.scene > * { will-change: transform; }
+/* Día y noche son dos escenas que se cruzan con un fundido; la oculta queda en pausa */
+.scene { position: absolute; inset: 0; transition: opacity 1.4s ease, visibility 1.4s; }
+.scene.night, .night .scene.day { opacity: 0; visibility: hidden; }
+.night .scene.night { opacity: 1; visibility: visible; }
+.scene.night *, .night .scene.day * { animation-play-state: paused; }
+.night .scene.night * { animation-play-state: running; }
 .sky {
   position: absolute; inset: -40px;
   transform: translate(calc(var(--px) * -10px), calc(var(--py) * -8px));
@@ -217,6 +223,7 @@ a { color: var(--link); }
   animation: rise linear forwards;
 }
 .bubble.pop { animation: pop .25s ease-out forwards !important; }
+@keyframes rise-calm { to { transform: translateY(-115vh) } }
 @keyframes rise {
   0% { transform: translate(0, 0) }
   25% { transform: translate(18px, -28vh) }
@@ -650,7 +657,8 @@ a { color: var(--link); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .bubbles { display: none; }
+  /* El mini-juego sigue activo, con un ascenso recto y suave */
+  .bubbles .bubble:not(.pop) { animation: rise-calm var(--dur, 16s) linear forwards !important; }
   .wallpaper *, .wallpaper *::before, .wallpaper *::after { animation: none !important; }
 }
 
@@ -768,3 +776,191 @@ a { color: var(--link); }
   .about-head { flex-wrap: wrap; }
   .photo-frame { width: 114px; height: 152px; }
 }
+
+/* =========================================================
+   MODO NOCHE — ciudad lluviosa con neones
+   Paleta: amarillo #fcee0a, cian #00f0ff, rosa #ff2a6d, morado #b967ff
+   ========================================================= */
+.n-sky {
+  position: absolute; inset: -40px;
+  transform: translate(calc(var(--px) * -10px), calc(var(--py) * -8px));
+  background:
+    radial-gradient(ellipse 70% 30% at 50% 100%, rgba(255,42,109,.42), transparent 70%),
+    radial-gradient(ellipse 45% 22% at 15% 92%, rgba(0,240,255,.22), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 81% 16%, rgba(150,120,255,.22), transparent 70%),
+    linear-gradient(180deg, #03020a 0%, #0b0620 28%, #1d0d38 52%, #3a1150 70%, #6a1a5c 84%, #2a0b2e 100%);
+}
+.n-stars {
+  position: absolute; inset: 0 0 50% 0;
+  transform: translate(calc(var(--px) * 6px), calc(var(--py) * 4px));
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 27% 8%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 44% 22%, #cfe9ff, transparent),
+    radial-gradient(1px 1px at 58% 6%, #fff, transparent),
+    radial-gradient(1px 1px at 66% 30%, #ffd6f0, transparent),
+    radial-gradient(1.5px 1.5px at 92% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 36%, #fff, transparent);
+  opacity: .5; animation: twinkle 5s ease-in-out infinite alternate;
+}
+/* La luna: con cráteres suaves y un halo que respira */
+.moon {
+  position: absolute; top: 9%; right: 19%; width: 118px; height: 118px; border-radius: 50%;
+  background:
+    radial-gradient(circle at 64% 38%, rgba(150,140,120,.35) 0 9%, transparent 10%),
+    radial-gradient(circle at 38% 64%, rgba(150,140,120,.3) 0 12%, transparent 13%),
+    radial-gradient(circle at 70% 70%, rgba(150,140,120,.25) 0 6%, transparent 7%),
+    radial-gradient(circle at 30% 30%, rgba(150,140,120,.2) 0 5%, transparent 6%),
+    radial-gradient(circle at 36% 32%, #fffdf3, #f3ecd6 45%, #d6cdb2 78%, #b9ae93);
+  box-shadow: 0 0 30px 6px rgba(255,244,214,.45), 0 0 110px 40px rgba(170,140,255,.22), 0 0 260px 110px rgba(255,42,109,.12);
+  transform: translate(calc(var(--px) * 22px), calc(var(--py) * 16px));
+  animation: moonGlow 9s ease-in-out infinite alternate;
+}
+@keyframes moonGlow { from { filter: brightness(.92) } to { filter: brightness(1.08) } }
+
+/* Nubes de lluvia que pasan delante de la luna, iluminadas desde abajo por la ciudad */
+.n-clouds { position: absolute; inset: 0; transform: translate(calc(var(--px) * -6px), calc(var(--py) * -4px)); }
+.nc {
+  position: absolute; width: 520px; height: 110px; border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 70%, rgba(110,40,120,.55), rgba(30,14,55,.7) 60%, transparent 72%);
+  filter: blur(16px); animation: cloudDrift 260s linear infinite;
+}
+.nc.a { top: 8%; animation-delay: -150s; }
+.nc.b { top: 20%; scale: .8; opacity: .8; animation-duration: 340s; animation-delay: -40s; }
+.nc.c { top: 2%; scale: 1.3; opacity: .7; animation-duration: 420s; animation-delay: -300s; }
+
+/* La ciudad: dos capas dibujadas en canvas (lejos y cerca) */
+.n-city { position: absolute; }
+.n-city canvas { display: block; width: 100%; height: 100%; }
+.n-city.far { left: -4%; right: -4%; bottom: 15%; height: 64%; transform: translate(calc(var(--px) * -14px), calc(var(--py) * -6px)); }
+.n-city.near { left: -6%; right: -6%; bottom: -30px; height: calc(62% + 30px); transform: translate(calc(var(--px) * -40px), calc(var(--py) * -12px)); }
+.n-haze {
+  position: absolute; left: -10%; right: -10%; bottom: 12%; height: 42%;
+  background: linear-gradient(transparent, rgba(255,42,109,.16) 55%, rgba(120,40,160,.32));
+  filter: blur(8px); animation: hazeShift 14s ease-in-out infinite alternate;
+}
+@keyframes hazeShift { from { opacity: .7; translate: -2% 0 } to { opacity: 1; translate: 2% 0 } }
+
+/* Letreros de neón sobre los edificios cercanos (los coloca script.js) */
+.n-signs { position: absolute; inset: 0; }
+.neon {
+  position: absolute; display: grid; place-items: center; overflow: hidden; white-space: nowrap;
+  font: 700 13px/1 "Segoe UI", system-ui, sans-serif; letter-spacing: .14em; color: #fff;
+  border: 2px solid var(--c); border-radius: 3px; background: rgba(8,4,18,.65);
+  text-shadow: 0 0 4px var(--c), 0 0 12px var(--c);
+  box-shadow: 0 0 8px var(--c), 0 0 26px color-mix(in srgb, var(--c) 55%, transparent), inset 0 0 10px color-mix(in srgb, var(--c) 45%, transparent);
+}
+.neon.v { writing-mode: vertical-rl; letter-spacing: .3em; font-size: 14px; }
+.neon.flick { animation: neonFlick 7s steps(1) infinite; }
+@keyframes neonFlick {
+  0%, 100% { opacity: 1 }
+  71% { opacity: .35 } 72% { opacity: 1 } 74% { opacity: .2 } 75% { opacity: 1 } 90% { opacity: .55 } 91% { opacity: 1 }
+}
+
+/* Vehículos voladores: luces lejanas cruzando el cielo */
+.n-av { position: absolute; inset: 0; transform: translate(calc(var(--px) * -10px), calc(var(--py) * -5px)); }
+.n-av i {
+  position: absolute; left: 0; width: 5px; height: 2px; border-radius: 2px; background: #fff;
+  box-shadow: 0 0 6px 2px var(--c, #ff2a6d), -10px 0 12px 1px color-mix(in srgb, var(--c, #ff2a6d) 50%, transparent);
+  animation: avFly 46s linear infinite;
+}
+.n-av i:nth-child(1) { top: 31%; --c: #ff2a6d; animation-delay: -8s; }
+.n-av i:nth-child(2) { top: 24%; --c: #00f0ff; animation-duration: 64s; animation-delay: -40s; animation-direction: reverse; }
+.n-av i:nth-child(3) { top: 39%; --c: #fcee0a; animation-duration: 38s; animation-delay: -22s; }
+@keyframes avFly { from { translate: -5vw 0 } to { translate: 105vw -3vh } }
+
+/* Brillo de la calle mojada: ondas de luz que tiemblan con la lluvia */
+.n-street {
+  position: absolute; left: 0; right: 0; bottom: 0; height: calc(13% + var(--taskbar-h));
+  background: repeating-linear-gradient(180deg, rgba(255,255,255,.05) 0 1px, transparent 1px 7px);
+  mix-blend-mode: screen; animation: streetShimmer 2.4s ease-in-out infinite alternate;
+}
+@keyframes streetShimmer { from { opacity: .4; translate: 0 0 } to { opacity: .9; translate: 0 2px } }
+.n-rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+@media (max-width: 760px) {
+  .moon { width: 84px; height: 84px; right: 12%; }
+  .nc.c, .n-av i:nth-child(3) { display: none; }
+}
+
+/* Burbujas de noche: con un reflejo de neón */
+.night .bubble { border-color: rgba(0,240,255,.6); box-shadow: 0 0 10px rgba(0,240,255,.25), inset 0 0 12px rgba(255,42,109,.25); }
+
+/* ---------------- Interfaz en modo noche ---------------- */
+.night {
+  --text: #e3e8f4;
+  --muted: #9aa3bd;
+  --link: #3ee8ff;
+  --glass-dark: rgba(12, 6, 26, .78);
+  --frame-shadow: 0 12px 40px rgba(0,0,0,.65), 0 0 22px rgba(0,240,255,.12);
+  --n-bg: #120c20;      /* fondo de los paneles */
+  --n-bg2: #1a1230;     /* barras y tarjetas */
+  --n-bg3: #241a40;     /* hover */
+  --n-line: #3a2d5c;    /* bordes */
+  --n-head: #fcee0a;    /* títulos */
+  color-scheme: dark;
+}
+.night .taskbar { border-top-color: rgba(0,240,255,.5); box-shadow: 0 -1px 14px rgba(0,240,255,.22); }
+.night .start-menu { border-color: rgba(0,240,255,.4); box-shadow: 0 0 0 1px rgba(255,42,109,.25) inset, 4px -4px 24px rgba(0,0,0,.6); }
+.night .window {
+  border-color: rgba(0,240,255,.4);
+  background: linear-gradient(180deg, rgba(36,20,64,.78), rgba(16,10,34,.76));
+  box-shadow: var(--frame-shadow), inset 0 0 0 1px rgba(255,42,109,.22);
+}
+.night .window::before { opacity: .25; }
+.night .window.inactive { background: linear-gradient(180deg, rgba(26,18,44,.7), rgba(14,10,26,.68)); box-shadow: 0 6px 20px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.08); }
+.night .title, .night .dlg-title { color: #eafcff; text-shadow: 0 0 8px rgba(0,240,255,.7); }
+.night .win-body { background: var(--n-bg); border-color: rgba(0,240,255,.25); box-shadow: none; }
+.night .gadget { border-color: rgba(0,240,255,.35); background: linear-gradient(rgba(40,24,70,.65), rgba(14,8,30,.6)); box-shadow: 0 6px 18px rgba(0,0,0,.5), 0 0 14px rgba(255,42,109,.15); }
+.night .stats-gadget { background: linear-gradient(rgba(30,14,58,.92), rgba(10,6,24,.92)); }
+.night .stat b { color: #fcee0a; }
+
+/* Paneles y superficies claras → oscuras */
+.night .about, .night .tab-panel, .night .tab.active, .night .skills, .night .hobbies,
+.night .mail, .night .cv-reader, .night .dlg-body, .night .sm-left { background: var(--n-bg); }
+.night .tab, .night .props, .night .cp-card, .night .metric, .night .ex-detail code,
+.night .ex-address, .night .dlg-actions, .night .info-bar { background: var(--n-bg2); }
+.night .hobby { background: linear-gradient(var(--n-bg2), var(--n-bg)); }
+.night .ex-bar, .night .ex-status, .night .ribbon, .night .mail-toolbar, .night .cv-toolbar { background: linear-gradient(#211739, #170f2a); }
+.night .ex-side, .night .cv-side { background: linear-gradient(90deg, #170f2a, #130c22); }
+.night .paint { background: #0d0818; }
+.night .cv-scroll { background: radial-gradient(ellipse at 50% 0, #2b2148, #0f0a1c); }
+.night .dialog { background: linear-gradient(180deg, rgba(36,20,64,.95), rgba(16,10,34,.95)); border-color: rgba(0,240,255,.4); box-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.night .modal-back { background: rgba(5,2,14,.55); }
+.night .toast { color: var(--text); background: linear-gradient(#22183c, #140d26); border-color: rgba(0,240,255,.45); box-shadow: 0 6px 18px rgba(0,0,0,.5), 0 0 14px rgba(0,240,255,.2); }
+
+/* Bordes */
+.night .tabs, .night .tab, .night .tab-panel, .night .props, .night .cp-card, .night .hobby, .night .metric,
+.night .ex-bar, .night .ex-side, .night .ex-status, .night .ex-address, .night .ex-search, .night .info-bar,
+.night .ribbon, .night .rb-group, .night .mail-toolbar, .night .mail-row, .night .mail-row input, .night .mail-row select,
+.night .mail textarea, .night .cv-toolbar, .night .cv-side, .night .file-row, .night .ex-detail h3, .night .cp-card li,
+.night .dlg-body, .night .dlg-actions, .night .dlg-fields input, .night .sm-left, .night .sm-search input,
+.night .file img, .night .ex-detail .hero-img { border-color: var(--n-line); }
+.night .cv-sep { background: var(--n-line); }
+
+/* Campos de texto */
+.night input, .night textarea, .night select { color: var(--text); background: #0c0716; }
+.night .paint-canvas, .night .dlg-preview { background: #fff; }
+
+/* Títulos en amarillo neón */
+.night .tab-panel h2, .night .about-head h1, .night .ex-detail h2, .night .ex-detail h3, .night .cp-title,
+.night .hobby h3, .night .ex-side li.head, .night .cv-side li.head, .night .dlg-fields label { color: var(--n-head); }
+.night .metric b, .night .rb-btn.publish { color: #00f0ff; }
+.night .cp-card li::before { color: #ff2a6d; }
+
+/* Hover y selección en cian */
+.night .sm-item:hover, .night .sm-item.hl, .night .file:hover, .night .ex-side button:hover, .night .ex-side a:hover,
+.night .cv-side button:hover, .night .rb-btn:hover, .night .tab:hover {
+  background: var(--n-bg3); border-color: rgba(0,240,255,.45);
+}
+.night .ex-side .active, .night .cv-side button.active, .night .file.selected, .night .file:focus-visible, .night .rb-btn.active {
+  background: rgba(0,240,255,.14); border-color: rgba(0,240,255,.7);
+}
+.night .sm-sep { background: linear-gradient(90deg, transparent, var(--n-line), transparent); }
+
+/* Botones Aero → botones oscuros con borde de neón */
+.night .aero-btn { color: var(--text); border-color: #4a3a74; background: linear-gradient(#2a1f48, #1c1434 50%, #160f2a 51%, #201738); box-shadow: inset 0 1px 0 rgba(255,255,255,.1); }
+.night .aero-btn:hover { border-color: #00f0ff; background: linear-gradient(#32255a, #241a44 50%, #1c1438 51%, #2a1f4c); box-shadow: 0 0 10px rgba(0,240,255,.35); }
+.night .aero-btn.primary { border-color: #fcee0a; box-shadow: 0 0 8px rgba(252,238,10,.25); }
+.night .mail-feedback { color: #b9ffcf; background: rgba(30,215,96,.12); border-color: rgba(30,215,96,.5); }
+.night .dlg-error { color: #ffb3c4; background: rgba(255,42,109,.12); border-color: rgba(255,42,109,.5); }

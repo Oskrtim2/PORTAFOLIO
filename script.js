@@ -228,14 +228,23 @@ const isMobile = () => innerWidth <= 760;
    Sonido (todo sintetizado con Web Audio, sin archivos)
    ========================================================= */
 const Sound = (() => {
-  let ctx = null;
+  let ctx = null, out = null;
   let on = localStorage.getItem('oskr-sound') !== 'off';
+  const MASTER = 4; // volumen general de los efectos
 
   function ac() {
     if (!ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
       ctx = new AC();
+      // Ganancia general + limitador: suena fuerte sin saturar cuando se juntan varios tonos
+      const master = ctx.createGain();
+      master.gain.value = MASTER;
+      const limiter = ctx.createDynamicsCompressor();
+      limiter.threshold.value = -6; limiter.knee.value = 4; limiter.ratio.value = 12;
+      limiter.attack.value = .003; limiter.release.value = .15;
+      master.connect(limiter).connect(ctx.destination);
+      out = master;
     }
     if (ctx.state === 'suspended') ctx.resume();
     return ctx;
@@ -250,7 +259,7 @@ const Sound = (() => {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(vol, t + .01);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(c.destination);
+    o.connect(g).connect(out);
     o.start(t); o.stop(t + dur + .05);
   }
 
@@ -1128,12 +1137,13 @@ paintSoundBtn();
 /* =========================================================
    Burbujas (mini-juego)
    ========================================================= */
+// Siempre activo: en Windows con los efectos de animación apagados el navegador
+// pide "reducir movimiento"; ahí las burbujas suben rectas y despacio (ver style.css).
 (function bubbles() {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const box = $('#bubbles'), counter = $('#bubble-count');
   let popped = 0;
   function spawn() {
-    if (document.hidden || box.childElementCount > 14) return;
+    if (document.hidden || box.childElementCount > 32) return;
     const b = document.createElement('div');
     const size = 18 + Math.random() * 54;
     b.className = 'bubble';
@@ -1142,6 +1152,7 @@ paintSoundBtn();
       left: (8 + Math.random() * 88) + '%',
       animationDuration: (11 + Math.random() * 12) + 's'
     });
+    b.style.setProperty('--dur', b.style.animationDuration);
     b.addEventListener('animationend', () => b.remove());
     b.addEventListener('pointerdown', e => {
       e.stopPropagation();
@@ -1152,8 +1163,245 @@ paintSoundBtn();
     });
     box.appendChild(b);
   }
-  for (let i = 0; i < 4; i++) setTimeout(spawn, i * 600);
-  setInterval(spawn, 1500);
+  for (let i = 0; i < 10; i++) setTimeout(spawn, i * 300);
+  setInterval(spawn, 650);
+})();
+
+/* =========================================================
+   Modo noche: ciudad lluviosa con neones + cambio de tema
+   ========================================================= */
+const NightScene = (() => {
+  const scene = $('.scene.night');
+  const farCv = $('.n-city.far canvas'), nearCv = $('.n-city.near canvas');
+  const signsBox = $('.n-signs'), rainCv = $('.n-rain');
+  const NEON = ['#fcee0a', '#00f0ff', '#ff2a6d', '#b967ff', '#ff003c'];
+  const SIGNS_V = ['オスカー', 'ネオン', '夜の雨', 'ラーメン', '電脳', 'バー'];
+  const SIGNS_H = ['OSKR', 'HOTEL', '24/7', 'BAR', 'NEO', 'RAMEN'];
+  let drawnFor = '', running = false, raf = 0;
+
+  // Aleatorio con semilla: la ciudad sale igual cada vez que se dibuja
+  function seeded(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
+
+  function fit(cv) {
+    const r = cv.parentElement.getBoundingClientRect();
+    const d = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.max(1, Math.round(r.width * d));
+    cv.height = Math.max(1, Math.round(r.height * d));
+    const c = cv.getContext('2d');
+    c.setTransform(d, 0, 0, d, 0, 0);
+    return [c, r.width, r.height];
+  }
+
+  // Ventanas encendidas: cálidas, frías o rosadas
+  function windowColor(R, a) {
+    const k = R();
+    const rgb = k < .5 ? '255,196,120' : k < .8 ? '120,220,255' : '255,120,220';
+    return `rgba(${rgb},${a})`;
+  }
+
+  function drawFar() {
+    const [c, w, h] = fit(farCv), R = seeded(7);
+    c.clearRect(0, 0, w, h);
+    for (let x = -10; x < w;) {
+      const bw = 26 + R() * 64, bh = h * (.22 + R() * .7), top = h - bh;
+      const g = c.createLinearGradient(0, top, 0, h);
+      g.addColorStop(0, '#2c1a4c'); g.addColorStop(1, '#170d2c');
+      c.fillStyle = g; c.fillRect(x, top, bw, bh);
+      if (R() < .35) { // antena con luz roja
+        const ah = 14 + R() * 30;
+        c.fillStyle = '#2c1a4c'; c.fillRect(x + bw / 2 - 1, top - ah, 2, ah);
+        c.fillStyle = '#ff2a6d'; c.shadowColor = '#ff2a6d'; c.shadowBlur = 8;
+        c.fillRect(x + bw / 2 - 1.5, top - ah - 2, 3, 3); c.shadowBlur = 0;
+      }
+      for (let y = top + 8; y < h - 6; y += 7)
+        for (let wx = x + 4; wx < x + bw - 4; wx += 6)
+          if (R() < .16) { c.fillStyle = windowColor(R, .15 + R() * .35); c.fillRect(wx, y, 3, 3); }
+      x += bw + R() * 5;
+    }
+  }
+
+  function drawNear() {
+    const [c, w, h] = fit(nearCv), R = seeded(42);
+    const ground = h * .72;
+    // Los edificios se dibujan aparte para poder reflejarlos en la calle
+    const off = document.createElement('canvas');
+    off.width = nearCv.width; off.height = nearCv.height;
+    const o = off.getContext('2d');
+    o.setTransform(nearCv.width / w, 0, 0, nearCv.height / h, 0, 0);
+
+    const signs = [];
+    for (let x = -10; x < w;) {
+      const bw = 60 + R() * 110, bh = ground * (.32 + R() * .6), top = ground - bh;
+      const g = o.createLinearGradient(0, top, 0, ground);
+      g.addColorStop(0, '#120a22'); g.addColorStop(1, '#06030c');
+      o.fillStyle = g; o.fillRect(x, top, bw, bh);
+      // Borde iluminado por los neones
+      const rim = NEON[Math.floor(R() * NEON.length)];
+      o.fillStyle = rim; o.globalAlpha = .35; o.fillRect(x, top, 1.5, bh); o.fillRect(x, top, bw, 1.5); o.globalAlpha = 1;
+      // Ventanas
+      for (let y = top + 12; y < ground - 14; y += 15)
+        for (let wx = x + 8; wx < x + bw - 10; wx += 13)
+          if (R() < .2) {
+            o.fillStyle = windowColor(R, .35 + R() * .5);
+            o.shadowColor = o.fillStyle; o.shadowBlur = 6;
+            o.fillRect(wx, y, 6, 8); o.shadowBlur = 0;
+          }
+      // Letrero de neón
+      if (bw > 70 && R() < .55) {
+        const color = NEON[Math.floor(R() * NEON.length)];
+        const vertical = R() < .55;
+        const sw = vertical ? 24 : 54 + R() * 40, sh = vertical ? 80 + R() * 70 : 24;
+        const sx = x + 8 + R() * Math.max(1, bw - sw - 16);
+        const sy = top + 16 + R() * Math.max(1, Math.min(bh - sh - 40, 160));
+        if (sy + sh < ground - 10) {
+          signs.push({ x: sx, y: sy, w: sw, h: sh, color, vertical, flick: R() < .4,
+            text: vertical ? SIGNS_V[signs.length % SIGNS_V.length] : SIGNS_H[signs.length % SIGNS_H.length] });
+          // Halo del letrero (también se refleja en la calle)
+          o.fillStyle = color; o.shadowColor = color; o.shadowBlur = 40; o.globalAlpha = .45;
+          o.fillRect(sx, sy, sw, sh); o.globalAlpha = 1; o.shadowBlur = 0;
+        }
+      }
+      x += bw + R() * 4;
+    }
+
+    // Calle mojada: fondo, reflejo invertido y difuminado de la ciudad, y luces en los charcos
+    c.clearRect(0, 0, w, h);
+    const sg = c.createLinearGradient(0, ground, 0, h);
+    sg.addColorStop(0, '#140a24'); sg.addColorStop(1, '#030107');
+    c.fillStyle = sg; c.fillRect(0, ground, w, h - ground);
+    c.save();
+    c.globalAlpha = .4; c.filter = 'blur(3px)';
+    const k = .7;
+    c.translate(0, ground * (1 + k)); c.scale(1, -k);
+    c.drawImage(off, 0, 0, w, h);
+    c.restore();
+    const fade = c.createLinearGradient(0, ground, 0, h);
+    fade.addColorStop(0, 'rgba(3,1,7,0)'); fade.addColorStop(1, 'rgba(3,1,7,.85)');
+    c.fillStyle = fade; c.fillRect(0, ground, w, h - ground);
+    c.drawImage(off, 0, 0, w, h);
+    // Bordillo con luz cian
+    c.fillStyle = 'rgba(0,240,255,.35)'; c.fillRect(0, ground, w, 1.5);
+
+    // Letreros como elementos para que puedan parpadear. En porcentajes:
+    // si el canvas se estira, siguen alineados con su resplandor.
+    const pct = (v, total) => (v / total * 100).toFixed(3) + '%';
+    signsBox.innerHTML = signs.map(s =>
+      `<i class="neon${s.vertical ? ' v' : ''}${s.flick ? ' flick' : ''}" style="left:${pct(s.x, w)};top:${pct(s.y, h)};width:${pct(s.w, w)};height:${pct(s.h, h)};--c:${s.color};animation-delay:${(-s.x % 7).toFixed(1)}s">${s.text}</i>`
+    ).join('');
+  }
+
+  function drawCity() {
+    const r = nearCv.parentElement.getBoundingClientRect();
+    const key = Math.round(r.width) + 'x' + Math.round(r.height);
+    if (key === drawnFor) return;
+    drawnFor = key;
+    drawFar(); drawNear();
+  }
+
+  /* ---- Lluvia ---- */
+  const rc = rainCv.getContext('2d');
+  let W = 0, H = 0, drops = [], splashes = [], last = 0;
+  const WIND = .2;
+
+  function newDrop(anywhere) {
+    const z = Math.random();
+    return {
+      x: Math.random() * (W + 200) - 150,
+      y: anywhere ? Math.random() * H : -30 - Math.random() * 120,
+      z, len: 12 + z * 26, speed: 650 + z * 750,
+      floor: H * (.86 + z * .14)
+    };
+  }
+  function sizeRain() {
+    W = rainCv.width = rainCv.clientWidth;
+    H = rainCv.height = rainCv.clientHeight;
+    const n = Math.min(520, Math.round(W * H / 4200));
+    drops = Array.from({ length: n }, () => newDrop(true));
+    splashes = [];
+  }
+
+  function frame(t) {
+    const dt = Math.min((t - last) / 1000 || 0, .05);
+    last = t;
+    rc.clearRect(0, 0, W, H);
+    rc.lineCap = 'round';
+    // Tres capas de profundidad: lejos (finas y tenues) a cerca (gruesas y brillantes)
+    for (let layer = 0; layer < 3; layer++) {
+      rc.beginPath();
+      rc.strokeStyle = `rgba(200,225,255,${.14 + layer * .12})`;
+      rc.lineWidth = .7 + layer * .55;
+      for (const d of drops) {
+        if (Math.min(2, Math.floor(d.z * 3)) !== layer) continue;
+        const step = d.speed * dt;
+        d.y += step; d.x += step * WIND;
+        if (d.y > d.floor) {
+          if (d.z > .45) splashes.push({ x: d.x, y: d.floor, r: 1, a: .5 });
+          Object.assign(d, newDrop(false));
+          continue;
+        }
+        rc.moveTo(d.x, d.y);
+        rc.lineTo(d.x - d.len * WIND, d.y - d.len);
+      }
+      rc.stroke();
+    }
+    // Salpicaduras en la calle
+    rc.lineWidth = 1;
+    for (let i = splashes.length - 1; i >= 0; i--) {
+      const s = splashes[i];
+      s.r += 26 * dt; s.a -= 1.5 * dt;
+      if (s.a <= 0) { splashes.splice(i, 1); continue; }
+      rc.strokeStyle = `rgba(160,235,255,${s.a})`;
+      rc.beginPath(); rc.ellipse(s.x, s.y, s.r * 2.2, s.r * .6, 0, 0, Math.PI * 2); rc.stroke();
+    }
+    raf = running && !document.hidden ? requestAnimationFrame(frame) : 0;
+  }
+
+  function start() {
+    running = true;
+    drawCity();
+    if (!W) sizeRain();
+    if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+  }
+  function stop() {
+    running = false;
+    // La lluvia sigue mientras dura el fundido y luego se detiene
+    setTimeout(() => { if (!running) { cancelAnimationFrame(raf); raf = 0; } }, 1500);
+  }
+
+  // Redibuja cuando cambia el tamaño del fondo (ventana, zoom, rotar el celular)
+  let resizeT = 0;
+  new ResizeObserver(() => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(() => { if (running) { drawCity(); sizeRain(); } else { drawnFor = ''; W = 0; } }, 150);
+  }).observe($('.wallpaper'));
+  document.addEventListener('visibilitychange', () => {
+    if (running && !document.hidden && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+  });
+
+  return { start, stop };
+})();
+
+const Theme = (() => {
+  const root = document.documentElement, btn = $('#theme-btn');
+  const isNight = () => root.classList.contains('night');
+
+  function paint() {
+    const n = isNight();
+    const label = n ? 'Cambiar a modo día' : 'Cambiar a modo noche';
+    btn.title = label; btn.setAttribute('aria-label', label);
+    $('use', btn).setAttribute('href', n ? '#i-sun' : '#i-moon');
+  }
+  function set(night) {
+    root.classList.toggle('night', night);
+    try { localStorage.setItem('oskr-theme', night ? 'night' : 'day'); } catch (e) {}
+    night ? NightScene.start() : NightScene.stop();
+    paint();
+  }
+
+  btn.addEventListener('click', () => { set(!isNight()); Sound.play('click'); });
+  paint();
+  if (isNight()) NightScene.start();
+  return { set, isNight };
 })();
 
 /* =========================================================

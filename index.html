@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>try { if (localStorage.getItem('oskr-theme') === 'night') document.documentElement.classList.add('night'); } catch (e) {}</script>
 </head>
 <body>
 
@@ -144,6 +145,13 @@
       <path d="M12 3v8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
       <path d="M7 6.5a7.5 7.5 0 1 0 10 0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
     </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+      <path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+    </symbol>
     <symbol id="i-speaker" viewBox="0 0 24 24">
       <path d="M3 9h4l5-4v14l-5-4H3z" fill="currentColor"/>
       <path class="waves" d="M15 8.5a5 5 0 0 1 0 7M17.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
@@ -168,6 +176,7 @@
 <!-- ============ ESCRITORIO ============ -->
 <main id="desktop" class="desktop">
   <div class="wallpaper" aria-hidden="true">
+   <div class="scene day">
     <div class="sky"></div>
     <div class="rays"></div>
     <div class="sun"></div>
@@ -197,6 +206,20 @@
     <div class="flare"><i></i><i></i><i></i></div>
     <div class="sparkles"></div>
     <div class="glints"><i></i><i></i><i></i><i></i><i></i></div>
+   </div>
+   <!-- Modo noche: ciudad lluviosa con neones (la ciudad y la lluvia las dibuja script.js) -->
+   <div class="scene night">
+    <div class="n-sky"></div>
+    <div class="n-stars"></div>
+    <div class="moon"></div>
+    <div class="n-clouds"><i class="nc a"></i><i class="nc b"></i><i class="nc c"></i></div>
+    <div class="n-city far"><canvas></canvas></div>
+    <div class="n-haze"></div>
+    <div class="n-av"><i></i><i></i><i></i></div>
+    <div class="n-city near"><canvas></canvas><div class="n-signs"></div></div>
+    <div class="n-street"></div>
+    <canvas class="n-rain"></canvas>
+   </div>
   </div>
   <div id="bubbles" class="bubbles"></div>
 
@@ -287,6 +310,7 @@
   </div>
   <div id="tb-windows" class="tb-windows"></div>
   <div class="tray">
+    <button id="theme-btn" class="tray-btn" title="Cambiar a modo noche" aria-label="Cambiar a modo noche"><svg><use href="#i-moon"/></svg></button>
     <button id="sound-btn" class="tray-btn" title="Sonido activado" aria-label="Sonido"><svg><use href="#i-speaker"/></svg></button>
     <div class="tray-clock" id="tray-clock"><span id="tb-time">--:--</span><span id="tb-date">--/--/----</span></div>
     <button id="show-desktop" class="show-desktop" title="Mostrar escritorio" aria-label="Mostrar escritorio"></button>
@@ -338,7 +362,7 @@
         </div>
       </div>
       <p>Estudio <b>Ingeniería de Software</b> en la Universidad Cooperativa de Colombia (quinto semestre). Transformo ideas en sistemas. Me interesa el arte del software: cómo se va a ver algo para quien lo usa y cómo va a crecer en el futuro.</p>
-      <p>Fuera del código soy <b>tatuador</b> (hace unos 9 meses) y <b>baterista</b> (hace 6 o 7 años). Me gusta mucho dibujar, hacer contenido para redes y aprovechar mi tiempo libre en mis hobbies: videojuegos, arte, series y películas.</p>
+      <p>Fuera del código soy <b>tatuador</b> (hace unos 9 meses) y <b>baterista</b> (hace 6 o 7 años). Me gusta mucho dibujar, hacer contenido para redes y aprovechar mi tiempo libre en mis hobbies: videojuegos, edición de video, diseño, dibujo, música, redes sociales, series y películas.</p>
       <dl class="props">
         <dt>GitHub</dt><dd><a href="https://github.com/Oskrtim2" target="_blank" rel="noopener">@Oskrtim2</a></dd>
         <dt>Instagram</dt><dd><a href="https://www.instagram.com/0skrtm__/" target="_blank" rel="noopener">@0skrtm__</a></dd>
