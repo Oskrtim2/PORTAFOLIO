@@ -16,25 +16,25 @@ const CONTACT_EMAIL = 'oscartimaran60@gmail.com';
 const TATTOO_PHOTOS = [
   { src: 'assets/images/tatuajes/arana.png', title: 'Araña' },
   { src: 'assets/images/tatuajes/crybaby.png', title: 'CryBaby' },
-  { src: 'assets/images/tatuajes/rei-ayanami.png', title: 'Rei Ayanami' },
-  { src: 'assets/images/tatuajes/sol-vale.png', title: 'Sol y olas' },
-  { src: 'assets/images/tatuajes/yoko.png', title: 'Yoko' },
-  { src: 'assets/images/tatuajes/str3yas.jpg', title: 'Str3yAs' },
   { src: 'assets/images/tatuajes/omakase.png', title: 'Omakase' },
+  { src: 'assets/images/tatuajes/rei-ayanami.png', title: 'Rei Ayanami' },
   { src: 'assets/images/tatuajes/siempre-vivaracha.png', title: 'Siempre vivaracha' },
-  { src: 'assets/images/tatuajes/sonic.png', title: 'Sonic' }
+  { src: 'assets/images/tatuajes/sol-vale.png', title: 'Sol y olas' },
+  { src: 'assets/images/tatuajes/sonic.png', title: 'Sonic' },
+  { src: 'assets/images/tatuajes/str3yas.jpg', title: 'Str3yAs' },
+  { src: 'assets/images/tatuajes/yoko.png', title: 'Yoko' }
 ];
 
 // Dibujos → assets/images/dibujos/
 const DRAWINGS = [
-  { src: 'assets/images/dibujos/str3yas.png', title: 'Str3yaS' },
   { src: 'assets/images/dibujos/emos.png', title: 'Emos hijueputas' },
+  { src: 'assets/images/dibujos/eri-tatuaje.png', title: 'ERI tatuaje' },
   { src: 'assets/images/dibujos/jhon-2.png', title: 'Jhon 2' },
-  { src: 'assets/images/dibujos/vida-mhm.png', title: 'Vida MHM' },
   { src: 'assets/images/dibujos/nirvana-x-nana.png', title: 'Nirvana x Nana' },
+  { src: 'assets/images/dibujos/str3yas.png', title: 'Str3yaS' },
   { src: 'assets/images/dibujos/tatu-oscar-dado.png', title: 'Tatu Oscar dado' },
   { src: 'assets/images/dibujos/tatuaje-kuromi.png', title: 'Tatuaje Kuromi' },
-  { src: 'assets/images/dibujos/eri-tatuaje.png', title: 'ERI tatuaje' }
+  { src: 'assets/images/dibujos/vida-mhm.png', title: 'Vida MHM' }
 ];
 
 // Comunidad (dibujos que publican los visitantes desde Paint).
