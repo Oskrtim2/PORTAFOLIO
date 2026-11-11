@@ -14,6 +14,7 @@ const CONTACT_EMAIL = 'oscartimaran60@gmail.com';
 
 // Tatuajes → assets/images/tatuajes/
 const TATTOO_PHOTOS = [
+  { src: 'assets/images/tatuajes/a.jpg', title: 'A' },
   { src: 'assets/images/tatuajes/arana.png', title: 'Araña' },
   { src: 'assets/images/tatuajes/crybaby.png', title: 'CryBaby' },
   { src: 'assets/images/tatuajes/omakase.png', title: 'Omakase' },
